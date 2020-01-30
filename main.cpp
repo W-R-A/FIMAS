@@ -4,11 +4,20 @@
  */
 
 #include "mbed.h"
-#include "platform/mbed_thread.h"
 
+DigitalOut washPump(PE_14);
+DigitalOut samplePump(PE_15);
+DigitalOut switchValve(PE_12);
+DigitalOut solenoidValve(PE_8);
+
+typedef struct {
+    int device;
+    int timeOn;
+    int timeOff;
+} deviceControl;
 
 // Blinking rate in milliseconds
-#define BLINKING_RATE_MS                                                    500
+#define BLINKING_RATE_MS  500
 
 
 int main()
