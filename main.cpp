@@ -15,7 +15,7 @@ DigitalOut solenoidValve(PE_8);
 
 
 //Define how many devices there are
-#define NO_DEVICES 4
+#define NUMBER_DEVICES 4
 
 //Define enumerated types for the devices
 enum DEVICE {WASHPUMP, SAMPLEPUMP, SWITCHVALVE, SOLENOIDVALVE}; 
@@ -27,16 +27,15 @@ typedef struct {
     int timeOff;
 } deviceTime;
 
+//Define a structure to hold the timing parameters for all the devices in a step
 typedef struct {
-    deviceTime StepTimes[NO_DEVICES];
+    deviceTime StepTimes[NUMBER_DEVICES];
 } step;
 
+
+//Define a routine, consisting of 2 steps
 #define STEPS 2
 step routine[STEPS] = {routine[0].StepTimes[0] = {WASHPUMP, 0, 20}, routine[0].StepTimes[1] = {WASHPUMP, 0, 20}, routine[0].StepTimes[2] = {WASHPUMP, 0, 20}, routine[0].StepTimes[3] = {WASHPUMP, 0, 20}};
-
-
-// Blinking rate in milliseconds
-#define BLINKING_RATE_MS  500
 
 
 //Turn off device
@@ -70,6 +69,7 @@ void turnOff(enum DEVICE device) {
     }
 }
 
+
 //Turn on device
 void turnOn(enum DEVICE device) {
     switch (device) {
@@ -101,6 +101,7 @@ void turnOn(enum DEVICE device) {
     }
 }
 
+
 //Device timings
 void checkTiming(void) {
 
@@ -109,24 +110,25 @@ void checkTiming(void) {
 
     //Loop through structures, read the timing data and take action if appropiate
     for (int i = 0; i < STEPS; i++) {
-        for (int j = 0; j < NO_DEVICES; j++) {
+        for (int j = 0; j < NUMBER_DEVICES; j++) {
 
             //Is it time to turn a device on
-            if (timeElapsed == routine[STEPS].StepTimes[NO_DEVICES].timeOn) {
+            if (timeElapsed == routine[STEPS].StepTimes[NUMBER_DEVICES].timeOn) {
                 //Turn on the device
-                turnOn(routine[STEPS].StepTimes[NO_DEVICES].device)
+                turnOn(routine[STEPS].StepTimes[NUMBER_DEVICES].device)
             }
 
             //Is it time to turn a device off
-            else if (timeElapsed == routine[STEPS].StepTimes[NO_DEVICES].timeOff) {
+            else if (timeElapsed == routine[STEPS].StepTimes[NUMBER_DEVICES].timeOff) {
                 //Turn off the device
-                turnOff(routine[STEPS].StepTimes[NO_DEVICES].device);
+                turnOff(routine[STEPS].StepTimes[NUMBER_DEVICES].device);
             }
         }
     }
     //Increment timeElapsed
     timeElapsed++;
 }
+
 
 int main() {
 	
