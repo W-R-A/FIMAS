@@ -34,8 +34,8 @@ typedef struct {
 
 
 //Define a routine, consisting of 2 steps
-#define STEPS 1
-step routine[STEPS] = {routine[0].StepTimes[0] = {WASHPUMP, 0, 5}, routine[0].StepTimes[1] = {SAMPLEPUMP, 5, 10}, routine[0].StepTimes[2] = {SWITCHVALVE, 15, 20}, routine[0].StepTimes[3] = {SOLENOIDVALVE, 20, 30}};
+#define STEPS 2
+step routine[STEPS] = {routine[0].StepTimes[0] = {WASHPUMP, 0, 5}, routine[0].StepTimes[1] = {SAMPLEPUMP, 5, 10}, routine[0].StepTimes[2] = {SWITCHVALVE, 10, 20}, routine[0].StepTimes[3] = {SOLENOIDVALVE, 20, 30}};
 
 
 //Turn off device
@@ -140,22 +140,27 @@ void checkTiming(void) {
 
 int main() {
 
-    turnOn(WASHPUMP);
-    turnOn(SAMPLEPUMP);
-    turnOn(SWITCHVALVE);
-    turnOn(SOLENOIDVALVE);
+    for (int i = 0; i < 10; i++) {
+        turnOn(WASHPUMP);
+        turnOn(SAMPLEPUMP);
+        turnOn(SWITCHVALVE);
+        turnOn(SOLENOIDVALVE);
 
-    thread_sleep_for(1000);
+        thread_sleep_for(500);
 
-    turnOff(WASHPUMP);
-    turnOff(SAMPLEPUMP);
-    turnOff(SWITCHVALVE);
-    turnOff(SOLENOIDVALVE);
+        turnOff(WASHPUMP);
+        turnOff(SAMPLEPUMP);
+        turnOff(SWITCHVALVE);
+        turnOff(SOLENOIDVALVE);
+
+        thread_sleep_for(500);
+    }
+        
 
     thread_sleep_for(1000);
 
     while (true) {
         checkTiming();
-        thread_sleep_for(1000);
+        thread_sleep_for(100);
     }
 }
