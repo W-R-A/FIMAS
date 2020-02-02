@@ -8,10 +8,10 @@
 
 
 //Define DigitalOutputs for the utilised devices
-DigitalOut washPump(PE_14);
-DigitalOut samplePump(PE_15);
-DigitalOut switchValve(PE_12);
-DigitalOut solenoidValve(PE_8);
+DigitalOut washPump(D7);
+DigitalOut samplePump(D6);
+DigitalOut switchValve(D5);
+DigitalOut solenoidValve(D4);
 
 
 //Define how many devices there are
@@ -34,30 +34,34 @@ typedef struct {
 
 
 //Define a routine, consisting of 2 steps
-#define STEPS 2
-step routine[STEPS] = {routine[0].StepTimes[0] = {WASHPUMP, 0, 20}, routine[0].StepTimes[1] = {WASHPUMP, 0, 20}, routine[0].StepTimes[2] = {WASHPUMP, 0, 20}, routine[0].StepTimes[3] = {WASHPUMP, 0, 20}};
+#define STEPS 1
+step routine[STEPS] = {routine[0].StepTimes[0] = {WASHPUMP, 0, 20}, routine[0].StepTimes[1] = {SAMPLEPUMP, 5, 25}, routine[0].StepTimes[2] = {SWITCHVALVE, 10, 20}, routine[0].StepTimes[3] = {SOLENOIDVALVE, 15, 30}};
 
 
 //Turn off device
 void turnOff(enum DEVICE device) {
     switch (device) {
         case WASHPUMP : {
-            //turn off wash pump
+            //Turn off the wash pump
+            washPump = 0;
             break;
         }
 
         case SAMPLEPUMP : {
-            //turn off sample pump
+            //Turn off the sample pump
+            samplePump = 0;
             break;
         } 
 
         case SWITCHVALVE : {
-            //turn off switch valve
+            //Turn off the switch valve - Position A
+            switchValve = 0;
             break;
         }
 
         case SOLENOIDVALVE : {
-            //turn off solenoid valve
+            //Turn off the solenoid valve
+            solenoidValve = 0;
             break;
         }
 
@@ -74,22 +78,26 @@ void turnOff(enum DEVICE device) {
 void turnOn(enum DEVICE device) {
     switch (device) {
         case WASHPUMP : {
-            //turn on wash pump
+            //Turn on the wash pump
+            washPump = 1;
             break;
         }
 
         case SAMPLEPUMP : {
-            //turn on sample pump
+            //Turn on the sample pump
+            samplePump = 1;
             break;
         } 
 
         case SWITCHVALVE : {
-            //turn on switch valve
+            //Turn on the switch valve - Position B
+            switchValve = 1;
             break;
         }
 
         case SOLENOIDVALVE : {
-            //turn on solenoid valve
+            //Turn on the solenoid valve
+            solenoidValve = 1;
             break;
         }
 
@@ -131,20 +139,23 @@ void checkTiming(void) {
 
 
 int main() {
-	
-    routine[0].StepTimes[0].device = SAMPLEPUMP;
-	
-    enum DEVICE x = routine[0].StepTimes[0].device;// = WASHPUMP;
-	
-    
-	
-	
-	
-	// Initialise the digital pin LED1 as an output
-    DigitalOut led(LED1);
+
+    turnOn(WASHPUMP);
+    turnOn(SAMPLEPUMP);
+    turnOn(SWITCHVALVE);
+    turnOn(SOLENOIDVALVE);
+
+    thread_sleep_for(1000);
+
+    turnOff(WASHPUMP);
+    turnOff(SAMPLEPUMP);
+    turnOff(SWITCHVALVE);
+    turnOff(SOLENOIDVALVE);
+
+    thread_sleep_for(1000);
 
     while (true) {
-        led = !led;
-        thread_sleep_for(BLINKING_RATE_MS);
+        checkTiming();
+        thread_sleep_for(1000);
     }
 }
