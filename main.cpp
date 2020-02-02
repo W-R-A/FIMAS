@@ -35,7 +35,7 @@ typedef struct {
 
 //Define a routine, consisting of 2 steps
 #define STEPS 1
-step routine[STEPS] = {routine[0].StepTimes[0] = {WASHPUMP, 0, 20}, routine[0].StepTimes[1] = {SAMPLEPUMP, 5, 25}, routine[0].StepTimes[2] = {SWITCHVALVE, 10, 20}, routine[0].StepTimes[3] = {SOLENOIDVALVE, 15, 30}};
+step routine[STEPS] = {routine[0].StepTimes[0] = {WASHPUMP, 0, 5}, routine[0].StepTimes[1] = {SAMPLEPUMP, 5, 10}, routine[0].StepTimes[2] = {SWITCHVALVE, 15, 20}, routine[0].StepTimes[3] = {SOLENOIDVALVE, 20, 30}};
 
 
 //Turn off device
@@ -114,22 +114,22 @@ void turnOn(enum DEVICE device) {
 void checkTiming(void) {
 
     //Temp, bind to rtc for accuracy
-    static int timeElapsed = 0;
+    static int timeElapsed;
 
     //Loop through structures, read the timing data and take action if appropiate
     for (int i = 0; i < STEPS; i++) {
         for (int j = 0; j < NUMBER_DEVICES; j++) {
 
             //Is it time to turn a device on
-            if (timeElapsed == routine[STEPS].StepTimes[NUMBER_DEVICES].timeOn) {
+            if (timeElapsed == routine[i].StepTimes[j].timeOn) {
                 //Turn on the device
-                turnOn(routine[STEPS].StepTimes[NUMBER_DEVICES].device)
+                turnOn(routine[i].StepTimes[j].device);
             }
 
             //Is it time to turn a device off
-            else if (timeElapsed == routine[STEPS].StepTimes[NUMBER_DEVICES].timeOff) {
+            else if (timeElapsed == routine[i].StepTimes[j].timeOff) {
                 //Turn off the device
-                turnOff(routine[STEPS].StepTimes[NUMBER_DEVICES].device);
+                turnOff(routine[i].StepTimes[j].device);
             }
         }
     }
