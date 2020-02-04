@@ -2,30 +2,35 @@
  * Copyright (c) 2019 ARM Limited
  * SPDX-License-Identifier: Apache-2.0
  */
-
 #include "mbed.h"
-#include <string>
+
+/* FIMAS Project
+ * Ross Andrewartha, January 2020
+ */
 
 
-//Define DigitalOutputs for the utilised devices
+//Define enumerated types for the devices used
+enum DEVICE {WASHPUMP, SAMPLEPUMP, SWITCHVALVE, SOLENOIDVALVE}; 
+
+//Declare how many devices there are defined above
+#define NUMBER_DEVICES 4
+
+//Declare DigitalOutputs for the utilised devices
 DigitalOut washPump(D7);
 DigitalOut samplePump(D6);
 DigitalOut switchValve(D5);
 DigitalOut solenoidValve(D4);
 
+//Declare input userbutton as trigger
+DigitalIn userButton(USER_BUTTON);
 
-//Define how many devices there are
-#define NUMBER_DEVICES 4
-
-//Define enumerated types for the devices
-enum DEVICE {WASHPUMP, SAMPLEPUMP, SWITCHVALVE, SOLENOIDVALVE}; 
-
-//Define a structure to hold the timing parameters
+//Define a structure to hold the timing parameters for each device for each step
 typedef struct {
     enum DEVICE device;
     int timeOn;
     int timeOff;
 } deviceTime;
+
 
 //Define a structure to hold the timing parameters for all the devices in a step
 typedef struct {
@@ -34,12 +39,17 @@ typedef struct {
 
 
 //Define a routine, consisting of 2 steps
-#define STEPS 2
-step routine[STEPS] = {routine[0].StepTimes[0] = {WASHPUMP, 0, 5}, routine[0].StepTimes[1] = {SAMPLEPUMP, 5, 10}, routine[0].StepTimes[2] = {SWITCHVALVE, 10, 20}, routine[0].StepTimes[3] = {SOLENOIDVALVE, 20, 30}};
+#define STEPS 3
+step routine[STEPS] = {
+    routine[0].StepTimes[0] = {WASHPUMP, 0, 5}, 
+    routine[0].StepTimes[1] = {SAMPLEPUMP, 5, 10}, 
+    routine[0].StepTimes[2] = {SWITCHVALVE, 10, 20},
+    routine[0].StepTimes[3] = {SOLENOIDVALVE, 20, 30}
+};
 
 
-//Turn off device
-void turnOff(enum DEVICE device) {
+//Turn off a device
+void turnOff (enum DEVICE device) {
     switch (device) {
         case WASHPUMP : {
             //Turn off the wash pump
@@ -74,8 +84,8 @@ void turnOff(enum DEVICE device) {
 }
 
 
-//Turn on device
-void turnOn(enum DEVICE device) {
+//Turn on a device
+void turnOn (enum DEVICE device) {
     switch (device) {
         case WASHPUMP : {
             //Turn on the wash pump
@@ -110,8 +120,8 @@ void turnOn(enum DEVICE device) {
 }
 
 
-//Device timings
-void checkTiming(void) {
+//Device timings - This is called once a second and turns devicies on or off based on the timing parameters
+void checkTiming (void) {
 
     //Temp, bind to rtc for accuracy
     static int timeElapsed;
@@ -137,10 +147,13 @@ void checkTiming(void) {
     timeElapsed++;
 }
 
-
-int main() {
-
-    for (int i = 0; i < 10; i++) {
+//Perform a Power On Self Test, POST
+/**
+    @param iter 
+*/
+void post (uint8_t iter) {
+    //Turn the devices on and off iter times
+    for (int i = 0; i < iter; i++) {
         turnOn(WASHPUMP);
         turnOn(SAMPLEPUMP);
         turnOn(SWITCHVALVE);
@@ -155,12 +168,22 @@ int main() {
 
         thread_sleep_for(500);
     }
-        
+}
 
-    thread_sleep_for(1000);
+
+int main() {
+
+    //Run POST, 10 times
+    post(10);
+
+    //Wait for button before starting routine
+    while(userButton) {};
 
     while (true) {
         checkTiming();
+
+        //Speeded up by a factor of 10 for testing
+        //Delay used to set timing
         thread_sleep_for(100);
     }
 }
