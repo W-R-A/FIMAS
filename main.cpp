@@ -188,7 +188,7 @@ void post (uint8_t iter) {
 int main() {
 
     //Run POST, 10 times
-    post(10);
+    post(5);
 
     //Wait for button before starting routine
     while(!userButton) {};
