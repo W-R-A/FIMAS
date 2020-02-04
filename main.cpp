@@ -27,8 +27,8 @@ DigitalIn userButton(USER_BUTTON);
 //Define a structure to hold the timing parameters for each device for each step
 typedef struct {
     enum DEVICE device;
-    int timeOn;
-    int timeOff;
+    signed int timeOn;
+    signed int timeOff;
 } deviceTime;
 
 
@@ -37,14 +37,28 @@ typedef struct {
     deviceTime StepTimes[NUMBER_DEVICES];
 } step;
 
-
-//Define a routine, consisting of 2 steps
+//Declare how many steps the routine will be
 #define STEPS 3
+
+//Define a routine, consisting of STEPS steps
 step routine[STEPS] = {
-    routine[0].StepTimes[0] = {WASHPUMP, 0, 5}, 
-    routine[0].StepTimes[1] = {SAMPLEPUMP, 5, 10}, 
-    routine[0].StepTimes[2] = {SWITCHVALVE, 10, 20},
-    routine[0].StepTimes[3] = {SOLENOIDVALVE, 20, 30}
+    //Declare timing for step 1
+    routine[0].StepTimes[0] = {WASHPUMP, 0, 15}, 
+    routine[0].StepTimes[1] = {SAMPLEPUMP, 15, 75}, 
+    routine[0].StepTimes[2] = {SWITCHVALVE, 0, 2},
+    routine[0].StepTimes[3] = {SOLENOIDVALVE, 0, 15},
+
+    //Declare timing for step 2
+    routine[1].StepTimes[0] = {WASHPUMP, 225, 240}, 
+    routine[1].StepTimes[1] = {SAMPLEPUMP, 240, 300}, 
+    routine[1].StepTimes[2] = {SWITCHVALVE, 225, 227},
+    routine[1].StepTimes[3] = {SOLENOIDVALVE, 225, 240},
+
+    //Declare timing for step 3
+    routine[2].StepTimes[0] = {WASHPUMP, 450, 465}, 
+    routine[2].StepTimes[1] = {SAMPLEPUMP, 465, 525}, 
+    routine[2].StepTimes[2] = {SWITCHVALVE, 450, 452},
+    routine[2].StepTimes[3] = {SOLENOIDVALVE, 450, 465}
 };
 
 
@@ -177,7 +191,7 @@ int main() {
     post(10);
 
     //Wait for button before starting routine
-    while(userButton) {};
+    while(!userButton) {};
 
     while (true) {
         checkTiming();
