@@ -187,7 +187,7 @@ void post (uint8_t iter) {
 
 int main() {
 
-    //Run POST, 10 times
+    //Run POST, 5 times
     post(5);
 
     //Wait for button before starting routine
