@@ -2,6 +2,7 @@ body {
     background-color: rgb(247, 252, 184);
     margin: 0;
     padding: 0;
+    padding-top: 0px; 
 }
   
 h1 {
@@ -52,6 +53,8 @@ li a:hover {
   background-color: rgb(100, 255, 255);
 }
 
-body { 
-  padding-top: 0px; 
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
 }
