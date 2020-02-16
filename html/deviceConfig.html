@@ -16,6 +16,7 @@
 </head>
 
 <body>
+  <!-- Header Navigation Bar -->
   <header>
     <ul>
       <li><a href="index.html">Home</a></li>
@@ -25,8 +26,11 @@
     </ul>
   </header>
 
+  <!-- Main Content -->
   <div class="rest" style="margin:auto">
     <h1>Device Configuration</h1>
+
+    <!-- Table showing a summary of the devices configured for use with the system -->
     <table contenteditable='true'>
       <tr>
         <th>Device Name</th>
@@ -35,27 +39,22 @@
       </tr>
       <tr>
         <td>Sample Pump</td>
-        <td>
-          <select id="devices">
-            <option value="peristalticPump">Peristaltic Pump</option>
-            <option value="solenoidValve">Solenoid Valve</option>
-            <option value="switchingValve">Switching Valve</option>
-          </select>
-        </td>
+        <td>Peristaltic Pump</td>
         <td>Relay 1</td>
       </tr>
       <tr>
+        <td>Switching Valve No.1</td>
         <td>Switching Valve</td>
-        <td>
-          <select id="devices">
-            <option value="peristalticPump">Peristaltic Pump</option>
-            <option value="solenoidValve">Solenoid Valve</option>
-            <option value="switchingValve">Switching Valve</option>
-          </select>
-        </td>
         <td>Relay 2</td>
       </tr>
     </table>
+
+    <!-- Dropdown to edit the configuration of a device -->
+    <select id="devices">
+      <option value="peristalticPump">Peristaltic Pump</option>
+      <option value="solenoidValve">Solenoid Valve</option>
+      <option value="switchingValve">Switching Valve</option>
+    </select>
   </div>
 </body>
 
