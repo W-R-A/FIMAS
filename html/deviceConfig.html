@@ -1,58 +1,62 @@
 <!doctype html>
 <html lang="en-GB">
-    <head>
-        <!-- Declare charset used at UTF-8 -->
-        <meta charset="UTF-8">
 
-        <!-- Title of the webpage -->
-        <title>FIMAS Device Configuration</title>
+<head>
+  <!-- Declare charset used at UTF-8 -->
+  <meta charset="UTF-8">
 
-        <!-- Link to stylesheet -->
-        <link rel="stylesheet" type="text/css" href="styles.css">
+  <!-- Title of the webpage -->
+  <title>FIMAS Device Configuration</title>
 
-        <!-- Set initial scale for devices with smaller screens -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Link to stylesheet -->
+  <link rel="stylesheet" type="text/css" href="styles.css">
 
-    </head>
+  <!-- Set initial scale for devices with smaller screens -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-    <body>
-        <header>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a class="active" href="deviceConfig.html">Device Configuration</a></li>
-                <li><a href="routines.html">Routines Configuration</a></li>
-                <li><a href="help.html">Help</a></li>
-            </ul>
-        </header>
+<body>
+  <header>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a class="active" href="deviceConfig.html">Device Configuration</a></li>
+      <li><a href="routines.html">Routines Configuration</a></li>
+      <li><a href="help.html">Help</a></li>
+    </ul>
+  </header>
 
-        <div class="rest" style="margin:auto">
-            <h1>Device Configuration</h1>
-            <table contenteditable='true'>
-                <tr>
-                  <th>Device Name</th>
-                  <th>Device Type</th>
-                  <th>Relay</th>
-                  <th>Pin State Device Off</th>
-                  <th>Pin State Device On</th>
-                  <th>Transition to next State</th>
-                </tr>
-                <tr>
-                  <td>Sample Pump</td>
-                  <td>ON/OFF</td>
-                  <td>Relay 1</td>
-                  <td>0</td>
-                  <td>1</td>
-                  <td>N/A</td>
-                </tr>
-                <tr>
-                  <td>Switching Valve</td>
-                  <td>Multi-State</td>
-                  <td>Relay 2</td>
-                  <td>N/A</td>
-                  <td>N/A</td>
-                  <td>Rising Edge</td>
-                </tr>
-              </table> 
-        </div>
-    </body>
+  <div class="rest" style="margin:auto">
+    <h1>Device Configuration</h1>
+    <table contenteditable='true'>
+      <tr>
+        <th>Device Name</th>
+        <th>Device Type</th>
+        <th>Relay</th>
+      </tr>
+      <tr>
+        <td>Sample Pump</td>
+        <td>
+          <select id="devices">
+            <option value="peristalticPump">Peristaltic Pump</option>
+            <option value="solenoidValve">Solenoid Valve</option>
+            <option value="switchingValve">Switching Valve</option>
+          </select>
+        </td>
+        <td>Relay 1</td>
+      </tr>
+      <tr>
+        <td>Switching Valve</td>
+        <td>
+          <select id="devices">
+            <option value="peristalticPump">Peristaltic Pump</option>
+            <option value="solenoidValve">Solenoid Valve</option>
+            <option value="switchingValve">Switching Valve</option>
+          </select>
+        </td>
+        <td>Relay 2</td>
+      </tr>
+    </table>
+  </div>
+</body>
+
 </html>
