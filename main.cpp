@@ -8,6 +8,7 @@
  * Ross Andrewartha, January 2020
  */
 
+#include "Networkbits.hpp"
 
 //Define enumerated types for the devices used
 enum DEVICE {WASHPUMP, SAMPLEPUMP, SWITCHVALVE, SOLENOIDVALVE}; 
@@ -187,6 +188,8 @@ void post (uint8_t iter) {
 
 int main() {
 
+	networktest();
+	
     //Run POST, 5 times
     post(5);
 
