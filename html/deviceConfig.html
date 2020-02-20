@@ -31,24 +31,12 @@
     <h1>Device Configuration</h1>
 
     <!-- Table showing a summary of the devices configured for use with the system -->
-    <table>
+    <table id="devices_table">
       <tr>
         <th>Device Name</th>
         <th>Device Type</th>
         <th>Relay</th>
         <th>Test Device</th>
-      </tr>
-      <tr>
-        <td>Sample Pump</td>
-        <td>Peristaltic Pump</td>
-        <td>Relay 1</td>
-        <td><button>Test Device</button></td>
-      </tr>
-      <tr>
-        <td>Switching Valve No.1</td>
-        <td>Switching Valve</td>
-        <td>Relay 2</td>
-        <td><button>Test Device</button></td>
       </tr>
     </table>
 
@@ -71,9 +59,32 @@
 
     <script src="jquery.js"></script>
     <script>
+    var jsonData = '[{"devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 2","devTest":"Test Device"}]';
+
       $( document ).ready(function() {
       // Your code here.
       });
+
+      var jsonData = '[{"devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 3","devTest":"Test Device"}]';
+
+$.ajax({
+  url: '/echo/json/',
+  type: 'POST',
+  data: {
+    json: jsonData
+  },
+  success: function(response) {
+    var trHTML = '';
+    $.each(response, function(i, item) {
+      trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button>' + item.devTest + '</button></td></tr>';
+    });
+    $('#devices_table').append(trHTML);
+  }
+});
+
+  
+
+
     </script>
 
   </div>
