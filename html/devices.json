@@ -1,20 +1,16 @@
 [
     {
-        "Book ID": "1",
-        "Book Name": "Computer Architecture",
-        "Category": "Computers",
-        "Price": "125.60"
+        "devId": "1",
+        "devName": "Sample Pump",
+        "devType": "Peristaltic Pump",
+        "devRelay": "Relay 1",
+        "devTest": "Test Device"
     },
     {
-        "Book ID": "2",
-        "Book Name": "Asp.Net 4 Blue Book",
-        "Category": "Programming",
-        "Price": "56.00"
-    },
-    {
-        "Book ID": "3",
-        "Book Name": "Popular Science",
-        "Category": "Science",
-        "Price": "210.40"
+        "devId": "2",
+        "devName": "Switching Valve No.1",
+        "devType": "Switching Valve",
+        "devRelay": "Relay 2",
+        "devTest": "Test Device"
     }
-]
+];
