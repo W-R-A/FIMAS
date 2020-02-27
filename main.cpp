@@ -186,9 +186,11 @@ void post (uint8_t iter) {
 }
 
 
+Thread t1;
+
 int main() {
 
-	networktest();
+	t1.start(networktest);
 	
     //Run POST, 5 times
     post(5);
