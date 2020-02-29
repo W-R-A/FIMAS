@@ -1,33 +1,70 @@
 <!doctype html>
 <html lang="en-GB">
-    <head>
-        <!-- Declare charset used at UTF-8 -->
-        <meta charset="UTF-8">
 
-        <!-- Title of the webpage -->
-        <title>FIMAS Routines Configuration</title>
+<head>
+  <!-- Declare charset used at UTF-8 -->
+  <meta charset="UTF-8">
 
-        <!-- Link to stylesheet -->
-        <link rel="stylesheet" type="text/css" href="styles.css">
+  <!-- Title of the webpage -->
+  <title>FIMAS Routines Configuration</title>
 
-        <!-- Set initial scale for devices with smaller screens -->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Link to stylesheet -->
+  <link rel="stylesheet" type="text/css" href="styles.css">
 
-    </head>
+  <!-- Set initial scale for devices with smaller screens -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 
-    <body>
-        <header>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="deviceConfig.html">Device Configuration</a></li>
-                <li><a class="active" href="routines.html">Routines Configuration</a></li>
-                <li><a href="help.html">Help</a></li>
-            </ul>
-        </header>
+<body>
+  <!-- Header Navigation Bar -->
+  <header>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="deviceConfig.html">Device Configuration</a></li>
+      <li><a class="active" href="routines.html">Routines Configuration</a></li>
+      <li><a href="help.html">Help</a></li>
+    </ul>
+  </header>
 
-        <div style="margin:auto">
-            <h1>Routines Configuration</h1>
-            <p>Configure routines</p>
-        </div>
-    </body>
+  <!-- Main Content -->
+  <div class="main">
+    <h1>Routines Configuration</h1>
+
+    <p>Select Device: </p>
+
+    <!-- Dropdown to edit the configuration of a device -->
+    <select id="devices_dropdown">
+    </select>
+
+
+    <script src="jquery.js"></script>
+    <script>
+      $(document).ready(function () {
+        // Your code here.
+
+        alert('Loading Devices Configuration');
+
+        //Clear dropdown
+        $('#devices_dropdown').empty();
+
+        //Set default option as select device, and make it disabled
+        $('#devices_dropdown').append('<option selected="true" disabled>Select Device</option>');
+        $('#devices_dropdown').prop('selectedIndex', 0);
+
+        var opHTML = '';
+
+        var jsonData = '[{"devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 3","devTest":"Test Device"}]';
+        
+        response = $.parseJSON(jsonData)
+        $.each(response, function (i, item) {
+          opHTML += '<option>' + item.devName + '</option>';
+        });
+
+        $('#devices_dropdown').append(opHTML);
+      });
+    </script>
+
+  </div>
+</body>
+
 </html>
