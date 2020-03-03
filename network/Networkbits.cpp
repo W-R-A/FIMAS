@@ -64,6 +64,7 @@ void networktest()
 
         //Declare a string for the favicon url request - this needs to move to a more central location, header file
         string addFavicon("favicon");
+		string addStyles("styles.css");
 
         //Create a sting based on the recieved data from the client
         string address(buffer);
@@ -79,6 +80,23 @@ void networktest()
 
             //Add a line feed and carriage return to the response
             response += "\r\n";
+        }
+		if (address.find(addStyles) != string::npos) {
+            
+            //Add a 200 header code to the response
+            response += HTTP_STATUS_LINE_200;
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+
+            //Add the header fields
+            response += "Content-Type: text/css";
+
+            //Add 2 line feeds and carriage returns to the response to signal the end of the headers
+            response += "\r\n\r\n";
+			
+			//Add the body
+            response += STYLES;
         }
         else {
             //Add a 200 header code to the response
