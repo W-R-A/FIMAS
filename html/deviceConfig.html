@@ -83,8 +83,23 @@
         $('#devices_table').append(trHTML);
         $('#devices_dropdown').append(opHTML);
 
-        $(".btnTest").click(function () {
-          alert($('#test').attr('id'));
+        $(".btnTest").click(function (event) {
+          alert(event.target.id);
+
+          var reqURL = '/test/' + event.target.id;
+
+          alert(reqURL);
+
+          $.ajax({
+            type: "GET",
+            url: reqURL,
+            success: function (result) {
+              alert('ok');
+            },
+            error: function (result) {
+              alert('error');
+            }
+          });
         });
       });
     </script>
