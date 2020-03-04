@@ -44,8 +44,6 @@
 
     <!-- Dropdown to edit the configuration of a device -->
     <select id="devices_dropdown">
-      <option value="peristalticPump">Sample Pump</option>
-      <option value="solenoidValve">Switching Valve No.1</option>
     </select>
 
     <!-- Linebreaks to move button onto new line -->
@@ -85,6 +83,12 @@
         $('#devices_table').append(trHTML);
         $('#devices_dropdown').append(opHTML);
       });
+    </script>
+
+    <script>
+    $( "td" ).click(function() {
+      alert( "Handler for .click() called." );
+    });
     </script>
 
   </div>

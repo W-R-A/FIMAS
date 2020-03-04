@@ -57,13 +57,16 @@ void networktest()
         clt_sock->recv(buffer, 1024);
 
         //Debuging, print this out over serial
-        pc.printf("Received Msg: %s\n\n", buffer); //this was missing in original example.
+        //pc.printf("Received Msg: %s\n\n", buffer); //this was missing in original example.
 
 
         //Address parser logic, decide what repsonse is required dependant on the incoming address
 
         //Declare a string for the favicon url request - this needs to move to a more central location, header file
-        string addFavicon("favicon");
+        string addFavicon("favicon.ico");
+        string addIndex("GET / HTTP/1.1");
+        string addStyles("styles.css");
+        string addJquery("jquery.js");
 
         //Create a sting based on the recieved data from the client
         string address(buffer);
@@ -80,7 +83,8 @@ void networktest()
             //Add a line feed and carriage return to the response
             response += "\r\n";
         }
-        else {
+        else if (address.find(addIndex) != string::npos) {
+            
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
 
@@ -96,9 +100,58 @@ void networktest()
             //Add the body
             response += HTTP_MESSAGE_BODY1;
         }
+        else if (address.find(addStyles) != string::npos) {
+            
+            //Add a 200 header code to the response
+            response += HTTP_STATUS_LINE_200;
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+
+            //Add the header fields
+            response += "Content-Type: text/css";
+
+            //Add 2 line feeds and carriage returns to the response to signal the end of the headers
+            response += "\r\n\r\n";
+            
+            //Add the body
+            response += STYLES;
+        }
+        else if (address.find(addJquery) != string::npos) {
+            
+            //Add a 200 header code to the response
+            response += HTTP_STATUS_LINE_200;
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+
+            //Add the header fields
+            response += "Content-Type: text/javascript";
+
+			//Add a line feed and carriage return to the response
+            response += "\r\n";
+			
+			//Add the header fields
+            response += "Cache-Control: public, max-age=31536000";
+			
+            //Add 2 line feeds and carriage returns to the response to signal the end of the headers
+            response += "\r\n\r\n";
+            
+            //Add the body
+            response += JQUERY;
+        }
+        else {
+            
+            //If we get to this else statement, then no route exists for this request, throw a 404 to the client
+            //Add a 404 header to the response
+            response += HTTP_STATUS_LINE_404;
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+        }
 
         //Debugging, print the sent html
-        printf("\n\nHTML: %s", response.c_str());
+        //printf("\n\nHTML: %s", response.c_str());
 
         //Send HTML response (as a C string)
         clt_sock->send(response.c_str(), response.size());
