@@ -53,7 +53,7 @@
 
         var opHTML = '';
 
-        var jsonData = '[{"devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 3","devTest":"Test Device"}]';
+        var jsonData = '[{"devId":"1","devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devId":"2","devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 2","devTest":"Test Device"}]';
         
         response = $.parseJSON(jsonData)
         $.each(response, function (i, item) {
