@@ -57,7 +57,7 @@ void networktest()
         clt_sock->recv(buffer, 1024);
 
         //Debuging, print this out over serial
-        //pc.printf("Received Msg: %s\n\n", buffer); //this was missing in original example.
+        pc.printf("Received Msg: %s\n\n", buffer); //this was missing in original example.
 
 
         //Address parser logic, decide what repsonse is required dependant on the incoming address
