@@ -76,7 +76,7 @@
 
         response = $.parseJSON(jsonData)
         $.each(response, function (i, item) {
-          trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devRelay + '">Test Device</button></td></tr>';
+          trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devId + '">Test Device</button></td></tr>';
           opHTML += '<option>' + item.devName + '</option>';
         });
 
