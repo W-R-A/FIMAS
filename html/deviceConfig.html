@@ -60,7 +60,7 @@
       $(document).ready(function () {
         // Your code here.
 
-        alert('Loading Device Configuration');
+        //alert('Loading Device Configuration');
 
         //Clear dropdown
         $('#devices_dropdown').empty();
@@ -73,24 +73,21 @@
         var opHTML = '';
 
         var jsonData = '[{"devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 3","devTest":"Test Device"}]';
-        
+
         response = $.parseJSON(jsonData)
         $.each(response, function (i, item) {
-          trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button>' + item.devTest + '</button></td></tr>';
+          trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devRelay + '">Test Device</button></td></tr>';
           opHTML += '<option>' + item.devName + '</option>';
         });
 
         $('#devices_table').append(trHTML);
         $('#devices_dropdown').append(opHTML);
+
+        $(".btnTest").click(function () {
+          alert($('#test').attr('id'));
+        });
       });
     </script>
-
-    <script>
-    $( "td" ).click(function() {
-      alert( "Handler for .click() called." );
-    });
-    </script>
-
   </div>
 </body>
 
