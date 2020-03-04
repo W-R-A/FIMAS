@@ -67,6 +67,7 @@ void networktest()
         string addIndex("GET / HTTP/1.1");
         string addStyles("styles.css");
         string addJquery("jquery.js");
+		string addTest("test");
 
         //Create a sting based on the recieved data from the client
         string address(buffer);
@@ -139,6 +140,32 @@ void networktest()
             
             //Add the body
             response += JQUERY;
+        }
+		else if (address.find(addTest) != string::npos) {
+            
+			
+			if (address.find("1") != string::npos) {
+				//Add a 200 header code to the response
+				response += HTTP_STATUS_LINE_200;
+
+				//Add a line feed and carriage return to the response
+				response += "\r\n";
+			}
+			else if (address.find("2") != string::npos) {
+				//Add a 200 header code to the response
+				response += HTTP_STATUS_LINE_200;
+
+				//Add a line feed and carriage return to the response
+				response += "\r\n";
+			} 
+			else {
+				//If we get to this else statement, then no route exists for this request, throw a 404 to the client
+				//Add a 404 header to the response
+				response += HTTP_STATUS_LINE_404;
+
+				//Add a line feed and carriage return to the response
+				response += "\r\n";
+			}
         }
         else {
             
