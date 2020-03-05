@@ -1,4 +1,5 @@
 #include "Networkbits.hpp"
+#include "hardware.hpp"
 
 //Debugging output, use faster baud rate to remain responsive
 Serial pc(USBTX, USBRX, 115200);
@@ -141,7 +142,7 @@ void networktest()
             //Add the body
             response += JQUERY;
         }
-		else if (address.find(addTest) != string::npos) {
+		else if (address.find("devicetest") != string::npos) {
             
 			
 			if (address.find("1") != string::npos) {
@@ -150,6 +151,8 @@ void networktest()
 
 				//Add a line feed and carriage return to the response
 				response += "\r\n";
+				
+				turnOn(WASHPUMP);
 			}
 			else if (address.find("2") != string::npos) {
 				//Add a 200 header code to the response
@@ -157,6 +160,8 @@ void networktest()
 
 				//Add a line feed and carriage return to the response
 				response += "\r\n";
+				
+				turnOn(SAMPLEPUMP);
 			} 
 			else {
 				//If we get to this else statement, then no route exists for this request, throw a 404 to the client
@@ -178,7 +183,7 @@ void networktest()
         }
 
         //Debugging, print the sent html
-        //printf("\n\nHTML: %s", response.c_str());
+        printf("\n\nHTML: %s", response.c_str());
 
         //Send HTML response (as a C string)
         clt_sock->send(response.c_str(), response.size());
