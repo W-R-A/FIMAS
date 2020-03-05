@@ -145,7 +145,7 @@ void networktest()
 		else if (address.find("devicetest") != string::npos) {
             
 			
-			if (address.find("1") != string::npos) {
+			if (address.find("id=1") != string::npos) {
 				//Add a 200 header code to the response
 				response += HTTP_STATUS_LINE_200;
 
@@ -154,7 +154,7 @@ void networktest()
 				
 				turnOn(WASHPUMP);
 			}
-			else if (address.find("2") != string::npos) {
+			else if (address.find("id=2") != string::npos) {
 				//Add a 200 header code to the response
 				response += HTTP_STATUS_LINE_200;
 
