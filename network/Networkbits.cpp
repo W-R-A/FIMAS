@@ -2,7 +2,7 @@
 #include "hardware.hpp"
 
 //Network thread - To handle networking, http over TCP/IP
-extern Thread networkThread;
+Thread networkThread;
 
 
 //Network - responsible for listening for http connections and then processing and responding to them
