@@ -57,7 +57,35 @@
 
     <script src="jquery.js"></script>
     <script>
+      //When the webpage has loaded and the the document is ready to be worked on
       $(document).ready(function () {
+
+        //Bind the test buttons to the following handler
+        $(document).on("click", "button.btnTest", function (event) {
+
+          //Debugging, display the ID to be requested
+          alert(event.target.id);
+
+          //Define the URL to hit
+          var reqURL = '/devicetest/id=' + event.target.id;
+
+          //Debuging, dislay the URL to send a GET request to
+          alert(reqURL);
+
+          //Send the AJAX request to the defined URL
+          $.ajax({
+            type: "GET",
+            url: reqURL,
+            //On success, alert the user
+            success: function (result) {
+              alert('ok');
+            },
+            //On failure, alert the user
+            error: function (result) {
+              alert('error');
+            }
+          });
+        });
 
         //Populate the device table based on the JSON configuration recieved
         populateDevices();
@@ -77,39 +105,28 @@
           var opHTML = '';
 
           //Testing the parsing of the json
-          //var jsonData = '[{"devId":"1","devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devId":"2","devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 2","devTest":"Test Device"}]';
+          var jsonData = '[{"devId":"1","devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devId":"2","devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 2","devTest":"Test Device"}]';
 
-          //Testing
-          //response = $.parseJSON(jsonData)
+          //Testing - use static json
+          response = $.parseJSON(jsonData)
 
-          $.getJSON("/devices.json", function (response) {
-            $.each(response, function (i, item) {
-              trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devID + '">Test Device</button></td></tr>';
-              opHTML += '<option>' + item.devName + '</option>';
-            });
+          //Get the devices on the system in a JSON format
+          //$.getJSON("/devices.json", function (response) {
+          //Loop through the response and fill in the table and dropdown
+          $.each(response, function (i, item) {
+            //Generate the table HTML from the recieved JSON file
+            trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devID + '">Test Device</button></td></tr>';
 
-            $('#devices_table').append(trHTML);
-            $('#devices_dropdown').append(opHTML);
+            //Generate the dropdown html
+            opHTML += '<option>' + item.devName + '</option>';
           });
 
-          $(".btnTest").click(function (event) {
-            alert(event.target.id);
+          //Append the html to the devices table
+          $('#devices_table').append(trHTML);
 
-            var reqURL = '/devicetest/id=' + event.target.id;
-
-            alert(reqURL);
-
-            $.ajax({
-              type: "GET",
-              url: reqURL,
-              success: function (result) {
-                alert('ok');
-              },
-              error: function (result) {
-                alert('error');
-              }
-            });
-          });
+          //Append the html to the dropdown
+          $('#devices_dropdown').append(opHTML);
+          //});
         }
       });
     </script>
