@@ -82,36 +82,35 @@
           //Testing
           //response = $.parseJSON(jsonData)
 
-          $.getJSON("/devices.json", function (result) {
+          $.getJSON("/devices.json", function (response) {
             $.each(response, function (i, item) {
-              trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devId + '">Test Device</button></td></tr>';
+              trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devID + '">Test Device</button></td></tr>';
               opHTML += '<option>' + item.devName + '</option>';
             });
 
             $('#devices_table').append(trHTML);
             $('#devices_dropdown').append(opHTML);
           });
-        }
 
+          $(".btnTest").click(function (event) {
+            alert(event.target.id);
 
-        $(".btnTest").click(function (event) {
-          alert(event.target.id);
+            var reqURL = '/devicetest/id=' + event.target.id;
 
-          var reqURL = '/devicetest/id=' + event.target.id;
+            alert(reqURL);
 
-          alert(reqURL);
-
-          $.ajax({
-            type: "GET",
-            url: reqURL,
-            success: function (result) {
-              alert('ok');
-            },
-            error: function (result) {
-              alert('error');
-            }
+            $.ajax({
+              type: "GET",
+              url: reqURL,
+              success: function (result) {
+                alert('ok');
+              },
+              error: function (result) {
+                alert('error');
+              }
+            });
           });
-        });
+        }
       });
     </script>
   </div>
