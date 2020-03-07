@@ -174,7 +174,24 @@ void network(void)
 				response += "\r\n";
 			}
         }
-        else {
+		else if (address.find("devices.json") != string::npos) {
+            
+			//Add a 200 header code to the response
+            response += HTTP_STATUS_LINE_200;
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+
+            //Add the header fields
+            response += "Content-Type: application/json";
+
+            //Add 2 line feeds and carriage returns to the response to signal the end of the headers
+            response += "\r\n\r\n";
+            
+            //Add the body
+            response += "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Distribution Valve\",\"devType\":\"swichValve\",\"devPin1\":\"5\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"9\",\"devPin2\":\"10\"}]";
+        }
+		else {
             
             //If we get to this else statement, then no route exists for this request, throw a 404 to the client
             //Add a 404 header to the response
