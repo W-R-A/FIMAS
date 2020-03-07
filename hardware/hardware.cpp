@@ -9,6 +9,9 @@ DigitalOut solenoidValve(D4);
 //Declare input userbutton as trigger
 DigitalIn userButton(USER_BUTTON);
 
+//Debugging output, use faster baud rate to remain responsive
+Serial pc(USBTX, USBRX, 115200);
+
 //Declare how many steps the routine will be
 #define STEPS 3
 

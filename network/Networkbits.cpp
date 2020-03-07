@@ -1,8 +1,6 @@
 #include "Networkbits.hpp"
 #include "hardware.hpp"
 
-//Debugging output, use faster baud rate to remain responsive
-Serial pc(USBTX, USBRX, 115200);
 
 //Network thread - This thread handles network communications over ethernet with a client
 void networktest()

@@ -18,6 +18,10 @@ extern DigitalOut solenoidValve;
 //Declare input userbutton as trigger
 extern DigitalIn userButton;
 
+//Serial Communications
+extern Serial pc;
+
+
 //Define a structure to hold the timing parameters for each device for each step
 typedef struct {
     enum DEVICE device;
