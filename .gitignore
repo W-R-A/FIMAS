@@ -37,3 +37,6 @@ BUILD/
 #User-Specific Files
 *.Ross
 .vscode/arduino.json
+
+#JSONParser
+jsmn/
