@@ -19,7 +19,7 @@ static const char *JSON_STRING = "[{\"devId\":\"1\",\"devName\":\"Sample Pump\",
 int main() {  
 
 	//Start Network Thread
-	networkThread.start(networktest);
+	networkThread.start(network);
 	
     MbedJSONValue demo;
 

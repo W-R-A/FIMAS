@@ -1,9 +1,13 @@
 #include "Networkbits.hpp"
 #include "hardware.hpp"
 
+//Network thread - To handle networking, http over TCP/IP
+extern Thread networkThread;
 
-//Network thread - This thread handles network communications over ethernet with a client
-void networktest()
+
+//Network - responsible for listening for http connections and then processing and responding to them
+//No data is returned and no parameters need to be passed
+void network(void)
 {
     //Declare an ethernet interface
     EthernetInterface eth;

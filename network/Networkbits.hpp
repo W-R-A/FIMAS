@@ -20,6 +20,11 @@
 #define NETMASK   "255.0.0.0"
 #define GATEWAY   "10.0.0.1"
 
-extern void networktest();
+//Network thread - To handle networking
+extern Thread networkThread;
+
+//Network - responsible for listening for http connections and then processing and responding to them
+//No data is returned and no parameters need to be passed
+extern void network(void);
 
 #endif
