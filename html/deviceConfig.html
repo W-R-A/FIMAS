@@ -58,30 +58,41 @@
     <script src="jquery.js"></script>
     <script>
       $(document).ready(function () {
-        // Your code here.
 
-        //alert('Loading Device Configuration');
+        //Populate the device table based on the JSON configuration recieved
+        populateDevices();
 
-        //Clear dropdown
-        $('#devices_dropdown').empty();
+        //Delcare the populate devices function - This will popuate the device table based on the JSON recieved from the board
+        function populateDevices() {
 
-        //Set default option as select device, and make it disabled
-        $('#devices_dropdown').append('<option selected="true" disabled>Select Device</option>');
-        $('#devices_dropdown').prop('selectedIndex', 0);
+          //Ensure that the dropdown is empty
+          $('#devices_dropdown').empty();
 
-        var trHTML = '';
-        var opHTML = '';
+          //Set default option as select device, and make it disabled
+          $('#devices_dropdown').append('<option selected="true" disabled>Select Device</option>');
+          $('#devices_dropdown').prop('selectedIndex', 0);
 
-        var jsonData = '[{"devId":"1","devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devId":"2","devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 2","devTest":"Test Device"}]';
+          //Define some temporary variables to hold the HTML
+          var trHTML = '';
+          var opHTML = '';
 
-        response = $.parseJSON(jsonData)
-        $.each(response, function (i, item) {
-          trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devId + '">Test Device</button></td></tr>';
-          opHTML += '<option>' + item.devName + '</option>';
-        });
+          //Testing the parsing of the json
+          //var jsonData = '[{"devId":"1","devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devId":"2","devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 2","devTest":"Test Device"}]';
 
-        $('#devices_table').append(trHTML);
-        $('#devices_dropdown').append(opHTML);
+          //Testing
+          //response = $.parseJSON(jsonData)
+
+          $.getJSON("/devices.json", function (result) {
+            $.each(response, function (i, item) {
+              trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devId + '">Test Device</button></td></tr>';
+              opHTML += '<option>' + item.devName + '</option>';
+            });
+
+            $('#devices_table').append(trHTML);
+            $('#devices_dropdown').append(opHTML);
+          });
+        }
+
 
         $(".btnTest").click(function (event) {
           alert(event.target.id);
