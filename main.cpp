@@ -10,63 +10,42 @@
 
 #include "Networkbits.hpp"
 #include "hardware.hpp"
-#include "jsmn.h"
+//#include "jsmn.h"
+#include "MbedJSONValue.h"
+#include <string>
 
-Thread t1;
+static const char *JSON_STRING = "[{\"devId\":\"1\",\"devName\":\"Sample Pump\",\"devType\":\"Peristaltic Pump\",\"devRelay\":\"Relay 1\",\"devTest\":\"Test Device\"},{\"devId\":\"2\",\"devName\":\"Switching Valve No.1\",\"devType\":\"Switching Valve\",\"devRelay\":\"Relay 2\",\"devTest\":\"Test Device\"}]";
 
-static const char *JSON_STRING = "{\"devId\":\"1\",\"devName\":\"Sample Pump\",\"devType\":\"Peristaltic Pump\",\"devRelay\":\"Relay 1\",\"devTest\":\"Test Device\"},{\"devId\":\"2\",\"devName\":\"Switching Valve No.1\",\"devType\":\"Switching Valve\",\"devRelay\":\"Relay 2\",\"devTest\":\"Test Device\"}";
+int main() {  
 
-static int jsoneq(const char *json, jsmntok_t *tok, const char *s) {
-  if (tok->type == JSMN_STRING && (int)strlen(s) == tok->end - tok->start &&
-      strncmp(json + tok->start, s, tok->end - tok->start) == 0) {
-    return 0;
-  }
-  return -1;
-}
+	//Start Network Thread
+	networkThread.start(networktest);
+	
+    MbedJSONValue demo;
 
-int main() {
-  int i;
-  int r;
-  jsmn_parser p;
-  jsmntok_t t[128]; /* We expect no more than 128 tokens */
 
-  jsmn_init(&p);
-  r = jsmn_parse(&p, JSON_STRING, strlen(JSON_STRING), t,
-                 sizeof(t) / sizeof(t[0]));
-  if (r < 0) {
-    pc.printf("Failed to parse JSON: %d\n", r);
-    return 1;
-  }
+	//parse the previous string and fill the object demo
+	parse(demo, JSON_STRING);
 
-  /* Assume the top-level element is an object */
-  if (r < 1 || t[0].type != JSMN_OBJECT) {
-    pc.printf("Object expected\n");
-    return 1;
-  }
+	std::string my_str;
+	int my_int;
+	bool my_bool;
+ 
+	if (demo[0].hasMember("devId")) {
+		my_str = demo[0]["devId"].get<std::string>();
+	}	
 
-  /* Loop over all keys of the root object */
-  for (i = 1; i < r; i++) {
-    if (jsoneq(JSON_STRING, &t[i], "devId") == 0) {
-      /* We may use strndup() to fetch string value */
-      pc.printf("- User: %.*s\n", t[i + 1].end - t[i + 1].start,
-             JSON_STRING + t[i + 1].start);
-      i++;
-    } else if (jsoneq(JSON_STRING, &t[i], "devName") == 0) {
-      /* We may additionally check if the value is either "true" or "false" */
-      pc.printf("- Admin: %.*s\n", t[i + 1].end - t[i + 1].start,
-             JSON_STRING + t[i + 1].start);
-      i++;
-    } else if (jsoneq(JSON_STRING, &t[i], "devType") == 0) {
-      /* We may want to do strtol() here to get numeric value */
-      pc.printf("- UID: %.*s\n", t[i + 1].end - t[i + 1].start,
-             JSON_STRING + t[i + 1].start);
-      i++;
-    } else {
-      pc.printf("Unexpected key: %.*s\n", t[i].end - t[i].start,
-             JSON_STRING + t[i].start);
-    }
-  }
-  return EXIT_SUCCESS;
+	//printf("%s", demo.hasMember("devId"));
+	
+    my_str = demo[0]["devId"].get<std::string>();
+    //my_int = demo["my_array"][1].get<int>();
+    //my_bool = demo["my_boolean"].get<bool>();
+   
+    printf("my_str: %s\r\n", my_str.c_str());
+    //printf("my_int: %d\r\n", my_int);
+    //printf("my_bool: %s\r\n", my_bool ? "true" : "false");
+	
+	while (true) {}
 }
 
 // int main() {
