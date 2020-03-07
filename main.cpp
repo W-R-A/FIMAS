@@ -10,7 +10,6 @@
 
 #include "Networkbits.hpp"
 #include "hardware.hpp"
-//#include "jsmn.h"
 #include "MbedJSONValue.h"
 #include <string>
 
@@ -21,16 +20,19 @@ int main() {
 	//Start Network Thread
 	networkThread.start(network);
 	
+	//Create a JSON parser object
     MbedJSONValue demo;
 
-
+	
+	
 	//parse the previous string and fill the object demo
 	parse(demo, JSON_STRING);
 
 	std::string my_str;
 	int my_int;
 	bool my_bool;
- 
+	
+	//Caution - always check if the object contains the requested value before atempting to access it, otherwise a hardfault occurs from trying to access invalid memory
 	if (demo[0].hasMember("devId")) {
 		my_str = demo[0]["devId"].get<std::string>();
 	}	
