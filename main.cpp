@@ -11,6 +11,7 @@
 #include "Networkbits.hpp"
 #include "hardware.hpp"
 #include "MbedJSONValue.h"
+#include "serialInterface.hpp"
 #include <string>
 
 static const char *JSON_STRING = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Distribution Valve\",\"devType\":\"swichValve\",\"devPin1\":\"5\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"9\",\"devPin2\":\"10\"}]";
@@ -24,6 +25,9 @@ PinName inputs[4] = {PA_7, PD_14, PD_15, PF_12};
 
 
 int main() {  
+
+	//Start serial thread
+	serialThread.start(serialInterface);
 
 	//Start Network Thread
 	networkThread.start(network);
@@ -49,14 +53,13 @@ int main() {
 		my_int = demo[0]["devPin1"].get<int>();
 	}	
 
-	pc.printf("Pin Config loaded, %d", my_int);
+	serialQueue.call(printf, "Pin Config loaded, %d", my_int);
 	
 	my_int = 1;
 	
 	outputs2[0] = new DigitalOut(outputs[my_int], 0);
 	
-	outputs2[0]->write(0);
-	
+
 	//printf("%s", demo.hasMember("devId"));
 	
     //my_str = demo[0]["devId"].get<std::string>();
