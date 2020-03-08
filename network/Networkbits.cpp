@@ -57,7 +57,7 @@ void network(void)
         pc.printf("accept %s:%d\n", clt_addr.get_ip_address(), clt_addr.get_port());
 
         //Recieve the data sent from the client
-        clt_sock->recv(buffer, 1024);
+        clt_sock->recv(buffer, 1023);
 
         //Debuging, print this out over serial
         pc.printf("Received Msg: %s\n\n", buffer); //this was missing in original example.
