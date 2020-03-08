@@ -105,28 +105,28 @@
           var opHTML = '';
 
           //Testing the parsing of the json
-          var jsonData = '[{"devId":"1","devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devId":"2","devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 2","devTest":"Test Device"}]';
+          //var jsonData = '[{"devId":"1","devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devId":"2","devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 2","devTest":"Test Device"}]';
 
           //Testing - use static json
-          response = $.parseJSON(jsonData)
+          //response = $.parseJSON(jsonData)
 
           //Get the devices on the system in a JSON format
-          //$.getJSON("/devices.json", function (response) {
-          //Loop through the response and fill in the table and dropdown
-          $.each(response, function (i, item) {
-            //Generate the table HTML from the recieved JSON file
-            trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devID + '">Test Device</button></td></tr>';
+          $.getJSON("/devices.json", function (response) {
+            //Loop through the response and fill in the table and dropdown
+            $.each(response, function (i, item) {
+              //Generate the table HTML from the recieved JSON file
+              trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devID + '">Test Device</button></td></tr>';
 
-            //Generate the dropdown html
-            opHTML += '<option>' + item.devName + '</option>';
+              //Generate the dropdown html
+              opHTML += '<option>' + item.devName + '</option>';
+            });
+
+            //Append the html to the devices table
+            $('#devices_table').append(trHTML);
+
+            //Append the html to the dropdown
+            $('#devices_dropdown').append(opHTML);
           });
-
-          //Append the html to the devices table
-          $('#devices_table').append(trHTML);
-
-          //Append the html to the dropdown
-          $('#devices_dropdown').append(opHTML);
-          //});
         }
       });
     </script>
