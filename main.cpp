@@ -13,7 +13,15 @@
 #include "MbedJSONValue.h"
 #include <string>
 
-static const char *JSON_STRING = "[{\"devId\":\"1\",\"devName\":\"Sample Pump\",\"devType\":\"Peristaltic Pump\",\"devRelay\":\"Relay 1\",\"devTest\":\"Test Device\"},{\"devId\":\"2\",\"devName\":\"Switching Valve No.1\",\"devType\":\"Switching Valve\",\"devRelay\":\"Relay 2\",\"devTest\":\"Test Device\"}]";
+static const char *JSON_STRING = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Distribution Valve\",\"devType\":\"swichValve\",\"devPin1\":\"5\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"9\",\"devPin2\":\"10\"}]";
+
+
+
+PinName outputs[8] = {PF_13, PE_9, PE_11, PF_14, PE_13, PF_15, PG_14, PG_9};
+
+PinName inputs[4] = {PA_7, PD_14, PD_15, PF_12};
+
+
 
 int main() {  
 
@@ -23,6 +31,10 @@ int main() {
 	//Create a JSON parser object
     MbedJSONValue demo;
 
+	//Test dynamic pin configuration
+	DigitalOut* outputs2[2];
+	
+	
 	
 	
 	//parse the previous string and fill the object demo
@@ -33,13 +45,19 @@ int main() {
 	bool my_bool;
 	
 	//Caution - always check if the object contains the requested value before atempting to access it, otherwise a hardfault occurs from trying to access invalid memory
-	if (demo[0].hasMember("devId")) {
-		my_str = demo[0]["devId"].get<std::string>();
+	if (demo[0].hasMember("devPin1")) {
+		my_int = demo[0]["devId"].get<int>();
 	}	
 
+	pc.printf("Pin Config loaded, %d", my_int);
+	
+	outputs2[0] = new DigitalOut(outputs[my_int], 0);
+	
+	outputs2[0]->write(0);
+	
 	//printf("%s", demo.hasMember("devId"));
 	
-    my_str = demo[0]["devId"].get<std::string>();
+    //my_str = demo[0]["devId"].get<std::string>();
     //my_int = demo["my_array"][1].get<int>();
     //my_bool = demo["my_boolean"].get<bool>();
    
@@ -47,7 +65,13 @@ int main() {
     //printf("my_int: %d\r\n", my_int);
     //printf("my_bool: %s\r\n", my_bool ? "true" : "false");
 	
-	while (true) {}
+	
+	
+	
+	while (true) {
+		outputs2[0] = !outputs2[0];
+		thread_sleep_for(500);
+	}
 }
 
 // int main() {
