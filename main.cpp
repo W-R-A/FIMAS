@@ -41,15 +41,17 @@ int main() {
 	parse(demo, JSON_STRING);
 
 	std::string my_str;
-	int my_int;
+	int my_int = 1;
 	bool my_bool;
 	
 	//Caution - always check if the object contains the requested value before atempting to access it, otherwise a hardfault occurs from trying to access invalid memory
 	if (demo[0].hasMember("devPin1")) {
-		my_int = demo[0]["devId"].get<int>();
+		my_int = demo[0]["devPin1"].get<int>();
 	}	
 
 	pc.printf("Pin Config loaded, %d", my_int);
+	
+	my_int = 1;
 	
 	outputs2[0] = new DigitalOut(outputs[my_int], 0);
 	
@@ -69,7 +71,7 @@ int main() {
 	
 	
 	while (true) {
-		outputs2[0] = !outputs2[0];
+		outputs2[0]->write(!outputs2[0]->read());
 		thread_sleep_for(500);
 	}
 }
