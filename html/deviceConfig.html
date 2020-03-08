@@ -35,7 +35,8 @@
       <tr>
         <th>Device Name</th>
         <th>Device Type</th>
-        <th>Relay</th>
+        <th>Primary Interface</th>
+        <th>Secondary Interface</th>
         <th>Test Device</th>
       </tr>
     </table>
@@ -105,13 +106,13 @@
           var opHTML = '';
 
           //Testing the parsing of the json
-          //var jsonData = '[{"devId":"1","devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devId":"2","devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 2","devTest":"Test Device"}]';
+          var jsonData = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Distribution Valve\",\"devType\":\"swichValve\",\"devPin1\":\"5\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"9\",\"devPin2\":\"10\"}]";
 
           //Testing - use static json
-          //response = $.parseJSON(jsonData)
+          response = $.parseJSON(jsonData)
 
           //Get the devices on the system in a JSON format
-          $.getJSON("/devices.json", function (response) {
+          //$.getJSON("/devices.json", function (response) {
             //Loop through the response and fill in the table and dropdown
             $.each(response, function (i, item) {
               //Generate the table HTML from the recieved JSON file
@@ -126,7 +127,7 @@
 
             //Append the html to the dropdown
             $('#devices_dropdown').append(opHTML);
-          });
+          //});
         }
       });
     </script>
