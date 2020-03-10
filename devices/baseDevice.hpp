@@ -9,8 +9,8 @@
  * This includes a unique ID as well as the control pins used
  */
 class baseDevice {
-    //Private Properties
-private:
+    //Protected Properties
+protected:
     //Declare two digital outputs for the control pins. One or both may be used dependant on the device
     DigitalOut *controlPin1, *controlPin2;
 
