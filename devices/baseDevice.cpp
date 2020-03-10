@@ -49,12 +49,12 @@ baseDevice::~baseDevice() {
 }
 
 //Change the state of the internal state variable in an interrupt-safe way
-void baseDevice::changeState(int newState) {
-    //Disable interrupts during critical section of a state change
+void baseDevice::updateState(uint8_t updatedState) {
+    //Disable interrupts during critical section of a state update
     CriticalSectionLock lock;
 
     //Update state variable
-    state = newState;
+    state = updatedState;
 }
 
 //Get the ID of the device

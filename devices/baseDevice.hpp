@@ -39,8 +39,10 @@ public:
     //Get the ID of the device
     unsigned short getID(void);
 
-    //Change the state of the device, in a interrupt-safe way
-    void changeState(int newState);
+    //Protected methods
+protected:
+    //Update the state of the internal state variable in an interrupt-safe way
+    void updateState(uint8_t updatedState);
 };
 
 #endif
