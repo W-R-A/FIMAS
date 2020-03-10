@@ -1,44 +1,23 @@
 #ifndef FIMAS_PERPUMP
 #define FIMAS_PERPUMP
 
+//Include mbed header file
 #include "mbed.h"
 
-//Peristaltic Pump class
+//Include the base device header file
+#include "baseDevice.hpp"
 
-//Class
+/*
+ * Peristaltic Pump class containing key methods to control a Peristaltic Pump.
+ * Based off of the baseDevice class
+ */
 
-class perPump
-{
-    //Private Properties
-    private:
-	
-	//Declare a digital out to hold the pin used to control the pump
-	DigitalOut* controlPin;
-	
-	//The state of the pump, 0 is off and 1 is on
-	//Inital state is 0, off
-	uint8_t state = 0;
-	
-	//ID of the device, important to allow for control by ID
-	unsigned short devID = 0;
-	
-
-
+class perPump : public baseDevice {
     //Public API
-    public:
-    //Constructor
-    //Pin specifies the pin that the pump is connected to
+public:
+    //pin specifies the pin that the Peristaltic Pump is connected to
+    //deviceID uniquely identifies the device
     perPump(PinName pin, unsigned short deviceID);
-
-    //Destructor
-    ~perPump();
-
-    //Change the state of the 
-    //0 turns the pump off, 1 turns the pump on
-    void changeState(int newState);	
-	
-	//Get the ID of the device
-	unsigned short getID (void);
-};
+}
 
 #endif
