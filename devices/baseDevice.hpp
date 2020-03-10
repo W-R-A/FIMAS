@@ -5,7 +5,7 @@
 #include "mbed.h"
 
 /*
- * Base device class containng key methods that all FIMAS devices use.
+ * Base device class containing key methods that all FIMAS devices use.
  * This includes a unique ID as well as the control pins used
  */
 class baseDevice {
