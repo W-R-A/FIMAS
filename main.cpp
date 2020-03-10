@@ -13,15 +13,18 @@
 #include "MbedJSONValue.h"
 #include "serialInterface.hpp"
 #include <string>
+#include <array>
 
-static const char *JSON_STRING = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Distribution Valve\",\"devType\":\"swichValve\",\"devPin1\":\"5\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"9\",\"devPin2\":\"10\"}]";
+//Device Classes
+#include "perPump.hpp"
 
+static const char *JSON_STRING = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"3\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Distribution Valve\",\"devType\":\"swichValve\",\"devPin1\":\"5\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"9\",\"devPin2\":\"10\"}]";
 
+//Define an array to hold the pins used for the digital outputs
+array<PinName, 8> digitalOutputs = {PF_13, PE_9, PE_11, PF_14, PE_13, PF_15, PG_14, PG_9};
 
-PinName outputs[8] = {PF_13, PE_9, PE_11, PF_14, PE_13, PF_15, PG_14, PG_9};
-
-PinName inputs[4] = {PA_7, PD_14, PD_15, PF_12};
-
+//Define an array to hold the pins used for the digital inputs
+array<PinName, 8> digitalInputs = {PA_7, PD_14, PD_15, PF_12};
 
 
 int main() {  
@@ -50,14 +53,32 @@ int main() {
 	
 	//Caution - always check if the object contains the requested value before atempting to access it, otherwise a hardfault occurs from trying to access invalid memory
 	if (demo[0].hasMember("devPin1")) {
-		my_int = demo[0]["devPin1"].get<int>();
+		my_str = demo[0]["devPin1"].get<std::string>();
 	}	
 
-	serialQueue.call(printf, "Pin Config loaded, %d", my_int);
 	
-	my_int = 1;
 	
-	outputs2[0] = new DigitalOut(outputs[my_int], 0);
+	my_int = std::stoi(my_str);
+	
+
+	serialQueue.call(printf, "Pin Config loaded, %d \n", my_int);
+	
+	
+	//Caution - always check if the object contains the requested value before atempting to access it, otherwise a hardfault occurs from trying to access invalid memory
+	if (demo[0].hasMember("devType")) {
+		my_str = demo[0]["devType"].get<std::string>();
+	}
+	
+	
+//	perPump* pump;
+//	
+//	if (my_str.find("perPump") != string::npos) {
+//		 pump = new perPump(digitalOutputs[my_int], 1000);
+//	}
+//	
+//	pump->changeState(1);
+	
+	//array<DigitalOut, 4> outputs = {DigitalOut(digitalOutputs[0], 0), DigitalOut(digitalOutputs[1], 1), DigitalOut(digitalOutputs[2], 0), DigitalOut(digitalOutputs[3], 1)};
 	
 
 	//printf("%s", demo.hasMember("devId"));
@@ -66,7 +87,7 @@ int main() {
     //my_int = demo["my_array"][1].get<int>();
     //my_bool = demo["my_boolean"].get<bool>();
    
-    printf("my_str: %s\r\n", my_str.c_str());
+    //printf("my_str: %s\r\n", my_str.c_str());
     //printf("my_int: %d\r\n", my_int);
     //printf("my_bool: %s\r\n", my_bool ? "true" : "false");
 	
@@ -74,7 +95,8 @@ int main() {
 	
 	
 	while (true) {
-		outputs2[0]->write(!outputs2[0]->read());
+		//for (int i=0; i<outputs.size(); i++)
+		//outputs[i].write(!outputs[i].read());
 		thread_sleep_for(500);
 	}
 }

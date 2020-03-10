@@ -3,6 +3,13 @@
 
 #include "mbed.h"
 
+//Device Classes
+#include "perPump.hpp"
+
+
+//extern perPump* pump;
+
+
 //Define enumerated types for the devices used
 enum DEVICE {WASHPUMP, SAMPLEPUMP, SWITCHVALVE, SOLENOIDVALVE}; 
 

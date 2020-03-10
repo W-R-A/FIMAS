@@ -1,23 +1,32 @@
 #include "perPump.hpp"
 
-class perPump
-{
-    //Private Properties
-    private:
 
-	uint8_t state;
+//Constructor
+//Pin specifies the pin that the pump is connected to
+perPump::perPump(PinName pin, unsigned short deviceID) {
+	this->controlPin = new DigitalOut(pin, state);
+	this->devID = deviceID;
+}
 
+//Destructor
+perPump::~perPump() {
+	delete controlPin;
+}
 
-    //Public API
-    public:
-    //Constructor
-    //Pin specifies the pin that the pump is connected to
-    perPump(PinName pin);
+//Change the state of the 
+//0 turns the pump off, 1 turns the pump on
+void perPump::changeState(int newState) {
+	//Disable interrupts during critical section of a state change
+	CriticalSectionLock lock;
+	
+	//Update state variable
+	state = newState;
+	
+	//Update device control pin
+	controlPin->write(state);
+}
 
-    //Destructor
-    ~perPump();
+unsigned short perPump::getID (void) {
+	return devID;
+}
 
-    //Change the state of the 
-    //0 turns the pump off, 1 turns the pump on
-    void changeState(int newState);	
-};

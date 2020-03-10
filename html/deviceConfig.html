@@ -65,10 +65,18 @@
         $(document).on("click", "button.btnTest", function (event) {
 
           //Debugging, display the ID to be requested
-          alert(event.target.id);
+          //alert(event.target.id);
+
+          var state = 0;
+
+          if (confirm("Ok for on, cancel for off!")) {
+            state = 1;
+          } else {
+            state = 0;
+          }
 
           //Define the URL to hit
-          var reqURL = '/devicetest/id=' + event.target.id;
+          var reqURL = '/devicetest/id=' + event.target.id + 'state=' + state;
 
           //Debuging, dislay the URL to send a GET request to
           alert(reqURL);
@@ -91,7 +99,7 @@
         //Populate the device table based on the JSON configuration recieved
         populateDevices();
 
-        //Delcare the populate devices function - This will popuate the device table based on the JSON recieved from the board
+        //Declare the populate devices function - This will popuate the device table based on the JSON recieved from the board
         function populateDevices() {
 
           //Ensure that the dropdown is empty
@@ -106,28 +114,28 @@
           var opHTML = '';
 
           //Testing the parsing of the json
-          var jsonData = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Distribution Valve\",\"devType\":\"swichValve\",\"devPin1\":\"5\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"9\",\"devPin2\":\"10\"}]";
+          //var jsonData = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Distribution Valve\",\"devType\":\"swichValve\",\"devPin1\":\"5\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"9\",\"devPin2\":\"10\"}]";
 
           //Testing - use static json
-          response = $.parseJSON(jsonData)
+          //response = $.parseJSON(jsonData)
 
           //Get the devices on the system in a JSON format
-          //$.getJSON("/devices.json", function (response) {
-            //Loop through the response and fill in the table and dropdown
-            $.each(response, function (i, item) {
-              //Generate the table HTML from the recieved JSON file
-              trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devID + '">Test Device</button></td></tr>';
+          $.getJSON("/devices.json", function (response) {
+          //Loop through the response and fill in the table and dropdown
+          $.each(response, function (i, item) {
+            //Generate the table HTML from the recieved JSON file
+            trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devRelay + '</td><td><button class="btnTest" id ="' + item.devID + '">Test Device</button></td></tr>';
 
-              //Generate the dropdown html
-              opHTML += '<option>' + item.devName + '</option>';
-            });
+            //Generate the dropdown html
+            opHTML += '<option>' + item.devName + '</option>';
+          });
 
-            //Append the html to the devices table
-            $('#devices_table').append(trHTML);
+          //Append the html to the devices table
+          $('#devices_table').append(trHTML);
 
-            //Append the html to the dropdown
-            $('#devices_dropdown').append(opHTML);
-          //});
+          //Append the html to the dropdown
+          $('#devices_dropdown').append(opHTML);
+          });
         }
       });
     </script>

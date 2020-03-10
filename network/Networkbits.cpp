@@ -1,5 +1,6 @@
 #include "Networkbits.hpp"
 #include "hardware.hpp"
+#include "serialInterface.hpp"
 
 //Network thread - To handle networking, http over TCP/IP
 Thread networkThread;
@@ -36,6 +37,14 @@ void network(void)
 
     //Listen for 1 connection at a time
     srv.listen(1);
+	
+	
+	perPump* pump;
+	
+	pump = new perPump(PE_9, 1000);
+
+	
+	pump->changeState(1);
 
     //Start an infinite loop to handle http requests
     //This will run once per http request recieved
@@ -54,13 +63,13 @@ void network(void)
         clt_sock->getpeername(&clt_addr); 
 
         //Debugging, send the client information over serial
-        pc.printf("accept %s:%d\n", clt_addr.get_ip_address(), clt_addr.get_port());
+        serialQueue.call(printf, "accept %s:%d\n", clt_addr.get_ip_address(), clt_addr.get_port());
 
         //Recieve the data sent from the client
         clt_sock->recv(buffer, 1023);
 
         //Debuging, print this out over serial
-        pc.printf("Received Msg: %s\n\n", buffer); //this was missing in original example.
+        serialQueue.call(printf, "Received Msg: %s\n\n", buffer); //this was missing in original example.
 
 
         //Address parser logic, decide what repsonse is required dependant on the incoming address
@@ -146,6 +155,35 @@ void network(void)
         }
 		else if (address.find("devicetest") != string::npos) {
             
+			int pos = address.find("id=");
+			
+			serialQueue.call(printf, "HTTP request, found device ID: %d \n", pos);
+			
+			string IDstr = address.substr(pos+3,4);
+			
+			serialQueue.call(printf, "Device ID:%s \n", IDstr.c_str());
+			
+			int id = stoi(IDstr);
+			
+			serialQueue.call(printf, "Device ID:%d \n", id);
+			
+			
+			
+			int statepos = address.find("state=");
+			
+			serialQueue.call(printf, "HTTP request, found state ID: %d \n", statepos);
+			
+			string Statestr = address.substr(statepos+6,2);
+			
+			serialQueue.call(printf, "State:%s \n", Statestr.c_str());
+			
+			int state = stoi(Statestr);
+			
+			serialQueue.call(printf, "state:%d \n", state);
+			
+			if (id == pump->getID()) {
+				pump->changeState(state);
+			}
 			
 			if (address.find("id=1") != string::npos) {
 				//Add a 200 header code to the response
@@ -202,7 +240,7 @@ void network(void)
         }
 
         //Debugging, print the sent html
-        printf("\n\nHTML: %s", response.c_str());
+        serialQueue.call(printf, "\n\nHTML: %s", response.c_str());
 
         //Send HTML response (as a C string)
         clt_sock->send(response.c_str(), response.size());
