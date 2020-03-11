@@ -18,6 +18,11 @@ public:
     //pin specifies the pin that the solenoid valve is connected to
     //deviceID uniquely identifies the device
     solValve(PinName pin, unsigned short deviceID);
-}
+
+    //Change the state of the solenoid valve
+    //Only two states are valid for the valve, on and off
+    //Hence newstate is 0 for off and any non-zero valve for on
+    unsigned short changeState(unsigned short newState);
+};
 
 #endif
