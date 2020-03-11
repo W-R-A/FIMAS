@@ -16,6 +16,10 @@
 //Include derrived device classes
 #include "solValve.hpp"
 
+//Include derrived device classes
+#include "sixValve.hpp"
+
+
 
 //Define an array to hold the pins used for the digital outputs
 extern const array<PinName, 8> digitalOutputs;

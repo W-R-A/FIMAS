@@ -36,13 +36,85 @@
     <select id="devices_dropdown">
     </select>
 
+    <input id="time" type="integer"></input>
+
+
+    <select id="state">
+      <option selected="true" disabled>Select State</option>
+    </select>
+
+    <button class="genTiming">Generate Timings</button>
+
+    <div id="timings"></div>
+
 
     <script src="jquery.js"></script>
     <script>
       $(document).ready(function () {
         // Your code here.
 
-        alert('Loading Devices Configuration');
+        $(document).on("click", "button.genTiming", function (event) {
+
+          //Debugging, display the ID to be requested
+          //alert(event.target.id);
+
+          var devClass = $('select[id="devices_dropdown"] option:selected').attr('class');
+
+          var time = $("#time").val();
+
+          var devState = $('select[id="state"] option:selected').attr('class');
+
+          var obj = { devID: devClass, time: time, state: devState };
+
+          var myJSON = JSON.stringify(obj);
+
+          
+          $('<p>' + myJSON + '</p>').appendTo('#timings');
+
+
+        });
+
+
+
+
+        //Bind the device selection to the following handler
+        $(document).on("change", "#devices_dropdown", function (event) {
+
+          var devClass = $('select[id="devices_dropdown"] option:selected').attr('class');
+
+          //Debugging, display the ID to be requested
+          //alert($('select[id="devices_dropdown"] option:selected').attr('class'));
+
+          $('#state').empty();
+
+          switch (devClass) {
+            case "perPump":
+              $('#state').append('<option selected="true" disabled>Select State</option>');
+              $('#state').append('<option class="stateOn">On</option>');
+              $('#state').append('<option class="stateOff">Off</option>');
+              $('#state').prop('selectedIndex', 0);
+              break;
+
+            case "solValve":
+              $('#state').append('<option selected="true" disabled>Select State</option>');
+              $('#state').append('<option class="stateOn">On</option>');
+              $('#state').append('<option class="stateOff">Off</option>');
+              $('#state').prop('selectedIndex', 0);
+              break;
+
+            case "sixValve":
+              $('#state').append('<option selected="true" disabled>Select State</option>');
+              $('#state').append('<option class="stateA">Position A</option>');
+              $('#state').append('<option class="stateB">Position B</option>');
+              $('#state').prop('selectedIndex', 0);
+              break;
+
+            default:
+            // code block
+          }
+        });
+
+        //alert('Loading Devices Configuration');
 
         //Clear dropdown
         $('#devices_dropdown').empty();
@@ -53,11 +125,11 @@
 
         var opHTML = '';
 
-        var jsonData = '[{"devId":"1","devName":"Sample Pump","devType":"Peristaltic Pump","devRelay":"Relay 1","devTest":"Test Device"},{"devId":"2","devName":"Switching Valve No.1","devType":"Switching Valve","devRelay":"Relay 2","devTest":"Test Device"}]';
-        
+        var jsonData = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
+
         response = $.parseJSON(jsonData)
         $.each(response, function (i, item) {
-          opHTML += '<option>' + item.devName + '</option>';
+          opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
         });
 
         $('#devices_dropdown').append(opHTML);

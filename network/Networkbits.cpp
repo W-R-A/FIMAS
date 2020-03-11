@@ -67,7 +67,6 @@ void network(void)
 
         //Declare a string for the favicon url request - this needs to move to a more central location, header file
         string addFavicon("favicon.ico");
-        string addIndex("GET / HTTP/1.1");
         string addStyles("styles.css");
         string addJquery("jquery.js");
         string addTest("test");
@@ -87,24 +86,7 @@ void network(void)
             //Add a line feed and carriage return to the response
             response += "\r\n";
         }
-        else if (address.find(addIndex) != string::npos) {
-
-            //Add a 200 header code to the response
-            response += HTTP_STATUS_LINE_200;
-
-            //Add a line feed and carriage return to the response
-            response += "\r\n";
-
-            //Add the header fields
-            response += HTTP_HEADER_FIELDS;
-
-            //Add 2 line feeds and carriage returns to the response to signal the end of the headers
-            response += "\r\n\r\n";
-
-            //Add the body
-            response += HTTP_MESSAGE_BODY1;
-        }
-        else if (address.find(addStyles) != string::npos) {
+		else if (address.find(addStyles) != string::npos) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -121,7 +103,7 @@ void network(void)
             //Add the body
             response += STYLES;
         }
-        else if (address.find(addJquery) != string::npos) {
+		else if (address.find(addJquery) != string::npos) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -207,6 +189,57 @@ void network(void)
             //Add the body
             response += "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
         }
+        else if (address.find("deviceConfig") != string::npos) {
+
+            //Add a 200 header code to the response
+            response += HTTP_STATUS_LINE_200;
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+
+            //Add the header fields
+            response += HTTP_HEADER_FIELDS;
+
+            //Add 2 line feeds and carriage returns to the response to signal the end of the headers
+            response += "\r\n\r\n";
+
+            //Add the body
+            response += HTTP_MESSAGE_BODY_DEVICE_CONFIG;
+        }
+		else if (address.find("GET / HTTP/1.1") != string::npos) {
+
+            //Add a 200 header code to the response
+            response += HTTP_STATUS_LINE_200;
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+
+            //Add the header fields
+            response += HTTP_HEADER_FIELDS;
+
+            //Add 2 line feeds and carriage returns to the response to signal the end of the headers
+            response += "\r\n\r\n";
+
+            //Add the body
+            response += HTTP_MESSAGE_BODY_DEVICE_CONFIG;
+        }
+		else if (address.find("routines") != string::npos) {
+
+            //Add a 200 header code to the response
+            response += HTTP_STATUS_LINE_200;
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+
+            //Add the header fields
+            response += HTTP_HEADER_FIELDS;
+
+            //Add 2 line feeds and carriage returns to the response to signal the end of the headers
+            response += "\r\n\r\n";
+
+            //Add the body
+            response += HTTP_MESSAGE_BODY_ROUTINES;
+        }
         else {
 
             //If we get to this else statement, then no route exists for this request, throw a 404 to the client
@@ -218,7 +251,7 @@ void network(void)
         }
 
         //Debugging, print the sent html
-        serialQueue.call(printf, "\n\nHTML: %s", response.c_str());
+        //serialQueue.call(printf, "\n\nHTML: %s", response.c_str());
 
         //Send HTML response (as a C string)
         clt_sock->send(response.c_str(), response.size());

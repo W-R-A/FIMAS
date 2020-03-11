@@ -487,6 +487,16 @@
               <FileType>5</FileType>
               <FilePath>.\devices\solValve.hpp</FilePath>
             </File>
+            <File>
+              <FileName>sixValve.hpp</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\devices\sixValve.hpp</FilePath>
+            </File>
+            <File>
+              <FileName>sixValve.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\devices\sixValve.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
