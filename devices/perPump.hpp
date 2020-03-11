@@ -18,6 +18,6 @@ public:
     //pin specifies the pin that the Peristaltic Pump is connected to
     //deviceID uniquely identifies the device
     perPump(PinName pin, unsigned short deviceID);
-}
+};
 
 #endif
