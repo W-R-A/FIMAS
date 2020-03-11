@@ -1,10 +1,10 @@
 #include "hardware.hpp"
 
-//Declare DigitalOutputs for the utilised devices
+/* //Declare DigitalOutputs for the utilised devices
 DigitalOut washPump(D7);
 DigitalOut samplePump(D6);
 DigitalOut switchValve(D5);
-DigitalOut solenoidValve(D4);
+DigitalOut solenoidValve(D4); */
 
 //Declare input userbutton as trigger
 DigitalIn userButton(USER_BUTTON);
@@ -12,7 +12,7 @@ DigitalIn userButton(USER_BUTTON);
 //Debugging output, use faster baud rate to remain responsive
 Serial pc(USBTX, USBRX, 115200);
 
-//Declare how many steps the routine will be
+/* //Declare how many steps the routine will be
 #define STEPS 3
 
 //Define a routine, consisting of STEPS steps
@@ -134,27 +134,27 @@ void checkTiming (void) {
     }
     //Increment timeElapsed
     timeElapsed++;
-}
+}*/
 
 //Perform a Power On Self Test, POST
 /**
     @param iter 
 */
-void post (uint8_t iter) {
-    //Turn the devices on and off iter times
-    for (int i = 0; i < iter; i++) {
-        turnOn(WASHPUMP);
-        turnOn(SAMPLEPUMP);
-        turnOn(SWITCHVALVE);
-        turnOn(SOLENOIDVALVE);
+// void post (uint8_t iter) {
+//     //Turn the devices on and off iter times
+//     for (int i = 0; i < iter; i++) {
+//         turnOn(WASHPUMP);
+//         turnOn(SAMPLEPUMP);
+//         turnOn(SWITCHVALVE);
+//         turnOn(SOLENOIDVALVE);
 
-        thread_sleep_for(500);
+//         thread_sleep_for(500);
 
-        turnOff(WASHPUMP);
-        turnOff(SAMPLEPUMP);
-        turnOff(SWITCHVALVE);
-        turnOff(SOLENOIDVALVE);
+//         turnOff(WASHPUMP);
+//         turnOff(SAMPLEPUMP);
+//         turnOff(SWITCHVALVE);
+//         turnOff(SOLENOIDVALVE);
 
-        thread_sleep_for(500);
-    }
-}
+//         thread_sleep_for(500);
+//     }
+// } 

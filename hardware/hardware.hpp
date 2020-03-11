@@ -1,26 +1,44 @@
 #ifndef FIMAS_HARDWARE_H
 #define FIMAS_HARDWARE_H
 
+//Include mbed header
 #include "mbed.h"
 
-//Device Classes
+//Include array header
+#include <array>
+
+//Include the base device class
+#include "baseDevice.hpp"
+
+//Include derrived device classes
 #include "perPump.hpp"
 
 
-//extern perPump* pump;
+//Define an array to hold the pins used for the digital outputs
+array<PinName, 8> digitalOutputs = {PF_13, PE_9, PE_11, PF_14, PE_13, PF_15, PG_14, PG_9};
+
+//Define an array to hold the pins used for the digital inputs
+array<PinName, 4> digitalInputs = {PA_7, PD_14, PD_15, PF_12};
+
+//Calculate the number of digital inputs and outpus defined
+const short maxDevices = digitalOutputs.size() + digitalInputs.size();
+
+//Declare an array to hold the devices assuming that each device requires an minimium of one pin, this means that the number of devices is limited by the number of digital output and input pins defined
+//Contents will be populated at run-time
+array<DigitalOut*, maxDevices> devices = {};
 
 
-//Define enumerated types for the devices used
-enum DEVICE {WASHPUMP, SAMPLEPUMP, SWITCHVALVE, SOLENOIDVALVE}; 
+// //Define enumerated types for the devices used
+// enum DEVICE {WASHPUMP, SAMPLEPUMP, SWITCHVALVE, SOLENOIDVALVE}; 
 
-//Declare how many devices there are defined above
-#define NUMBER_DEVICES 4
+// //Declare how many devices there are defined above
+// #define NUMBER_DEVICES 4
 
-//Declare DigitalOutputs for the utilised devices
-extern DigitalOut washPump;
-extern DigitalOut samplePump;
-extern DigitalOut switchValve;
-extern DigitalOut solenoidValve;
+// //Declare DigitalOutputs for the utilised devices
+// extern DigitalOut washPump;
+// extern DigitalOut samplePump;
+// extern DigitalOut switchValve;
+// extern DigitalOut solenoidValve;
 
 //Declare input userbutton as trigger
 extern DigitalIn userButton;
@@ -29,18 +47,18 @@ extern DigitalIn userButton;
 extern Serial pc;
 
 
-//Define a structure to hold the timing parameters for each device for each step
-typedef struct {
-    enum DEVICE device;
-    signed int timeOn;
-    signed int timeOff;
-} deviceTime;
+// //Define a structure to hold the timing parameters for each device for each step
+// typedef struct {
+//     enum DEVICE device;
+//     signed int timeOn;
+//     signed int timeOff;
+// } deviceTime;
 
 
-//Define a structure to hold the timing parameters for all the devices in a step
-typedef struct {
-    deviceTime StepTimes[NUMBER_DEVICES];
-} step;
+// //Define a structure to hold the timing parameters for all the devices in a step
+// typedef struct {
+//     deviceTime StepTimes[NUMBER_DEVICES];
+// } step;
 
 //Function prototypes
 
@@ -48,15 +66,15 @@ typedef struct {
 /**
     @param iter 
 */
-void post (uint8_t iter);
+// void post (uint8_t iter);
 
-//Device timings - This is called once a second and turns devicies on or off based on the timing parameters
-void checkTiming (void);
+// //Device timings - This is called once a second and turns devicies on or off based on the timing parameters
+// void checkTiming (void);
 
-//Turn on a device
-void turnOn (enum DEVICE device);
+// //Turn on a device
+// void turnOn (enum DEVICE device);
 
-//Turn off a device
-void turnOff (enum DEVICE device);
+// //Turn off a device
+// void turnOff (enum DEVICE device);
 
 #endif
