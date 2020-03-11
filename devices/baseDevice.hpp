@@ -39,6 +39,8 @@ public:
     //Get the ID of the device
     unsigned short getID(void);
 
+    virtual unsigned short changeState(unsigned short newState);
+
     //Protected methods
 protected:
     //Update the state of the internal state variable in an interrupt-safe way

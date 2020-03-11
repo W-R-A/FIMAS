@@ -7,7 +7,7 @@ solValve::solValve(PinName pin, unsigned short deviceID) : baseDevice(pin, devic
 
 //Change the state of the solenoid valve
 //Only two states are valid for the valve, on and off
-//Hence newstate is 0 for off and any non-zero valve for on
+//Hence newstate is 0 for off and any non-zero value for on
 unsigned short solValve::changeState(unsigned short newState)
 {
     //If the newstate is non-zero, and the pump is not already running, turn the valve on

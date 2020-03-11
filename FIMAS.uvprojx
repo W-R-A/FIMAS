@@ -458,6 +458,16 @@
           <GroupName>devices</GroupName>
           <Files>
             <File>
+              <FileName>baseDevice.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\devices\baseDevice.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>baseDevice.hpp</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\devices\baseDevice.hpp</FilePath>
+            </File>
+            <File>
               <FileName>perPump.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\devices\perPump.cpp</FilePath>
@@ -466,6 +476,16 @@
               <FileName>perPump.hpp</FileName>
               <FileType>5</FileType>
               <FilePath>.\devices\perPump.hpp</FilePath>
+            </File>
+            <File>
+              <FileName>solValve.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\devices\solValve.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>solValve.hpp</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\devices\solValve.hpp</FilePath>
             </File>
           </Files>
         </Group>

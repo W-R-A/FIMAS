@@ -13,19 +13,22 @@
 //Include derrived device classes
 #include "perPump.hpp"
 
+//Include derrived device classes
+#include "solValve.hpp"
+
 
 //Define an array to hold the pins used for the digital outputs
-array<PinName, 8> digitalOutputs = {PF_13, PE_9, PE_11, PF_14, PE_13, PF_15, PG_14, PG_9};
+extern const array<PinName, 8> digitalOutputs;
 
 //Define an array to hold the pins used for the digital inputs
-array<PinName, 4> digitalInputs = {PA_7, PD_14, PD_15, PF_12};
+extern const array<PinName, 4> digitalInputs;
 
 //Calculate the number of digital inputs and outpus defined
 const short maxDevices = digitalOutputs.size() + digitalInputs.size();
 
 //Declare an array to hold the devices assuming that each device requires an minimium of one pin, this means that the number of devices is limited by the number of digital output and input pins defined
 //Contents will be populated at run-time
-array<DigitalOut*, maxDevices> devices = {};
+extern array<baseDevice*, maxDevices> devices;
 
 
 // //Define enumerated types for the devices used

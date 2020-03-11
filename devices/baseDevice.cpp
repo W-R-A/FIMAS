@@ -3,7 +3,8 @@
 //Constructor
 //pin specifies the pin that the device is connected to.
 //deviceID uniquely identifies the device
-baseDevice::baseDevice(PinName pin, unsigned short deviceID) {
+baseDevice::baseDevice(PinName pin, unsigned short deviceID)
+{
     //Initialise the control pin used, default output state of low
     this->controlPin1 = new DigitalOut(pin, 0);
 
@@ -20,7 +21,8 @@ baseDevice::baseDevice(PinName pin, unsigned short deviceID) {
 //Constructor
 //pin1 and pin2 specify the pin(s) that the device is connected to.
 //deviceID uniquely identifies the device
-baseDevice::baseDevice(PinName pin1, PinName pin2, unsigned short deviceID) {
+baseDevice::baseDevice(PinName pin1, PinName pin2, unsigned short deviceID)
+{
     //Initialise the control pin used, default output state of low
     this->controlPin1 = new DigitalOut(pin1, 0);
 
@@ -38,7 +40,8 @@ baseDevice::baseDevice(PinName pin1, PinName pin2, unsigned short deviceID) {
 }
 
 //Destructor
-baseDevice::~baseDevice() {
+baseDevice::~baseDevice()
+{
     //Delete control pin one
     delete controlPin1;
 
@@ -49,7 +52,8 @@ baseDevice::~baseDevice() {
 }
 
 //Change the state of the internal state variable in an interrupt-safe way
-void baseDevice::updateState(uint8_t updatedState) {
+void baseDevice::updateState(uint8_t updatedState)
+{
     //Disable interrupts during critical section of a state update
     CriticalSectionLock lock;
 
@@ -58,6 +62,12 @@ void baseDevice::updateState(uint8_t updatedState) {
 }
 
 //Get the ID of the device
-unsigned short baseDevice::getID(void) {
+unsigned short baseDevice::getID(void)
+{
     return devID;
+}
+
+unsigned short baseDevice::changeState(unsigned short newState)
+{
+    return this->state;
 }

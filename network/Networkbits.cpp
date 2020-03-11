@@ -5,7 +5,6 @@
 //Network thread - To handle networking, http over TCP/IP
 Thread networkThread;
 
-
 //Network - responsible for listening for http connections and then processing and responding to them
 //No data is returned and no parameters need to be passed
 void network(void)
@@ -23,11 +22,11 @@ void network(void)
     //TCP/IP Server
     TCPSocket srv;
 
-    //Socket for communication      
-    TCPSocket *clt_sock; 
+    //Socket for communication
+    TCPSocket *clt_sock;
 
-    //Address of incoming connection   
-    SocketAddress clt_addr; 
+    //Address of incoming connection
+    SocketAddress clt_addr;
 
     //Open the server on the ethernet interface stack
     srv.open(&eth);
@@ -37,15 +36,8 @@ void network(void)
 
     //Listen for 1 connection at a time
     srv.listen(1);
-	
-	
-	perPump* pump;
-	
-	pump = new perPump(PE_9, 1000);
 
-	
-	pump->changeState(1);
-
+ 
     //Start an infinite loop to handle http requests
     //This will run once per http request recieved
     while (true) {
@@ -60,7 +52,7 @@ void network(void)
         clt_sock = srv.accept();
 
         //Fill address of client to the SocketAddress object
-        clt_sock->getpeername(&clt_addr); 
+        clt_sock->getpeername(&clt_addr);
 
         //Debugging, send the client information over serial
         serialQueue.call(printf, "accept %s:%d\n", clt_addr.get_ip_address(), clt_addr.get_port());
@@ -71,7 +63,6 @@ void network(void)
         //Debuging, print this out over serial
         serialQueue.call(printf, "Received Msg: %s\n\n", buffer); //this was missing in original example.
 
-
         //Address parser logic, decide what repsonse is required dependant on the incoming address
 
         //Declare a string for the favicon url request - this needs to move to a more central location, header file
@@ -79,7 +70,7 @@ void network(void)
         string addIndex("GET / HTTP/1.1");
         string addStyles("styles.css");
         string addJquery("jquery.js");
-		string addTest("test");
+        string addTest("test");
 
         //Create a sting based on the recieved data from the client
         string address(buffer);
@@ -89,7 +80,7 @@ void network(void)
 
         //If the address contains the word favicon, return a 404 error
         if (address.find(addFavicon) != string::npos) {
-            
+
             //Add a 404 header to the response
             response += HTTP_STATUS_LINE_404;
 
@@ -97,7 +88,7 @@ void network(void)
             response += "\r\n";
         }
         else if (address.find(addIndex) != string::npos) {
-            
+
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
 
@@ -114,7 +105,7 @@ void network(void)
             response += HTTP_MESSAGE_BODY1;
         }
         else if (address.find(addStyles) != string::npos) {
-            
+
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
 
@@ -126,12 +117,12 @@ void network(void)
 
             //Add 2 line feeds and carriage returns to the response to signal the end of the headers
             response += "\r\n\r\n";
-            
+
             //Add the body
             response += STYLES;
         }
         else if (address.find(addJquery) != string::npos) {
-            
+
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
 
@@ -141,80 +132,67 @@ void network(void)
             //Add the header fields
             response += "Content-Type: text/javascript";
 
-			//Add a line feed and carriage return to the response
+            //Add a line feed and carriage return to the response
             response += "\r\n";
-			
-			//Add the header fields
+
+            //Add the header fields
             response += "Cache-Control: public, max-age=31536000";
-			
+
             //Add 2 line feeds and carriage returns to the response to signal the end of the headers
             response += "\r\n\r\n";
-            
+
             //Add the body
             response += JQUERY;
         }
-		else if (address.find("devicetest") != string::npos) {
-            
-			int pos = address.find("id=");
-			
-			serialQueue.call(printf, "HTTP request, found device ID: %d \n", pos);
-			
-			string IDstr = address.substr(pos+3,4);
-			
-			serialQueue.call(printf, "Device ID:%s \n", IDstr.c_str());
-			
-			int id = stoi(IDstr);
-			
-			serialQueue.call(printf, "Device ID:%d \n", id);
-			
-			
-			
-			int statepos = address.find("state=");
-			
-			serialQueue.call(printf, "HTTP request, found state ID: %d \n", statepos);
-			
-			string Statestr = address.substr(statepos+6,2);
-			
-			serialQueue.call(printf, "State:%s \n", Statestr.c_str());
-			
-			int state = stoi(Statestr);
-			
-			serialQueue.call(printf, "state:%d \n", state);
-			
-			if (id == pump->getID()) {
-				pump->changeState(state);
-			}
-			
-			if (address.find("id=1") != string::npos) {
-				//Add a 200 header code to the response
-				response += HTTP_STATUS_LINE_200;
+        else if (address.find("devicetest") != string::npos) {
 
-				//Add a line feed and carriage return to the response
-				response += "\r\n";
-				
-				turnOn(WASHPUMP);
-			}
-			else if (address.find("id=2") != string::npos) {
-				//Add a 200 header code to the response
-				response += HTTP_STATUS_LINE_200;
+            int pos = address.find("id=");
 
-				//Add a line feed and carriage return to the response
-				response += "\r\n";
-				
-				turnOn(SAMPLEPUMP);
-			} 
-			else {
-				//If we get to this else statement, then no route exists for this request, throw a 404 to the client
-				//Add a 404 header to the response
-				response += HTTP_STATUS_LINE_404;
+            serialQueue.call(printf, "HTTP request, found device ID: %d \n", pos);
 
-				//Add a line feed and carriage return to the response
-				response += "\r\n";
-			}
+            string IDstr = address.substr(pos + 3, 4);
+
+            serialQueue.call(printf, "Device ID:%s \n", IDstr.c_str());
+
+            int id = stoi(IDstr);
+
+            serialQueue.call(printf, "Device ID:%d \n", id);
+
+            int statepos = address.find("state=");
+
+            serialQueue.call(printf, "HTTP request, found state ID: %d \n", statepos);
+
+            string Statestr = address.substr(statepos + 6, 2);
+
+            serialQueue.call(printf, "State:%s \n", Statestr.c_str());
+
+            int state = stoi(Statestr);
+
+            serialQueue.call(printf, "state:%d \n", state);
+
+            for (int i = 0; i < devices.size(); i++) {
+                if (id == devices[i]->getID()) {
+                    devices[i]->changeState(state);
+                    //Add a 200 header code to the response
+                    response += HTTP_STATUS_LINE_200;
+
+                    //Add a line feed and carriage return to the response
+                    response += "\r\n";
+                }
+            }
+
+            //			else {
+            //				//If we get to this else statement, then no route exists for this request, throw a 404 to the client
+            //				//Add a 404 header to the response
+            //				response += HTTP_STATUS_LINE_404;
+
+            //				//Add a line feed and carriage return to the response
+            //				response += "\r\n";
+            //			}
         }
-		else if (address.find("devices.json") != string::npos) {
-            
-			//Add a 200 header code to the response
+        else if (address.find("devices.json") != string::npos) {
+
+            //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
 
             //Add a line feed and carriage return to the response
@@ -225,12 +203,12 @@ void network(void)
 
             //Add 2 line feeds and carriage returns to the response to signal the end of the headers
             response += "\r\n\r\n";
-            
+
             //Add the body
-            response += "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Distribution Valve\",\"devType\":\"swichValve\",\"devPin1\":\"5\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"9\",\"devPin2\":\"10\"}]";
+            response += "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
         }
-		else {
-            
+        else {
+
             //If we get to this else statement, then no route exists for this request, throw a 404 to the client
             //Add a 404 header to the response
             response += HTTP_STATUS_LINE_404;

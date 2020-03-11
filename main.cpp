@@ -18,10 +18,14 @@
 //Device Classes
 #include "perPump.hpp"
 
-static const char *JSON_STRING = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"3\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Distribution Valve\",\"devType\":\"swichValve\",\"devPin1\":\"5\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"9\",\"devPin2\":\"10\"}]";
+static const char *JSON_STRING = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
 
 
 int main() {  
+	
+	devices[0] = new perPump(digitalOutputs[0], 1000);
+	
+	devices[1] = new solValve(digitalOutputs[1], 1001);
 
 	//Start serial thread
 	serialThread.start(serialInterface);
@@ -31,12 +35,6 @@ int main() {
 	
 	//Create a JSON parser object
     MbedJSONValue demo;
-
-	//Test dynamic pin configuration
-	DigitalOut* outputs2[2];
-	
-	
-	
 	
 	//parse the previous string and fill the object demo
 	parse(demo, JSON_STRING);
