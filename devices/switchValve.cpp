@@ -3,19 +3,19 @@
 ////pin specifies the pin that the switching valve step input is connected to
 //deviceID uniquely identifies the device
 //Constructor is inhertited from baseDevice
-switchingValve::switchingValve(PinName pin, unsigned short deviceID) : baseDevice(pin, deviceID) {}
+switchValve::switchValve(PinName pin, unsigned short deviceID) : baseDevice(pin, deviceID) {}
 
 //pin1 specifies the pin that the switching valve step input is connected to
 //pin2 specifies the pin that the switching valve home input is connected to
 //deviceID uniquely identifies the device
 //Constructor is inhertited from baseDevice
-switchingValve::switchingValve(PinName pin1, PinName pin2, unsigned short deviceID) : baseDevice(pin1, pin2, deviceID) {}
+switchValve::switchValve(PinName pin1, PinName pin2, unsigned short deviceID) : baseDevice(pin1, pin2, deviceID) {}
 
 //create the signal pulses needed to change the state of the switching valve
 //pin determines the pin to generate the pulses on
 //noPulses determines the number of pulses generated
 //According to the data sheet, each pulse must be at least 30ms in duration, so a delay of 50ms is used
-void switchingValve::pulse(unsigned short pin, unsigned short noPulses)
+void switchValve::pulse(unsigned short pin, unsigned short noPulses)
 {
     for (int i = 0; i < noPulses; i++) {
         if (pin == 1) {
@@ -34,7 +34,7 @@ void switchingValve::pulse(unsigned short pin, unsigned short noPulses)
 //Change the state of the switching valve
 //The valve can be in one of ten states and can operated in two modes
 //Hence newstate is the desired state of the valve
-unsigned short switchingValve::changeState(unsigned short newState)
+unsigned short switchValve::changeState(unsigned short newState)
 {
     //Check if operating in 1 or 2 pin mode
     //If in single pin mode - need to cycle through all configurations to get to the derired state
@@ -77,28 +77,4 @@ unsigned short switchingValve::changeState(unsigned short newState)
             updateState(newState);
         }
     }
-}
-
-//If the newstate is non-zero, and the pump is not already running, turn the valve on
-if (newState) {
-    if (this->state == 1) {
-        return this->state;
-    }
-    else {
-        this->controlPin1->write(1);
-        updateState(1);
-        return this->state;
-    }
-}
-//If the newstate is zero, and the pump is running, turn the valve off
-else {
-    if (this->state == 0) {
-        return this->state;
-    }
-    else {
-        this->controlPin1->write(0);
-        updateState(0);
-        return this->state;
-    }
-}
 }
