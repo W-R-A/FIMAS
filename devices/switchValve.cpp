@@ -20,12 +20,12 @@ void switchValve::pulse(unsigned short pin, unsigned short noPulses)
     for (int i = 0; i < noPulses; i++) {
         if (pin == 1) {
             this->controlPin1->write(1);
-            thread_sleep_for(50);
+            thread_sleep_for(500);
             this->controlPin1->write(0);
         }
         else {
             this->controlPin2->write(1);
-            thread_sleep_for(50);
+            thread_sleep_for(500);
             this->controlPin2->write(0);
         }
     }
@@ -40,7 +40,7 @@ unsigned short switchValve::changeState(unsigned short newState)
     //If in single pin mode - need to cycle through all configurations to get to the derired state
     if (this->noPins == 1) {
         //Bounds Check
-        if (newState > 10) {
+        if (newState > 9) {
             printError("State out of bounds");
         }
         else {
@@ -48,7 +48,7 @@ unsigned short switchValve::changeState(unsigned short newState)
             unsigned short pulses = 0;
             //If the current state of greater than th desired state, get back to position zero before moving to the desired state
             if (this->state > newState) {
-                pulses = 10 - this->state;
+                pulses = 9 - this->state;
                 pulses = pulses + newState;
             }
             else {
@@ -64,7 +64,7 @@ unsigned short switchValve::changeState(unsigned short newState)
     //If in 2 pin mode, reset to home before cycling through to the desired state
     else {
         //Bounds Check
-        if (newState > 10) {
+        if (newState > 9) {
             printError("State out of bounds");
         }
         else {
@@ -77,4 +77,5 @@ unsigned short switchValve::changeState(unsigned short newState)
             updateState(newState);
         }
     }
+    return this->state;
 }

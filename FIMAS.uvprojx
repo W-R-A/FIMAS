@@ -497,6 +497,16 @@
               <FileType>8</FileType>
               <FilePath>.\devices\sixValve.cpp</FilePath>
             </File>
+            <File>
+              <FileName>switchValve.hpp</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\devices\switchValve.hpp</FilePath>
+            </File>
+            <File>
+              <FileName>switchValve.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\devices\switchValve.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

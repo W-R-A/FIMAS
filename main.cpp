@@ -25,7 +25,7 @@ int main()
 
     devices[0] = new perPump(digitalOutputs[0], 1000);
 
-    devices[1] = new solValve(digitalOutputs[1], 1001);
+    devices[1] = new switchValve(digitalOutputs[1], 1001);
 
     devices[2] = new sixValve(digitalOutputs[2], digitalOutputs[3], 1002);
 
@@ -39,48 +39,57 @@ int main()
     while (!userButton) {
     };
 
-    devices[0]->changeState(1);
-
-    devices[1]->changeState(1);
-
-    devices[2]->changeState(1);
-
-    thread_sleep_for(1000);
-
-    devices[1]->changeState(0);
-
-    devices[2]->changeState(0);
-
-    thread_sleep_for(5000);
-
-    devices[1]->changeState(1);
-
-    devices[0]->changeState(0);
-
-    while (true) {
-        //Wait for button before starting routine
-        //while(!userButton) {};
-
-        devices[0]->changeState(1);
-
-        devices[1]->changeState(1);
-
-        devices[2]->changeState(1);
-
-        thread_sleep_for(1000);
-
-        devices[1]->changeState(0);
-
-        devices[2]->changeState(0);
-
-        thread_sleep_for(5000);
-
-        devices[1]->changeState(1);
-
-        devices[0]->changeState(0);
-
-        thread_sleep_for(500);
+    for (int i = 0; i < 9; i++) {
+		devices[1]->changeState(i);
+		thread_sleep_for(1000);
     }
+
+	devices[1]->changeState(5);
+	
+	devices[1]->changeState(2);
+
+    // devices[0]->changeState(1);
+
+    // devices[1]->changeState(1);
+
+    // devices[2]->changeState(1);
+
+    // thread_sleep_for(1000);
+
+    // devices[1]->changeState(0);
+
+    // devices[2]->changeState(0);
+
+    // thread_sleep_for(5000);
+
+    // devices[1]->changeState(1);
+
+    // devices[0]->changeState(0);
+
+    // while (true) {
+    //     //Wait for button before starting routine
+    //     //while(!userButton) {};
+
+    //     devices[0]->changeState(1);
+
+    //     devices[1]->changeState(1);
+
+    //     devices[2]->changeState(1);
+
+    //     thread_sleep_for(1000);
+
+    //     devices[1]->changeState(0);
+
+    //     devices[2]->changeState(0);
+
+    //     thread_sleep_for(5000);
+
+    //     devices[1]->changeState(1);
+
+    //     devices[0]->changeState(0);
+
+    //     thread_sleep_for(500);
+    //}
 }
 
 //	//Create a JSON parser object
