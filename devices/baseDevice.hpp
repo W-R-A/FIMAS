@@ -45,6 +45,10 @@ public:
 protected:
     //Update the state of the internal state variable in an interrupt-safe way
     void updateState(uint8_t updatedState);
+
+    //Print an error message from a device
+    //msg if the error string to print
+    void printError(const char *msg);
 };
 
 #endif

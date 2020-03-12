@@ -71,3 +71,8 @@ unsigned short baseDevice::changeState(unsigned short newState)
 {
     return this->state;
 }
+
+void baseDevice::printError(const char *msg) 
+{
+    printf("Error occured: %s", msg);
+}
