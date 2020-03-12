@@ -12,12 +12,9 @@
 
 //Include derrived device classes
 #include "perPump.hpp"
-
-//Include derrived device classes
 #include "solValve.hpp"
-
-//Include derrived device classes
 #include "sixValve.hpp"
+#include "switchValve.hpp"
 
 
 
