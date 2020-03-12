@@ -15,7 +15,7 @@
 class sixValve : public baseDevice {
     //Public API
 public:
-    //pin specifies the pin that the six-port valve is connected to
+    //pin1 specifies the pin that the six-port valve is connected to
     //deviceID uniquely identifies the device
     sixValve(PinName pin1, PinName pin2, unsigned short deviceID);
 
