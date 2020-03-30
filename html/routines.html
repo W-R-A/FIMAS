@@ -55,6 +55,8 @@
         // Your code here.
         //Document is ready to be manipulated
 
+        var globalTimings;
+
         //Get user input values
         //No paraeters need to be passed
         //Return key values pairs of the user input data
@@ -79,10 +81,7 @@
         }
 
 
-        function checkInputs() {
-
-          //Get the value of the user inputs
-          values = getInputs();
+        function checkInputs(values) {
 
           //Check if a valid device selected
           if (typeof values.devID == "undefined") {
@@ -107,20 +106,23 @@
           return 1;
         }
 
+
         //Generate timing JSON data from user input
         $(document).on("click", "button.genTiming", function (event) {
 
-          //Check that the user input is valid
-          if (checkInputs()) {
+          //Get the value of the user inputs
+          values = getInputs();
 
-            //Get user inputs
-            var timings = getInputs();
+          //Check that the user input is valid
+          if (checkInputs(values)) {
 
             //Create the JSON object
-            var obj = { devID: timings.devID, time: timings.time, state: timings.devState };
+            var obj = { devID: values.devID, time: values.time, state: values.devState };
 
             //Convert the JSON object to a string
             var myJSON = JSON.stringify(obj);
+
+            globalTimings = globalTimings + myJSON;
 
             //Append this to the page
             $('<p>' + myJSON + '</p>').appendTo('#timings');
