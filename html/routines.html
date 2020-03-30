@@ -92,11 +92,13 @@
             return 0;
           }
 
-          alert(values.time)
+          //Check the time value - should only be a integer between 0 and 1000
+          if ((values.time < 0) || (values.time > 1000)) {
+            //Alert the user to select a valid time
+            alert("Please enter a time between 0 and 1000 seconds");
 
-          //Sanity check the time - should only be a integer between 0 and 1000
-          if ($("#time").val()) {
-
+            //Return and do not execute the rest of the function as there is an invalid input
+            return 0;
           }
 
 
@@ -115,7 +117,7 @@
             var timings = getInputs();
 
             //Create the JSON object
-            var obj = { devID: devID, time: time, state: devState };
+            var obj = { devID: timings.devID, time: timings.time, state: timings.devState };
 
             //Convert the JSON object to a string
             var myJSON = JSON.stringify(obj);
