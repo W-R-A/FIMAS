@@ -36,7 +36,8 @@
     <select id="devices_dropdown">
     </select>
 
-    <input id="time" type="integer"></input>
+    <!-- Create an input box for the timings, and restrict its contents to a number between 0 and 1000 -->
+    <input id="time" type="number" min="0" , max="1000"></input>
 
 
     <select id="state">
@@ -52,32 +53,82 @@
     <script>
       $(document).ready(function () {
         // Your code here.
+        //Document is ready to be manipulated
 
-        $(document).on("click", "button.genTiming", function (event) {
+        //Get user input values
+        //No paraeters need to be passed
+        //Return key values pairs of the user input data
+        function getInputs() {
 
-          //Debugging, display the ID to be requested
-          //alert(event.target.id);
+          //Get the device ID
+          var devID = $('select[id="devices_dropdown"] option:selected').attr('id');
 
-          var devClass = $('select[id="devices_dropdown"] option:selected').attr('class');
-
+          //Get the time from the input box
           var time = $("#time").val();
+
+          //Get the device state
+          var devState = $('select[id="state"] option:selected').attr('class');
+
+          //Return values
+          return {
+            devID: devID,
+            time: time,
+            devState: devState,
+          };
+
+        }
+
+
+        function checkInputs() {
+
+          //Get the value of the user inputs
+          values = getInputs();
+
+          //Check if a valid device selected
+          if (typeof values.devID == "undefined") {
+            //Tell the user to select a valid device
+            alert("Please select a device");
+            //Return and do not execute the rest of the function as there is an invalid input
+            return 0;
+          }
+
+          alert(values.time)
+
+          //Sanity check the time - should only be a integer between 0 and 1000
+          if ($("#time").val()) {
+
+          }
+
 
           var devState = $('select[id="state"] option:selected').attr('class');
 
-          var obj = { devID: devClass, time: time, state: devState };
+          return 1;
+        }
 
-          var myJSON = JSON.stringify(obj);
+        //Generate timing JSON data from user input
+        $(document).on("click", "button.genTiming", function (event) {
 
-          
-          $('<p>' + myJSON + '</p>').appendTo('#timings');
+          //Check that the user input is valid
+          if (checkInputs()) {
 
+            //Get user inputs
+            var timings = getInputs();
 
+            //Create the JSON object
+            var obj = { devID: devID, time: time, state: devState };
+
+            //Convert the JSON object to a string
+            var myJSON = JSON.stringify(obj);
+
+            //Append this to the page
+            $('<p>' + myJSON + '</p>').appendTo('#timings');
+          }
         });
 
 
 
 
-        //Bind the device selection to the following handler
+        //Bind the device selection to the following handler - to adjust the state drop down
         $(document).on("change", "#devices_dropdown", function (event) {
 
           var devClass = $('select[id="devices_dropdown"] option:selected').attr('class');
