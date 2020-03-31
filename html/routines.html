@@ -51,6 +51,31 @@
 
     <div id="timings"></div>
 
+    <figure>
+      <div class="row">
+        <h6>Bar One</h6>
+        <div class="chart">
+          <span class="block" title="Category A">
+            <span class="value">57%</span>
+          </span>
+          <span class="block" title="Category B">
+            <span class="value">13%</span>
+          </span>
+          <span class="block" title="Category C">
+            <span class="value">8%</span>
+          </span>
+          <span class="block" title="Category D">
+            <span class="value">2%</span>
+          </span>
+          <span class="block" title="Category E">
+            <span class="value">17%</span>
+          </span>
+          <span class="block" title="Category F">
+            <span class="value">3%</span>
+          </span>
+        </div>
+      </div>
+    </figure>
 
     <script src="jquery.js"></script>
     <script>
@@ -58,7 +83,7 @@
         // Your code here.
         //Document is ready to be manipulated
 
-        var globalTimings = [];
+        var routines = [];
 
         //Get user input values
         //No paraeters need to be passed
@@ -114,7 +139,7 @@
           }
 
           //Check the start time is before the stop time
-          if (values.timeStart > values.timeStop-1) {
+          if (values.timeStart > values.timeStop - 1) {
             //Alert the user to select a valid time
             alert("Please ensure that the starting time is less than the stopping time");
 
