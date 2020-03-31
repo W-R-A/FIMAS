@@ -69,8 +69,8 @@
           var devID = $('select[id="devices_dropdown"] option:selected').attr('id');
 
           //Get the time from the input box
-          var time = $("#timeStart").val();
-          var time = $("#timeStop").val();
+          var timeStart = $("#timeStart").val();
+          var timeStop = $("#timeStop").val();
 
           //Get the device state
           var devState = $('select[id="state"] option:selected').attr('class');
@@ -78,10 +78,10 @@
           //Return values
           return {
             devID: devID,
-            time: time,
+            timeStart: timeStart,
+            timeStop: timeStop,
             devState: devState,
           };
-
         }
 
 
@@ -95,17 +95,39 @@
             return 0;
           }
 
-          //Check the time value - should only be a integer between 0 and 1000
-          if ((values.time < 0) || (values.time > 1000)) {
+          //Check the starting time value - should only be a integer between 0 and 1000
+          if ((!values.timeStart) || (values.timeStart < 0) || (values.timeStart > 1000)) {
             //Alert the user to select a valid time
-            alert("Please enter a time between 0 and 1000 seconds");
+            alert("Please enter a starting time between 0 and 1000 seconds");
 
             //Return and do not execute the rest of the function as there is an invalid input
             return 0;
           }
 
+          //Check the stopping time value - should only be a integer between 0 and 1000
+          if ((!values.timeStop) || (values.timeStop < 0) || (values.timeStop > 1000)) {
+            //Alert the user to select a valid time
+            alert("Please enter a stopping time between 0 and 1000 seconds");
 
-          var devState = $('select[id="state"] option:selected').attr('class');
+            //Return and do not execute the rest of the function as there is an invalid input
+            return 0;
+          }
+
+          //Check the start time is before the stop time
+          if (values.timeStart > values.timeStop-1) {
+            //Alert the user to select a valid time
+            alert("Please ensure that the starting time is less than the stopping time");
+
+            //Return and do not execute the rest of the function as there is an invalid input
+            return 0;
+          }
+
+          if (typeof values.devState == "undefined") {
+            //Tell the user to select a valid device
+            alert("Please select a state");
+            //Return and do not execute the rest of the function as there is an invalid input
+            return 0;
+          }
 
 
 
@@ -123,7 +145,7 @@
           if (checkInputs(values)) {
 
             //Create the JSON object
-            var obj = { devID: values.devID, time: values.time, state: values.devState };
+            var obj = { devID: values.devID, timeStart: values.timeStart, timeStop: values.timeStop, state: values.devState };
 
             //Convert the JSON object to a string
             var myJSON = JSON.stringify(obj);
