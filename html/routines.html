@@ -51,16 +51,18 @@
 
     <div id="timings"></div>
 
-    
+    <br>
+
+
     <figure>
       <div class="row">
-        <h6>Bar One</h6>
+        <h6>Sample Pump</h6>
         <div class="chart">
           <span class="block" title="Category A">
-            <span class="value">57%</span>
+            <span class="value">58%</span>
           </span>
           <span class="block" title="Category B">
-            <span class="value">13%</span>
+            <span class="value">12%</span>
           </span>
           <span class="block" title="Category C">
             <span class="value">8%</span>
@@ -84,6 +86,13 @@
         // Your code here.
         //Document is ready to be manipulated
 
+
+        $('.value').each(function () {
+          var text = $(this).text();
+          $(this).parent().css('width', text);
+        });
+
+        $('.block').tooltip();
         var routines = [];
 
         //Get user input values
