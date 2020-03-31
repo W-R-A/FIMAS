@@ -37,7 +37,10 @@
     </select>
 
     <!-- Create an input box for the timings, and restrict its contents to a number between 0 and 1000 -->
-    <input id="time" type="number" min="0" , max="1000"></input>
+    <input id="timeStart" type="number" min="0" , max="1000"></input>
+
+    <!-- Create an input box for the timings, and restrict its contents to a number between 0 and 1000 -->
+    <input id="timeStop" type="number" min="0" , max="1000"></input>
 
 
     <select id="state">
@@ -55,7 +58,7 @@
         // Your code here.
         //Document is ready to be manipulated
 
-        var globalTimings;
+        var globalTimings = [];
 
         //Get user input values
         //No paraeters need to be passed
@@ -66,7 +69,8 @@
           var devID = $('select[id="devices_dropdown"] option:selected').attr('id');
 
           //Get the time from the input box
-          var time = $("#time").val();
+          var time = $("#timeStart").val();
+          var time = $("#timeStop").val();
 
           //Get the device state
           var devState = $('select[id="state"] option:selected').attr('class');
@@ -103,6 +107,8 @@
 
           var devState = $('select[id="state"] option:selected').attr('class');
 
+
+
           return 1;
         }
 
@@ -122,10 +128,12 @@
             //Convert the JSON object to a string
             var myJSON = JSON.stringify(obj);
 
-            globalTimings = globalTimings + myJSON;
+            globalTimings.push(myJSON);
 
             //Append this to the page
             $('<p>' + myJSON + '</p>').appendTo('#timings');
+
+            console.log(globalTimings);
           }
         });
 
