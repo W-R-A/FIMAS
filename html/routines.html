@@ -33,17 +33,17 @@
     <p>Select Device: </p>
 
     <!-- Dropdown to edit the configuration of a device -->
-    <select id="devices_dropdown">
+    <select id="devices_dropdown" title="Select a device">
     </select>
 
     <!-- Create an input box for the timings, and restrict its contents to a number between 0 and 1000 -->
-    <input id="timeStart" type="number" min="0" , max="1000"></input>
+    <input id="timeStart" type="number" min="0" , max="1000" title="The starting time for the step"></input>
 
     <!-- Create an input box for the timings, and restrict its contents to a number between 0 and 1000 -->
-    <input id="timeStop" type="number" min="0" , max="1000"></input>
+    <input id="timeStop" type="number" min="0" , max="1000" title="The ending time for the step"></input>
 
 
-    <select id="state">
+    <select id="state" title="Select the state of the device during the step">
       <option selected="true" disabled>Select State</option>
     </select>
 
@@ -86,13 +86,6 @@
         // Your code here.
         //Document is ready to be manipulated
 
-
-        $('.value').each(function () {
-          var text = $(this).text();
-          $(this).parent().css('width', text);
-        });
-
-        $('.block').tooltip();
         var routines = [];
 
         //Get user input values
@@ -185,12 +178,12 @@
             //Convert the JSON object to a string
             var myJSON = JSON.stringify(obj);
 
-            globalTimings.push(myJSON);
+            routines.push(myJSON);
 
             //Append this to the page
             $('<p>' + myJSON + '</p>').appendTo('#timings');
 
-            console.log(globalTimings);
+            console.log(routines);
           }
         });
 
@@ -253,6 +246,14 @@
         });
 
         $('#devices_dropdown').append(opHTML);
+
+        //Visualisation
+        $('.value').each(function () {
+          var text = $(this).text();
+          $(this).parent().css('width', text);
+        });
+
+        //$('.block').tooltip();
       });
     </script>
 
