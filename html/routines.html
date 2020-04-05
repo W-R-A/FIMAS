@@ -112,6 +112,72 @@
           };
         }
 
+        //Check if the inputs are sane - not conflicting with other inputs
+        function checkInputsSanity(values) {
+          //Loop through all of the previous timing data and raise an error if the new data would conflict with the exisiting data
+          //ie if the states are different for the same time - gaps of undefined time 
+
+          //Conflict detection
+          //Start
+          //Check if ID is the same
+          //Check if the start time is within the previos range
+          //Check if the stop time is within the previous range
+          //Check if the state is the same
+          //if so - conflict - need to resolve
+
+          var timesStart = [];
+          var timesStop = [];
+
+          for (let i = 0; i < routines.length; i++) {
+
+            console.log(routines[i].timeStart);
+            timesStop.push(routines[i].timeStop);
+          }
+
+
+          console.log(timesStart);
+          console.log(timesStop);
+
+          console.log(timesStart.sort());
+          console.log(timesStop.sort());
+
+
+
+          for (let i = 0; i < routines.length; i++) {
+
+            //Is the ID the same
+            if (values.devID == routines[i].devID) {
+
+              //Are the start time within any previous range
+              if ((values.timeStart >= routines[i].timeStart && values.timeStart <= routines[i].timeStop)) {
+                //Are the stop time within any previous range
+                if ((values.timeStop >= routines[i].timeStart && values.timeStop <= routines[i].timeStop)) {
+                  //Timings are within previous range, alert user
+                  alert("Timings overlap previous inputs, aborting");
+                }
+
+
+                //Is the state the same
+                if (values.devState = routines[i].devState) {
+                  //If yes, are the start and stop times the same or do they need to be changed
+
+                }
+                //If no check timings
+                else {
+
+
+                }
+              }
+              //Different device, no worries
+              else {
+
+              }
+            }
+
+          }
+          return 1;
+        }
+
 
         function checkInputs(values) {
 
@@ -157,9 +223,13 @@
             return 0;
           }
 
+          //Check inputs sanity
+          if (checkInputsSanity(values)) {
+            return 1;
+          }
 
+          return 0;
 
-          return 1;
         }
 
 
