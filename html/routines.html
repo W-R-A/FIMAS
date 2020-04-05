@@ -112,21 +112,25 @@
           };
         }
 
-        function checkSingleSanity(newValues, oldValues) {
+        function checkSingleSanity(newValue, existingValue) {
           //Is the ID the same
-          if (values.devID == routines[i].devID) {
+          if (values.devID == existingValue.devID) {
 
-            //Are the start time within any previous range
-            if ((values.timeStart >= routines[i].timeStart && values.timeStart <= routines[i].timeStop)) {
-              //Are the stop time within any previous range
-              if ((values.timeStop >= routines[i].timeStart && values.timeStop <= routines[i].timeStop)) {
+            //Are the start time within the existing value 
+            if ((values.timeStart > existingValue.timeStart && values.timeStart < existingValue.timeStop)) {
+              //Are the stop time within the existing value 
+              if ((values.timeStop > existingValue.timeStart && values.timeStop < existingValue.timeStop)) {
                 //Timings are within previous range, alert user
                 alert("Timings overlap previous inputs, aborting");
                 return 0;
               }
+              else{
+                //No overlap, safe to proceed,
+                return 1;
+              }
 
               //Is the state the same
-              if (values.devState = routines[i].devState) {
+              if (values.devState = existingValue.devState) {
                 //If yes, are the start and stop times the same or do they need to be changed
 
               }
@@ -165,9 +169,10 @@
             timesStop.push(routines[i].timeStop);
           }
 
+          //Math.max.apply(null, timesStop)
 
           console.log(timesStart);
-          console.log(Math.max.apply(null, timesStop));
+          console.log(timesStop);
 
           console.log(timesStart.sort());
           console.log(timesStop.sort());
@@ -175,9 +180,9 @@
 
 
           for (let i = 0; i < routines.length; i++) {
-
-
-
+            if (!checkSingleSanity) {
+              return 0;
+            }
           }
           return 1;
         }
