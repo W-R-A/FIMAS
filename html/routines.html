@@ -112,6 +112,37 @@
           };
         }
 
+        function checkSingleSanity(newValues, oldValues) {
+          //Is the ID the same
+          if (values.devID == routines[i].devID) {
+
+            //Are the start time within any previous range
+            if ((values.timeStart >= routines[i].timeStart && values.timeStart <= routines[i].timeStop)) {
+              //Are the stop time within any previous range
+              if ((values.timeStop >= routines[i].timeStart && values.timeStop <= routines[i].timeStop)) {
+                //Timings are within previous range, alert user
+                alert("Timings overlap previous inputs, aborting");
+                return 0;
+              }
+
+              //Is the state the same
+              if (values.devState = routines[i].devState) {
+                //If yes, are the start and stop times the same or do they need to be changed
+
+              }
+              //If no check timings
+              else {
+
+
+              }
+            }
+            //Different device, no worries
+            else {
+
+            }
+          }
+        }
+
         //Check if the inputs are sane - not conflicting with other inputs
         function checkInputsSanity(values) {
           //Loop through all of the previous timing data and raise an error if the new data would conflict with the exisiting data
@@ -130,13 +161,13 @@
 
           for (let i = 0; i < routines.length; i++) {
 
-            console.log(routines[i].timeStart);
+            timesStart.push(routines[i].timeStart);
             timesStop.push(routines[i].timeStop);
           }
 
 
           console.log(timesStart);
-          console.log(timesStop);
+          console.log(Math.max.apply(null, timesStop));
 
           console.log(timesStart.sort());
           console.log(timesStop.sort());
@@ -145,34 +176,7 @@
 
           for (let i = 0; i < routines.length; i++) {
 
-            //Is the ID the same
-            if (values.devID == routines[i].devID) {
 
-              //Are the start time within any previous range
-              if ((values.timeStart >= routines[i].timeStart && values.timeStart <= routines[i].timeStop)) {
-                //Are the stop time within any previous range
-                if ((values.timeStop >= routines[i].timeStart && values.timeStop <= routines[i].timeStop)) {
-                  //Timings are within previous range, alert user
-                  alert("Timings overlap previous inputs, aborting");
-                }
-
-
-                //Is the state the same
-                if (values.devState = routines[i].devState) {
-                  //If yes, are the start and stop times the same or do they need to be changed
-
-                }
-                //If no check timings
-                else {
-
-
-                }
-              }
-              //Different device, no worries
-              else {
-
-              }
-            }
 
           }
           return 1;
@@ -246,14 +250,14 @@
             var obj = { devID: values.devID, timeStart: values.timeStart, timeStop: values.timeStop, state: values.devState };
 
             //Convert the JSON object to a string
-            var myJSON = JSON.stringify(obj);
+            //var myJSON = JSON.stringify(obj);
 
-            routines.push(myJSON);
+            routines.push(obj);
 
             //Append this to the page
-            $('<p>' + myJSON + '</p>').appendTo('#timings');
+            //$('<p>' + myJSON + '</p>').appendTo('#timings');
 
-            console.log(routines);
+            console.log(JSON.stringify(routines));
           }
         });
 
