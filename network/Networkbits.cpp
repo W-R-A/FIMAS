@@ -130,7 +130,7 @@ void network(void)
 
             int pos = address.find("id=");
 
-            serialQueue.call(printf, "HTTP request, found device ID: %d \n", pos);
+            serialQueue.call(printf, "HTTP request, found device ID at position: %d \n", pos);
 
             string IDstr = address.substr(pos + 3, 4);
 
@@ -142,7 +142,7 @@ void network(void)
 
             int statepos = address.find("state=");
 
-            serialQueue.call(printf, "HTTP request, found state ID: %d \n", statepos);
+            serialQueue.call(printf, "HTTP request, found state ID at position : %d \n", statepos);
 
             string Statestr = address.substr(statepos + 6, 2);
 
