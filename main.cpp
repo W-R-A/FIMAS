@@ -20,8 +20,10 @@
 
 static const char *JSON_STRING = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
 
-int main()
-{
+int main() {
+    //Setup devices according to JSON description
+    //Create a JSON parser object
+    MbedJSONValue jsonParser;
 
     devices[0] = new perPump(digitalOutputs[0], 1000);
 
@@ -40,13 +42,13 @@ int main()
     };
 
     for (int i = 0; i < 9; i++) {
-		devices[1]->changeState(i);
-		thread_sleep_for(1000);
+        devices[1]->changeState(i);
+        thread_sleep_for(1000);
     }
 
-	devices[1]->changeState(5);
-	
-	devices[1]->changeState(2);
+    devices[1]->changeState(5);
+
+    devices[1]->changeState(2);
 
     // devices[0]->changeState(1);
 
