@@ -124,7 +124,7 @@
                 alert("Timings overlap previous inputs, aborting");
                 return 0;
               }
-              else{
+              else {
                 //No overlap, safe to proceed,
                 return 1;
               }
@@ -144,6 +144,10 @@
             else {
 
             }
+          }
+          else {
+            //Different ID, safe to proceed
+            return 1;
           }
         }
 
@@ -177,10 +181,12 @@
           console.log(timesStart.sort());
           console.log(timesStop.sort());
 
+          console.log("\n");
+
 
 
           for (let i = 0; i < routines.length; i++) {
-            if (!checkSingleSanity) {
+            if (!checkSingleSanity(values, routines[i])) {
               return 0;
             }
           }
@@ -233,11 +239,11 @@
           }
 
           //Check inputs sanity
-          if (checkInputsSanity(values)) {
-            return 1;
+          if (!checkInputsSanity(values)) {
+            return 0;
           }
 
-          return 0;
+          return 1;
 
         }
 
