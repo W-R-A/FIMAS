@@ -187,7 +187,7 @@ void network(void)
             response += "\r\n\r\n";
 
             //Add the body
-            response += "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
+            response += CONFIGURATION;
         }
         else if (address.find("deviceConfig") != string::npos) {
 
