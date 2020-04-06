@@ -25,11 +25,100 @@ int main() {
     //Create a JSON parser object
     MbedJSONValue jsonParser;
 
-    devices[0] = new perPump(digitalOutputs[0], 1000);
+    //Parse the JSON string and store the result in jsonParser
+    parse(jsonParser, JSON_STRING);
 
-    devices[1] = new switchValve(digitalOutputs[1], 1001);
+    //Loop through the JSON, extracting the device configuration for each device ID
+    for (uint8_t i = 0; jsonParser[i].hasMember("devID"); i++) {
+        //Create strings to hold the extracted values
+        uint16_t devID;
+        uint16_t devPin1;
+        short devPin2;
+        std::string devType;
 
-    devices[2] = new sixValve(digitalOutputs[2], digitalOutputs[3], 1002);
+        //Caution - always check if the object contains the requested value before atempting to access it, otherwise a hardfault occurs from trying to access invalid memory
+        if (jsonParser[i].hasMember("devID")) {
+            //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+            devID = std::stoi(jsonParser[i]["devID"].get<std::string>());
+
+            if (jsonParser[i].hasMember("devPin1")) {
+                //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+                devPin1 = std::stoi(jsonParser[i]["devPin1"].get<std::string>());
+
+                if (jsonParser[i].hasMember("devPin2")) {
+                    //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+                    devPin2 = std::stoi(jsonParser[i]["devPin2"].get<std::string>());
+
+                    if (jsonParser[i].hasMember("devType")) {
+                        //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+                        devType = jsonParser[i]["devType"].get<std::string>();
+
+                        if (devType.find("perPump") != string::npos) {
+                            //Create perPump object
+                            devices[i] = new perPump(digitalOutputs[devPin1], devID);
+
+                        } else if (devType.find("solValve") != string::npos) {
+                            //Create solValve object
+                            devices[i] = new solValve(digitalOutputs[devPin1], devID);
+
+                        } else if (devType.find("sixValve") != string::npos) {
+                            //Create sixValve object
+                            devices[i] = new sixValve(digitalOutputs[devPin1], digitalOutputs[devPin2], devID);
+
+                        } else if (devType.find("switchValve") != string::npos) {
+                            //Check if the switchvalve is working in one or two pin mode
+                            if (devPin2 == -1) {
+                                //Create switchValve object with one pin
+                                devices[i] = new switchValve(digitalOutputs[devPin1], devID);
+                            } else {
+                                //Create switchValve object with two pins
+                                devices[i] = new switchValve(digitalOutputs[devPin1], digitalOutputs[devPin2], devID);
+                            }
+                        } else {
+                            //Debugging, send the client information over serial
+                            serialQueue.call(printf, "Error creating object, could not determine device type, device ID: %d, device pin 1: %d, device pin 2: %d\n", devID, devPin1, devPin2);
+                        }
+
+                    } else {
+                        //Debugging, send the client information over serial
+                        serialQueue.call(printf, "Error reading device pin 2, device ID: %d, device pin 1: %d\n", devID, devPin1);
+                    }
+                } else {
+                    //Debugging, send the client information over serial
+                    serialQueue.call(printf, "Error reading device pin 1, device ID: %d, device pin 1: %d\n", devID, devPin1);
+                }
+            } else {
+                //Debugging, send the client information over serial
+                serialQueue.call(printf, "Error reading device pin 1, device ID: %d\n", devID);
+            }
+        } else {
+            //Debugging, send the client information over serial
+            serialQueue.call(printf, "Error reading device ID\n");
+        }
+    }
+
+    // if (jsonParser[0].hasMember("devPin1")) {
+    //     value = jsonParser[0]["devPin1"].get<std::string>();
+    // }
+
+    //
+    //
+    //	my_int = std::stoi(my_str);
+    //
+
+    //	serialQueue.call(printf, "Pin Config loaded, %d \n", my_int);
+    //
+    //
+    //	//Caution - always check if the object contains the requested value before atempting to access it, otherwise a hardfault occurs from trying to access invalid memory
+    //	if (demo[0].hasMember("devType")) {
+    //		my_str = demo[0]["devType"].get<std::string>();
+    //	}
+
+    // devices[0] = new perPump(digitalOutputs[0], 1000);
+
+    // devices[1] = new switchValve(digitalOutputs[1], 1001);
+
+    // devices[2] = new sixValve(digitalOutputs[2], digitalOutputs[3], 1002);
 
     //Start serial thread
     serialThread.start(serialInterface);
