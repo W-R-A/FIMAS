@@ -30,13 +30,13 @@ int main() {
 
     //Loop through the JSON, extracting the device configuration for each device ID
     for (uint8_t i = 0; jsonParser[i].hasMember("devID"); i++) {
-        //Create strings to hold the extracted values
+        //Create variables to hold the extracted values
         uint16_t devID;
         uint16_t devPin1;
         short devPin2;
         std::string devType;
 
-        //Caution - always check if the object contains the requested value before atempting to access it, otherwise a hardfault occurs from trying to access invalid memory
+        //Caution - always check if the object contains the requested value before attempting to access it, otherwise a hardfault occurs from trying to access invalid memory
         if (jsonParser[i].hasMember("devID")) {
             //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
             devID = std::stoi(jsonParser[i]["devID"].get<std::string>());
@@ -50,7 +50,7 @@ int main() {
                     devPin2 = std::stoi(jsonParser[i]["devPin2"].get<std::string>());
 
                     if (jsonParser[i].hasMember("devType")) {
-                        //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+                        //Get the device type string
                         devType = jsonParser[i]["devType"].get<std::string>();
 
                         if (devType.find("perPump") != string::npos) {
