@@ -288,22 +288,22 @@
           switch (devClass) {
             case "perPump":
               $('#state').append('<option selected="true" disabled>Select State</option>');
-              $('#state').append('<option class="stateOn">On</option>');
-              $('#state').append('<option class="stateOff">Off</option>');
+              $('#state').append('<option class="1">On</option>');
+              $('#state').append('<option class="0">Off</option>');
               $('#state').prop('selectedIndex', 0);
               break;
 
             case "solValve":
               $('#state').append('<option selected="true" disabled>Select State</option>');
-              $('#state').append('<option class="stateOn">On</option>');
-              $('#state').append('<option class="stateOff">Off</option>');
+              $('#state').append('<option class="1">On</option>');
+              $('#state').append('<option class="0">Off</option>');
               $('#state').prop('selectedIndex', 0);
               break;
 
             case "sixValve":
               $('#state').append('<option selected="true" disabled>Select State</option>');
-              $('#state').append('<option class="stateA">Position A</option>');
-              $('#state').append('<option class="stateB">Position B</option>');
+              $('#state').append('<option class="0">Position A</option>');
+              $('#state').append('<option class="1">Position B</option>');
               $('#state').prop('selectedIndex', 0);
               break;
 
