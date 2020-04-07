@@ -51,7 +51,7 @@ extern Serial pc;
 typedef struct {
     uint16_t devID;
     uint16_t startTime;
-    uint16_t StopTime;
+    uint16_t stopTime;
     uint16_t devState;
 } deviceTimes;
 
