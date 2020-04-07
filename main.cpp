@@ -15,11 +15,6 @@
 #include <array>
 #include <string>
 
-//Device Classes
-#include "perPump.hpp"
-
-//static const char *JSON_STRING = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
-
 int main() {
     //Setup devices according to JSON description
     //Create a JSON parser object
