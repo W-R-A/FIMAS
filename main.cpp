@@ -92,6 +92,19 @@ int main() {
         }
     }
 
+    //Parse the JSON string and store the result in jsonParser
+    parse(jsonParser, ROUTINE1);
+
+    //Loop through the JSON, extracting routine configuration info
+    for (uint8_t i = 0; jsonParser[i].hasMember("devID"); i++) {
+        //Create variables to hold the extracted values
+        uint16_t devID;
+        uint16_t startTime;
+        uint16_t StopTime;
+        uint16_t devState;
+    }
+
+
     // if (jsonParser[0].hasMember("devPin1")) {
     //     value = jsonParser[0]["devPin1"].get<std::string>();
     // }
