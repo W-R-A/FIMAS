@@ -93,19 +93,76 @@ int main() {
         }
     }
 
-    //Create vector to store device times for the routine
-    std::vector<deviceTimes> v = {7, 5, 16, 8};
+    //Create a vector to store device times for the routine
+    std::vector<deviceTimes> routine;
 
     //Parse the JSON string and store the result in jsonParser
     parse(jsonParser, ROUTINE1);
 
     //Loop through the JSON, extracting routine configuration info
     for (uint8_t i = 0; jsonParser[i].hasMember("devID"); i++) {
-        //Create variables to hold the extracted values
-        uint16_t devID;
-        uint16_t startTime;
-        uint16_t StopTime;
-        uint16_t devState;
+        //Create a variable to hold the extracted values
+        deviceTimes time;
+
+        //Caution - always check if the object contains the requested value before attempting to access it, otherwise a hardfault occurs from trying to access invalid memory
+        if (jsonParser[i].hasMember("devID")) {
+            //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+            time.devID = std::stoi(jsonParser[i]["devID"].get<std::string>());
+
+            if (jsonParser[i].hasMember("timeStart")) {
+                //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+                time.startTime = std::stoi(jsonParser[i]["timeStart"].get<std::string>());
+
+                if (jsonParser[i].hasMember("timeStop")) {
+                    //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+                    time.stopTime = std::stoi(jsonParser[i]["timeStop"].get<std::string>());
+
+                    if (jsonParser[i].hasMember("devType")) {
+                        //Get the device type string
+                        devType = jsonParser[i]["devType"].get<std::string>();
+
+                        if (devType.find("perPump") != string::npos) {
+                            //Create perPump object
+                            devices[i] = new perPump(digitalOutputs[devPin1], devID);
+
+                        } else if (devType.find("solValve") != string::npos) {
+                            //Create solValve object
+                            devices[i] = new solValve(digitalOutputs[devPin1], devID);
+
+                        } else if (devType.find("sixValve") != string::npos) {
+                            //Create sixValve object
+                            devices[i] = new sixValve(digitalOutputs[devPin1], digitalOutputs[devPin2], devID);
+
+                        } else if (devType.find("switchValve") != string::npos) {
+                            //Check if the switchvalve is working in one or two pin mode
+                            if (devPin2 == -1) {
+                                //Create switchValve object with one pin
+                                devices[i] = new switchValve(digitalOutputs[devPin1], devID);
+                            } else {
+                                //Create switchValve object with two pins
+                                devices[i] = new switchValve(digitalOutputs[devPin1], digitalOutputs[devPin2], devID);
+                            }
+                        } else {
+                            //Debugging, send the client information over serial
+                            serialQueue.call(printf, "Error creating object, could not determine device type, device ID: %d, device pin 1: %d, device pin 2: %d\n", devID, devPin1, devPin2);
+                        }
+
+                    } else {
+                        //Debugging, send the client information over serial
+                        serialQueue.call(printf, "Error reading device pin 2, device ID: %d, device pin 1: %d\n", devID, devPin1);
+                    }
+                } else {
+                    //Debugging, send the client information over serial
+                    serialQueue.call(printf, "Error reading device pin 1, device ID: %d, device pin 1: %d\n", devID, devPin1);
+                }
+            } else {
+                //Debugging, send the client information over serial
+                serialQueue.call(printf, "Error reading device pin 1, device ID: %d\n", devID);
+            }
+        } else {
+            //Debugging, send the client information over serial
+            serialQueue.call(printf, "Error reading device ID\n");
+        }
     }
 
     // if (jsonParser[0].hasMember("devPin1")) {
