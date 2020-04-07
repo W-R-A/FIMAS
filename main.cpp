@@ -14,6 +14,7 @@
 #include "serialInterface.hpp"
 #include <array>
 #include <string>
+#include <vector>
 
 int main() {
     //Setup devices according to JSON description
@@ -92,6 +93,9 @@ int main() {
         }
     }
 
+    //Create vector to store device times for the routine
+    std::vector<deviceTimes> v = {7, 5, 16, 8};
+
     //Parse the JSON string and store the result in jsonParser
     parse(jsonParser, ROUTINE1);
 
@@ -103,7 +107,6 @@ int main() {
         uint16_t StopTime;
         uint16_t devState;
     }
-
 
     // if (jsonParser[0].hasMember("devPin1")) {
     //     value = jsonParser[0]["devPin1"].get<std::string>();
