@@ -12,11 +12,9 @@
 
 //Include derrived device classes
 #include "perPump.hpp"
-#include "solValve.hpp"
 #include "sixValve.hpp"
+#include "solValve.hpp"
 #include "switchValve.hpp"
-
-
 
 //Define an array to hold the pins used for the digital outputs
 extern const array<PinName, 8> digitalOutputs;
@@ -29,11 +27,10 @@ const short maxDevices = digitalOutputs.size() + digitalInputs.size();
 
 //Declare an array to hold the devices assuming that each device requires an minimium of one pin, this means that the number of devices is limited by the number of digital output and input pins defined
 //Contents will be populated at run-time
-extern array<baseDevice*, maxDevices> devices;
-
+extern array<baseDevice *, maxDevices> devices;
 
 // //Define enumerated types for the devices used
-// enum DEVICE {WASHPUMP, SAMPLEPUMP, SWITCHVALVE, SOLENOIDVALVE}; 
+// enum DEVICE {WASHPUMP, SAMPLEPUMP, SWITCHVALVE, SOLENOIDVALVE};
 
 // //Declare how many devices there are defined above
 // #define NUMBER_DEVICES 4
@@ -50,14 +47,13 @@ extern DigitalIn userButton;
 //Serial Communications
 extern Serial pc;
 
-
-// //Define a structure to hold the timing parameters for each device for each step
-// typedef struct {
-//     enum DEVICE device;
-//     signed int timeOn;
-//     signed int timeOff;
-// } deviceTime;
-
+//Define a structure to hold the timing parameters for each device for each step
+typedef struct {
+    uint16_t devID;
+    uint16_t startTime;
+    uint16_t StopTime;
+    uint16_t devState;
+} deviceTimes;
 
 // //Define a structure to hold the timing parameters for all the devices in a step
 // typedef struct {
