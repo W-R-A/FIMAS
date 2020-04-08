@@ -117,35 +117,9 @@ int main() {
                     //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
                     time.stopTime = std::stoi(jsonParser[i]["timeStop"].get<std::string>());
 
-                    if (jsonParser[i].hasMember("devType")) {
-                        //Get the device type string
-                        devType = jsonParser[i]["devType"].get<std::string>();
-
-                        if (devType.find("perPump") != string::npos) {
-                            //Create perPump object
-                            devices[i] = new perPump(digitalOutputs[devPin1], devID);
-
-                        } else if (devType.find("solValve") != string::npos) {
-                            //Create solValve object
-                            devices[i] = new solValve(digitalOutputs[devPin1], devID);
-
-                        } else if (devType.find("sixValve") != string::npos) {
-                            //Create sixValve object
-                            devices[i] = new sixValve(digitalOutputs[devPin1], digitalOutputs[devPin2], devID);
-
-                        } else if (devType.find("switchValve") != string::npos) {
-                            //Check if the switchvalve is working in one or two pin mode
-                            if (devPin2 == -1) {
-                                //Create switchValve object with one pin
-                                devices[i] = new switchValve(digitalOutputs[devPin1], devID);
-                            } else {
-                                //Create switchValve object with two pins
-                                devices[i] = new switchValve(digitalOutputs[devPin1], digitalOutputs[devPin2], devID);
-                            }
-                        } else {
-                            //Debugging, send the client information over serial
-                            serialQueue.call(printf, "Error creating object, could not determine device type, device ID: %d, device pin 1: %d, device pin 2: %d\n", devID, devPin1, devPin2);
-                        }
+                    if (jsonParser[i].hasMember("devState")) {
+                        //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+                        time.devState = std::stoi(jsonParser[i]["devState"].get<std::string>());
 
                     } else {
                         //Debugging, send the client information over serial
