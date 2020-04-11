@@ -8,10 +8,10 @@
  * Ross Andrewartha, January 2020
  */
 
-#include "MbedJSONValue.h"
 #include "Networkbits.hpp"
 #include "hardware.hpp"
 #include "serialInterface.hpp"
+#include "deviceConfig.hpp"
 #include <array>
 #include <string>
 #include <vector>
