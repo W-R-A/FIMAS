@@ -8,23 +8,22 @@
  * Ross Andrewartha, January 2020
  */
 
-#include "serialInterface.hpp"
-#include "hardware.hpp"
-#include "deviceConfig.hpp"
 #include "Networkbits.hpp"
-
-#include <array>
-#include <string>
-#include <vector>
+#include "deviceConfig.hpp"
+#include "hardware.hpp"
+#include "routineConfig.hpp"
+#include "serialInterface.hpp"
 
 int main() {
+
+    //Welcome message
+    serialQueue.call(printf, "Welcome, Serial Port Open\n");
 
     //Configure devices in the system
     configDevices(CONFIGURATION);
 
-
-
-
+    //Confgure routine id 1004 for use with the system
+    configRoutine(ROUTINE1, 1004);
 
     // if (jsonParser[0].hasMember("devPin1")) {
     //     value = jsonParser[0]["devPin1"].get<std::string>();
