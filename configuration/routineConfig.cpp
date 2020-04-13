@@ -113,14 +113,13 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
     return 1;
 }
 
-
 //Print out the current routine
 //Nothing is returned and no parameters need to be passed
 void printRoutine(void) {
     //Loop through the routine vector and print out the timing data
     for (uint8_t i = 0; i < routine.size(); i++) {
         deviceTimes device = routine.at(i);
-        serialQueue.call(printf, "Timing block: %u\n", i);
-        //serialQueue.call(printf, "Timing block: %u, deviceID: %u, timeStart: %u, timeStop: %u, state: %u\n", i, device.devID, device.startTime, device.stopTime, device.devState);
+        serialQueue.call(printf, "Timing block: %u,", i);
+        serialQueue.call(printf, "deviceID: %u, timeStart: %u, timeStop: %u, state: %u\n", device.devID, device.startTime, device.stopTime, device.devState);
     }
 }
