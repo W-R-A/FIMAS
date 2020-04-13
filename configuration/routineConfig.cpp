@@ -1,6 +1,5 @@
 #include "routineConfig.hpp"
 
-
 //Configure a routine to be run
 //Takes the JSON string of routines and the ID of the desired routine to load
 //Returns 0 on sucess, non zero on failure
@@ -16,28 +15,28 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
     //check for timings array
     //loop through array, extracting timing data
 
-    for (uint8_t i = 0; jsonParser[i].hasMember("routineID"); i++) {
-        if (jsonParser[i].hasMember("routineID")) {
+    for (uint8_t i = 0; jsonParser[i].hasMember((char *)"routineID"); i++) {
+        if (jsonParser[i].hasMember((char *)"routineID")) {
 
             //Loop through the JSON, extracting routine configuration info
-            for (uint8_t i = 0; jsonParser[i].hasMember("name"); i++) {
+            for (uint8_t i = 0; jsonParser[i].hasMember((char *)"name"); i++) {
                 //Create a variable to hold the extracted values
                 deviceTimes time;
 
                 //Caution - always check if the object contains the requested value before attempting to access it, otherwise a hardfault occurs from trying to access invalid memory
-                if (jsonParser[i]["timings"].hasMember("devID")) {
+                if (jsonParser[i]["timings"].hasMember((char *)"devID")) {
                     //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
                     time.devID = std::stoi(jsonParser[i]["timings"]["devID"].get<std::string>());
 
-                    if (jsonParser[i]["timings"].hasMember("timeStart")) {
+                    if (jsonParser[i]["timings"].hasMember((char *)"timeStart")) {
                         //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
                         time.startTime = std::stoi(jsonParser[i]["timings"]["timeStart"].get<std::string>());
 
-                        if (jsonParser[i]["timings"].hasMember("timeStop")) {
+                        if (jsonParser[i]["timings"].hasMember((char *)"timeStop")) {
                             //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
                             time.stopTime = std::stoi(jsonParser[i]["timings"]["timeStop"].get<std::string>());
 
-                            if (jsonParser[i]["timings"].hasMember("devState")) {
+                            if (jsonParser[i]["timings"].hasMember((char *)"devState")) {
                                 //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
                                 time.devState = std::stoi(jsonParser[i]["timings"]["devState"].get<std::string>());
 
