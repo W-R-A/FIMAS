@@ -33,32 +33,32 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
                 if (jsonParser[i].hasMember((char *)"timings")) {
 
                     //Loop through the timings array, extracting timing info
-                    for (uint8_t i = 0; jsonParser[i].hasMember((char *)"name"); i++) {
+                    for (uint16_t j = 0; jsonParser[i]["timings"][j].hasMember((char *)"devID"); j++) {
                         //Create a variable to hold the extracted values
                         deviceTimes time;
 
                         //Check for the deviceID
-                        if (jsonParser[i]["timings"].hasMember((char *)"devID")) {
+                        if (jsonParser[i]["timings"][j].hasMember((char *)"devID")) {
                             //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
-                            time.devID = std::stoi(jsonParser[i]["timings"]["devID"].get<std::string>());
+                            time.devID = std::stoi(jsonParser[i]["timings"][j]["devID"].get<std::string>());
 
                             //Check for the start time
-                            if (jsonParser[i]["timings"].hasMember((char *)"timeStart")) {
+                            if (jsonParser[i]["timings"][j].hasMember((char *)"timeStart")) {
                                 //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
-                                time.startTime = std::stoi(jsonParser[i]["timings"]["timeStart"].get<std::string>());
+                                time.startTime = std::stoi(jsonParser[i]["timings"][j]["timeStart"].get<std::string>());
 
                                 //Check for the stop time
-                                if (jsonParser[i]["timings"].hasMember((char *)"timeStop")) {
+                                if (jsonParser[i]["timings"][j].hasMember((char *)"timeStop")) {
                                     //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
-                                    time.stopTime = std::stoi(jsonParser[i]["timings"]["timeStop"].get<std::string>());
+                                    time.stopTime = std::stoi(jsonParser[i]["timings"][j]["timeStop"].get<std::string>());
 
                                     //Check for the device state
-                                    if (jsonParser[i]["timings"].hasMember((char *)"devState")) {
+                                    if (jsonParser[i]["timings"][j].hasMember((char *)"state")) {
                                         //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
-                                        time.devState = std::stoi(jsonParser[i]["timings"]["devState"].get<std::string>());
+                                        time.devState = std::stoi(jsonParser[i]["timings"][j]["state"].get<std::string>());
 
                                         //Add the timing information to the routines vector
-                                        routine.push_back(time);
+                                        routine.emplace_back(time);
                                     } else {
                                         //Debugging, send the client information over serial
                                         serialQueue.call(printf, "Error reading the device state, device ID: %d, start time: %d, stop time: %d\n", time.devID, time.startTime, time.stopTime);
@@ -90,7 +90,6 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
                     }
                     //Routine loaded, signal success
                     return 0;
-
                 } else {
                     //Debugging, send the client information over serial
                     serialQueue.call(printf, "Error reading the timings array, Routine ID: %d\n", currentRoutineID);
@@ -103,7 +102,7 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
             //Debugging, send the client information over serial
             serialQueue.call(printf, "Error reading routine ID\n");
 
-            //Cannot read routine ID, signal failure 
+            //Cannot read routine ID, signal failure
             return 1;
         }
     }
