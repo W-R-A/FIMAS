@@ -10,7 +10,7 @@
 //Include the hardware header file
 #include "hardware.hpp"
 
-//Incldue the serial interface header file
+//Include the serial interface header file
 #include "serialInterface.hpp"
 
 //Function Prototypes
