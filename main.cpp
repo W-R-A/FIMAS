@@ -16,14 +16,21 @@
 
 int main() {
 
+    //Start serial thread
+    serialThread.start(serialInterface);
+
     //Welcome message
-    serialQueue.call(printf, "Welcome, Serial Port Open\n");
+    serialQueue.call(printf, "Welcome, Serial Port Opened\n");
 
     //Configure devices in the system
     configDevices(CONFIGURATION);
 
     //Confgure routine id 1004 for use with the system
-    configRoutine(ROUTINE1, 1004);
+    if (configRoutine(ROUTINE1, 1004)) {
+        serialQueue.call(printf, "Error loading routine\n");
+    } else {
+        printRoutine();
+    }
 
     // if (jsonParser[0].hasMember("devPin1")) {
     //     value = jsonParser[0]["devPin1"].get<std::string>();
@@ -47,9 +54,6 @@ int main() {
     // devices[1] = new switchValve(digitalOutputs[1], 1001);
 
     // devices[2] = new sixValve(digitalOutputs[2], digitalOutputs[3], 1002);
-
-    //Start serial thread
-    serialThread.start(serialInterface);
 
     //Start Network Thread
     networkThread.start(network);
