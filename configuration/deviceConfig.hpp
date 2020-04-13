@@ -13,6 +13,9 @@
 //Include the serial interface header file
 #include "serialInterface.hpp"
 
+//Include the string header to assist with working with JSON
+#include <string>
+
 //Function Prototypes
 uint8_t configDevices(const char * configJSON);
 
