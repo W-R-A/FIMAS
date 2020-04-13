@@ -54,6 +54,8 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
                                         //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
                                         time.devState = std::stoi(jsonParser[i]["timings"]["devState"].get<std::string>());
 
+                                        //Add the timing information to the routines vector
+                                        routine.push_back(time);
                                     } else {
                                         //Debugging, send the client information over serial
                                         serialQueue.call(printf, "Error reading the device state, device ID: %d, start time: %d, stop time: %d\n", time.devID, time.startTime, time.stopTime);
