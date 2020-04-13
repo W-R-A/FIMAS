@@ -7,7 +7,7 @@ std::vector<deviceTimes> routine;
 //Takes the JSON string of routines and the ID of the desired routine to load
 //Returns 0 on sucess, non-zero on failure
 uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
-    //Setup routines accroding to JSON description
+    //Setup routines according to JSON description
     //Create a JSON parser object
     MbedJSONValue jsonParser;
 
@@ -90,7 +90,7 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
                     }
                     //Routine loaded, signal success
                     return 0;
-                    
+
                 } else {
                     //Debugging, send the client information over serial
                     serialQueue.call(printf, "Error reading the timings array, Routine ID: %d\n", currentRoutineID);
@@ -108,7 +108,7 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
         }
     }
     //Debugging, send the client information over serial
-    serialQueue.call(printf, "No routine found matching the given ID\n");
+    serialQueue.call(printf, "No routine found matching the requested ID, %d\n", routineID);
 
     //No routine found with given ID, signal failure
     return 1;
