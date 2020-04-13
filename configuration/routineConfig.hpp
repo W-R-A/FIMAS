@@ -33,4 +33,8 @@ extern std::vector<deviceTimes> routine;
 //Returns 0 on sucess, non zero on failure
 uint8_t configRoutine(const char *configJSON, uint16_t routineID);
 
+//Print out the current routine
+//Nothing is returned and no parameters need to be passed
+void printRoutine(void);
+
 #endif
