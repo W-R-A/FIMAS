@@ -10,7 +10,7 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
     MbedJSONValue jsonParser;
 
     //Parse the JSON string and store the result in jsonParser
-    parse(jsonParser, ROUTINE1);
+    parse(jsonParser, configJSON);
 
     //check for name/ID of routine
     //check for timings array
