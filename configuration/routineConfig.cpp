@@ -18,7 +18,7 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
     //check for timings array
     //loop through array, extracting timing data
 
-    //Loop through JSON, checking all of the routines
+    //Loop through all of the routines that have an valid ID
     for (uint8_t i = 0; jsonParser[i].hasMember((char *)"routineID"); i++) {
 
         //Caution - always check if the object contains the requested value before attempting to access it, otherwise a hardfault occurs from trying to access invalid memory
@@ -88,6 +88,9 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
                             return 1;
                         }
                     }
+                    //Routine loaded, signal success
+                    return 0;
+                    
                 } else {
                     //Debugging, send the client information over serial
                     serialQueue.call(printf, "Error reading the timings array, Routine ID: %d\n", currentRoutineID);
@@ -100,10 +103,13 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
             //Debugging, send the client information over serial
             serialQueue.call(printf, "Error reading routine ID\n");
 
-            //An error has occured, signal failure to load the routine
+            //Cannot read routine ID, signal failure 
             return 1;
         }
     }
-    //No errors, signal success
-    return 0;
+    //Debugging, send the client information over serial
+    serialQueue.call(printf, "No routine found matching the given ID\n");
+
+    //No routine found with given ID, signal failure
+    return 1;
 }
