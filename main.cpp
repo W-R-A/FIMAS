@@ -22,8 +22,7 @@ int main() {
     //Configure devices in the system
     configDevices(CONFIGURATION);
 
-    //Create a vector to store device times for the routine
-    std::vector<deviceTimes> routine;
+
 
 
 

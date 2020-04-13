@@ -18,6 +18,9 @@ typedef struct {
     uint16_t devState;
 } deviceTimes;
 
+//Create a vector to store device times for the routine
+std::vector<deviceTimes> routine;
+
 //Function Prototypes
 
 //Takes the JSON string of routines and the ID of the desired routine to load
