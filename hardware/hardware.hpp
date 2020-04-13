@@ -47,13 +47,7 @@ extern DigitalIn userButton;
 //Serial Communications
 extern Serial pc;
 
-//Define a structure to hold the timing parameters for each device for each step
-typedef struct {
-    uint16_t devID;
-    uint16_t startTime;
-    uint16_t stopTime;
-    uint16_t devState;
-} deviceTimes;
+
 
 // //Define a structure to hold the timing parameters for all the devices in a step
 // typedef struct {
