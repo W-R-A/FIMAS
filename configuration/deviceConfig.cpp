@@ -17,19 +17,19 @@ uint8_t configDevices(const char *configJSON) {
         std::string devType;
 
         //Caution - always check if the object contains the requested value before attempting to access it, otherwise a hardfault occurs from trying to access invalid memory
-        if (jsonParser[i].hasMember("devID")) {
+        if (jsonParser[i].hasMember((char *)"devID")) {
             //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
             devID = std::stoi(jsonParser[i]["devID"].get<std::string>());
 
-            if (jsonParser[i].hasMember("devPin1")) {
+            if (jsonParser[i].hasMember((char *)"devPin1")) {
                 //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
                 devPin1 = std::stoi(jsonParser[i]["devPin1"].get<std::string>());
 
-                if (jsonParser[i].hasMember("devPin2")) {
+                if (jsonParser[i].hasMember((char *)"devPin2")) {
                     //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
                     devPin2 = std::stoi(jsonParser[i]["devPin2"].get<std::string>());
 
-                    if (jsonParser[i].hasMember("devType")) {
+                    if (jsonParser[i].hasMember((char *)"devType")) {
                         //Get the device type string
                         devType = jsonParser[i]["devType"].get<std::string>();
 
