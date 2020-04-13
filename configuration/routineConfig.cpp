@@ -1,5 +1,9 @@
 #include "routineConfig.hpp"
 
+
+//Configure a routine to be run
+//Takes the JSON string of routines and the ID of the desired routine to load
+//Returns 0 on sucess, non zero on failure
 uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
     //Setup routines accroding to JSON description
     //Create a JSON parser object
