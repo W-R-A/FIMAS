@@ -25,7 +25,7 @@ typedef struct {
 } deviceTimes;
 
 //Create a vector to store device times for the routine
-std::vector<deviceTimes> routine;
+extern std::vector<deviceTimes> routine;
 
 //Function Prototypes
 

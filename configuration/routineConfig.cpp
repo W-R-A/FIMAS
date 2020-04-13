@@ -1,5 +1,8 @@
 #include "routineConfig.hpp"
 
+//Create a vector to store device times for the routine
+std::vector<deviceTimes> routine;
+
 //Configure a routine to be run
 //Takes the JSON string of routines and the ID of the desired routine to load
 //Returns 0 on sucess, non-zero on failure
