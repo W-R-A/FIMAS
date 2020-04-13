@@ -452,6 +452,26 @@
               <FileType>5</FileType>
               <FilePath>.\configuration\deviceConfig.hpp</FilePath>
             </File>
+            <File>
+              <FileName>configuration.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\configuration\configuration.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>configuration.hpp</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\configuration\configuration.hpp</FilePath>
+            </File>
+            <File>
+              <FileName>routineConfig.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\configuration\routineConfig.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>routineConfig.hpp</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\configuration\routineConfig.hpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
