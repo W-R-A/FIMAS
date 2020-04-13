@@ -7,8 +7,14 @@
 //Include theJSON Parser header file
 #include "MbedJSONValue.h"
 
-//Incldue the serial interface header file
+//Include the serial interface header file
 #include "serialInterface.hpp"
+
+//Include the string header to assist with working with JSON
+#include <string>
+
+//Include the vector header to allow to creation of vector arrays
+#include <vector>
 
 //Define a structure to hold the timing parameters for each device for each step
 typedef struct {
