@@ -19,7 +19,10 @@ int main() {
     //Start serial thread
     serialThread.start(serialInterface);
 
-    //Welcome message
+    //Start Network Thread
+    networkThread.start(network);
+
+    //Send Welcome message over serial
     serialQueue.call(printf, "Welcome, Serial Port Opened\n");
 
     //Configure devices in the system
@@ -31,6 +34,10 @@ int main() {
     } else {
         printRoutine();
     }
+
+    //Wait for button before starting routine
+    while (!userButton) {
+    };
 
     // if (jsonParser[0].hasMember("devPin1")) {
     //     value = jsonParser[0]["devPin1"].get<std::string>();
@@ -54,23 +61,6 @@ int main() {
     // devices[1] = new switchValve(digitalOutputs[1], 1001);
 
     // devices[2] = new sixValve(digitalOutputs[2], digitalOutputs[3], 1002);
-
-    //Start Network Thread
-    networkThread.start(network);
-
-    //Wait for button before starting routine
-    while (!userButton) {
-    };
-
-    for (int i = 0; i < 9; i++) {
-        devices[1]->changeState(i);
-        thread_sleep_for(1000);
-    }
-
-    devices[1]->changeState(5);
-
-    devices[1]->changeState(2);
-
     // devices[0]->changeState(1);
 
     // devices[1]->changeState(1);
