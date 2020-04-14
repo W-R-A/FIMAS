@@ -27,7 +27,7 @@
     </header>
 
     <div class="main">
-        <h1>Welcome to FIMAS</h1>
+        <h1>Welcome</h1>
 
         <p>Select a routine to run</p>
 
@@ -68,7 +68,7 @@
             //Loop through the response and fill in the table and dropdown
             $.each(response, function (i, item) {
                 //Generate the dropdown html
-                opHTML += '<option id=' + item.routineID + '>' + item.name + '</option>';
+                opHTML += '<option class=' + item.routineID + '>' + item.name + '</option>';
             });
 
             //Append the html to the dropdown
@@ -88,6 +88,7 @@
                 //Get the ID of the selected routine
                 var routineID = $('select[id="routines_dropdown"] option:selected').attr('class');
 
+                //Check if a valid routine has been selected
                 if (typeof routineID == "undefined") {
                     //Tell the user to select a valid device
                     alert("Please select a routine, or create one if none are available");
@@ -96,7 +97,7 @@
                 }
 
                 //Define the URL to hit
-                var reqURL = '/testdevices/routineid=' + event.target.id + 'state=' + state;
+                var reqURL = '/testdevices/routineid=' + routineID;
 
                 //Debuging, dislay the URL to send a GET request to
                 //alert(reqURL);
@@ -111,7 +112,7 @@
                     },
                     //On failure, alert the user
                     error: function (result) {
-                        //alert('error');
+                        alert('An error occured testing the devices');
                     }
                 });
             });
