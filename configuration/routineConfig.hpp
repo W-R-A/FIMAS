@@ -10,6 +10,9 @@
 //Include the serial interface header file
 #include "serialInterface.hpp"
 
+//Include the hardware header file
+#include "hardware.hpp"
+
 //Include the string header to assist with working with JSON
 #include <string>
 
@@ -40,7 +43,7 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID);
 //Test the devices used in a routine
 //The routine must have been loaded using configRoutine
 //Takes no inputs
-//Returns 0 on sucess, non-zero on failure to a device test
+//Returns 0 on sucess, non-zero on failure to pass a device test, with the value being the number of devices to fail testing
 uint8_t testRoutineDevices(void);
 
 //Print out the current routine
