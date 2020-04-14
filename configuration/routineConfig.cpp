@@ -7,6 +7,9 @@ std::vector<deviceTimes> routine;
 //Takes the JSON string of routines and the ID of the desired routine to load
 //Returns 0 on sucess, non-zero on failure
 uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
+    //Clear the routine vector of any previous timing information
+    routine.clear();
+
     //Setup routines according to JSON description
     //Create a JSON parser object
     MbedJSONValue jsonParser;
