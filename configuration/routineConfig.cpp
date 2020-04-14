@@ -126,3 +126,19 @@ void printRoutine(void) {
         serialQueue.call(printf, "deviceID: %u, timeStart: %u, timeStop: %u, state: %u\n", device.devID, device.startTime, device.stopTime, device.devState);
     }
 }
+
+//Test the devices used in a routine
+//The routine must have been loaded using configRoutine
+//Takes no inputs
+//Returns 0 on sucess, non-zero on failure to a device test
+uint8_t testRoutineDevices(void) {
+    //Create a set to hold the extracted deviceID's
+    std::set<uint16_t> ids;
+
+    //Loop through the routine vector and extract the deviceID's
+    for (uint8_t i = 0; i < routine.size(); i++) {
+        deviceTimes device = routine.at(i);
+        device.devID;
+
+    }
+}
