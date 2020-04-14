@@ -7,8 +7,7 @@ Thread networkThread;
 
 //Network - responsible for listening for http connections and then processing and responding to them
 //No data is returned and no parameters need to be passed
-void network(void)
-{
+void network(void) {
     //Declare an ethernet interface
     EthernetInterface eth;
 
@@ -37,7 +36,6 @@ void network(void)
     //Listen for 1 connection at a time
     srv.listen(1);
 
- 
     //Start an infinite loop to handle http requests
     //This will run once per http request recieved
     while (true) {
@@ -63,6 +61,9 @@ void network(void)
         //Debuging, print this out over serial
         serialQueue.call(printf, "Received Msg: %s\n\n", buffer); //this was missing in original example.
 
+        //Find the HTTP request version so that the address can be parsed properly
+        
+
         //Address parser logic, decide what repsonse is required dependant on the incoming address
 
         //Declare a string for the favicon url request - this needs to move to a more central location, header file
@@ -85,8 +86,7 @@ void network(void)
 
             //Add a line feed and carriage return to the response
             response += "\r\n";
-        }
-		else if (address.find(addStyles) != string::npos) {
+        } else if (address.find(addStyles) != string::npos) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -102,8 +102,7 @@ void network(void)
 
             //Add the body
             response += STYLES;
-        }
-		else if (address.find(addJquery) != string::npos) {
+        } else if (address.find(addJquery) != string::npos) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -125,8 +124,7 @@ void network(void)
 
             //Add the body
             response += JQUERY;
-        }
-        else if (address.find("devicetest") != string::npos) {
+        } else if (address.find("devicetest") != string::npos) {
 
             int pos = address.find("id=");
 
@@ -171,8 +169,7 @@ void network(void)
             //				//Add a line feed and carriage return to the response
             //				response += "\r\n";
             //			}
-        }
-        else if (address.find("devices.json") != string::npos) {
+        } else if (address.find("devices.json") != string::npos) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -188,8 +185,7 @@ void network(void)
 
             //Add the body
             response += CONFIGURATION;
-        }
-        else if (address.find("deviceConfig") != string::npos) {
+        } else if (address.find("deviceConfig") != string::npos) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -205,8 +201,7 @@ void network(void)
 
             //Add the body
             response += HTTP_MESSAGE_BODY_DEVICE_CONFIG;
-        }
-		else if (address.find("GET / HTTP/1.1") != string::npos) {
+        } else if (address.find("GET / HTTP/1.1") != string::npos) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -222,8 +217,7 @@ void network(void)
 
             //Add the body
             response += HTTP_MESSAGE_BODY_DEVICE_CONFIG;
-        }
-		else if (address.find("routines") != string::npos) {
+        } else if (address.find("routines") != string::npos) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -239,8 +233,7 @@ void network(void)
 
             //Add the body
             response += HTTP_MESSAGE_BODY_ROUTINES;
-        }
-        else {
+        } else {
 
             //If we get to this else statement, then no route exists for this request, throw a 404 to the client
             //Add a 404 header to the response
