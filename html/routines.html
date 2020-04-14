@@ -323,22 +323,25 @@
 
         var opHTML = '';
 
-        var jsonData = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
+        //var jsonData = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
 
-        response = $.parseJSON(jsonData)
-        $.each(response, function (i, item) {
-          opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
+        //response = $.parseJSON(jsonData)
+        $.getJSON("/devices.json", function (response) {
+
+          $.each(response, function (i, item) {
+            opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
+          });
+
+          $('#devices_dropdown').append(opHTML);
+
+          //Visualisation
+          $('.value').each(function () {
+            var text = $(this).text();
+            $(this).parent().css('width', text);
+          });
+
+          //$('.block').tooltip();
         });
-
-        $('#devices_dropdown').append(opHTML);
-
-        //Visualisation
-        $('.value').each(function () {
-          var text = $(this).text();
-          $(this).parent().css('width', text);
-        });
-
-        //$('.block').tooltip();
       });
     </script>
 
