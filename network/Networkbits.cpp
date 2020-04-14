@@ -177,6 +177,14 @@ void network(void) {
 
             int id = stoi(IDstr);
 
+            //Confgure the routine with id id for use with the system
+            if (configRoutine(ROUTINE1, id)) {
+                serialQueue.call(printf, "Error loading routine\n");
+            } else {
+                printRoutine();
+            }
+
+
             serialQueue.call(printf, "Routine ID:%d \n", id);
 
             for (int i = 0; i < devices.size(); i++) {
@@ -238,7 +246,7 @@ void network(void) {
 
             //Add the body
             response += HTTP_MESSAGE_BODY_ROUTINES;
-        } else if ((address.find("GET /") != string::npos) || (address.find("GET /index") != string::npos)) {
+        } else if ((address.find("GET / ") != string::npos) || (address.find("GET /index") != string::npos)) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;

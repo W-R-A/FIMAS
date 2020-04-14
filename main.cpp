@@ -28,13 +28,6 @@ int main() {
     //Configure devices in the system
     configDevices(CONFIGURATION);
 
-    //Confgure routine id 1004 for use with the system
-    if (configRoutine(ROUTINE1, 1004)) {
-        serialQueue.call(printf, "Error loading routine\n");
-    } else {
-        printRoutine();
-    }
-
     //Wait for button before starting routine
     while (!userButton) {
     };
