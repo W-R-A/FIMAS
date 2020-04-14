@@ -8,14 +8,12 @@ perPump::perPump(PinName pin, unsigned short deviceID) : baseDevice(pin, deviceI
 //Change the state of the Peristaltic Pump
 //Only two states are valid for the pump, on and off
 //Hence newstate is 0 for off and any non-zero value for on
-unsigned short perPump::changeState(unsigned short newState)
-{
+unsigned short perPump::changeState(unsigned short newState) {
     //If the newstate is non-zero, and the pump is not already running, turn the pump on
     if (newState) {
         if (this->state == 1) {
             return this->state;
-        }
-        else {
+        } else {
             this->controlPin1->write(1);
             updateState(1);
             return this->state;
@@ -25,11 +23,19 @@ unsigned short perPump::changeState(unsigned short newState)
     else {
         if (this->state == 0) {
             return this->state;
-        }
-        else {
+        } else {
             this->controlPin1->write(0);
             updateState(0);
             return this->state;
         }
     }
+}
+
+//Tests the operation of the pump
+//Returns 0 if the pump is operating normally, non-zero otherwise
+unsigned short perPump::testDevice() {
+    changeState(1);
+    thread_sleep_for(500);
+    changeState(0);
+    return 0;
 }

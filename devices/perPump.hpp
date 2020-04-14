@@ -23,6 +23,10 @@ public:
     //Only two states are valid for the pump, on and off
     //Hence newstate is 0 for off and any non-zero value for on
     unsigned short changeState(unsigned short newState);
+
+    //Tests the operation of the pump
+    //Returns 0 if the pump is operating normally, non-zero otherwise
+    unsigned short testDevice();
 };
 
 #endif
