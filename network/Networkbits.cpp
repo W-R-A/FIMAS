@@ -160,35 +160,28 @@ void network(void) {
                     response += "\r\n";
                 }
             }
-        } else if (address.find("devicetest") != string::npos) {
+        } else if (address.find("testdevices") != string::npos) {
 
-            int pos = address.find("id=");
+            //load routine with requested ID
+            //search for device ID used
+            //test device
+            //return codes dependant on the outcome of the device tests
 
-            serialQueue.call(printf, "HTTP request, found device ID at position: %d \n", pos);
+            int pos = address.find("routineid=");
 
-            string IDstr = address.substr(pos + 3, 4);
+            serialQueue.call(printf, "HTTP request, found routine ID at position: %d \n", pos);
 
-            serialQueue.call(printf, "Device ID:%s \n", IDstr.c_str());
+            string IDstr = address.substr(pos + 10, 4);
+
+            serialQueue.call(printf, "Routine ID:%s \n", IDstr.c_str());
 
             int id = stoi(IDstr);
 
-            serialQueue.call(printf, "Device ID:%d \n", id);
-
-            int statepos = address.find("state=");
-
-            serialQueue.call(printf, "HTTP request, found state ID at position : %d \n", statepos);
-
-            string Statestr = address.substr(statepos + 6, 2);
-
-            serialQueue.call(printf, "State:%s \n", Statestr.c_str());
-
-            int state = stoi(Statestr);
-
-            serialQueue.call(printf, "state:%d \n", state);
+            serialQueue.call(printf, "Routine ID:%d \n", id);
 
             for (int i = 0; i < devices.size(); i++) {
                 if (id == devices[i]->getID()) {
-                    devices[i]->changeState(state);
+                    devices[i]->testDevice();
                     //Add a 200 header code to the response
                     response += HTTP_STATUS_LINE_200;
 
