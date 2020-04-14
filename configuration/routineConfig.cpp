@@ -130,15 +130,34 @@ void printRoutine(void) {
 //Test the devices used in a routine
 //The routine must have been loaded using configRoutine
 //Takes no inputs
-//Returns 0 on sucess, non-zero on failure to a device test
+//Returns 0 on sucess, non-zero on failure to pass a device test, with the value being the number of devices to fail testing
 uint8_t testRoutineDevices(void) {
     //Create a set to hold the extracted deviceID's
     std::set<uint16_t> ids;
 
     //Loop through the routine vector and extract the deviceID's
     for (uint8_t i = 0; i < routine.size(); i++) {
+        //Get the timing information at i
         deviceTimes device = routine.at(i);
-        device.devID;
 
+        //Insert it into the set, this will remove duplicates of the device ID
+        ids.insert(device.devID);
     }
-}
+
+    //Get the set iterator
+    set<uint16_t>::iterator it;
+
+    //Loop through the deviceID's, testing each
+    for (it = ids.begin(); it != ids.end(); ++it) {
+
+        //Loop through all of the devices, testing the one which matches the given id
+        for (int i = 0; i < devices.size(); i++) {
+            if (*it == devices[i]->getID()) {
+                devices[i]->testDevice();
+            }
+        }
+
+        if (*it == devices[it]->getID()) {
+            devices[it]->testDevice();
+        }
+    }
