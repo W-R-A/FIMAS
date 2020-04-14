@@ -160,15 +160,43 @@ void network(void) {
                     response += "\r\n";
                 }
             }
+        } else if (address.find("devicetest") != string::npos) {
 
-            //			else {
-            //				//If we get to this else statement, then no route exists for this request, throw a 404 to the client
-            //				//Add a 404 header to the response
-            //				response += HTTP_STATUS_LINE_404;
+            int pos = address.find("id=");
 
-            //				//Add a line feed and carriage return to the response
-            //				response += "\r\n";
-            //			}
+            serialQueue.call(printf, "HTTP request, found device ID at position: %d \n", pos);
+
+            string IDstr = address.substr(pos + 3, 4);
+
+            serialQueue.call(printf, "Device ID:%s \n", IDstr.c_str());
+
+            int id = stoi(IDstr);
+
+            serialQueue.call(printf, "Device ID:%d \n", id);
+
+            int statepos = address.find("state=");
+
+            serialQueue.call(printf, "HTTP request, found state ID at position : %d \n", statepos);
+
+            string Statestr = address.substr(statepos + 6, 2);
+
+            serialQueue.call(printf, "State:%s \n", Statestr.c_str());
+
+            int state = stoi(Statestr);
+
+            serialQueue.call(printf, "state:%d \n", state);
+
+            for (int i = 0; i < devices.size(); i++) {
+                if (id == devices[i]->getID()) {
+                    devices[i]->changeState(state);
+                    //Add a 200 header code to the response
+                    response += HTTP_STATUS_LINE_200;
+
+                    //Add a line feed and carriage return to the response
+                    response += "\r\n";
+                }
+            }
+
         } else if (address.find("devices.json") != string::npos) {
 
             //Add a 200 header code to the response
