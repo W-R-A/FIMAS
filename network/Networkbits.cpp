@@ -184,17 +184,21 @@ void network(void) {
                 printRoutine();
             }
 
-            serialQueue.call(printf, "Routine ID:%d \n", id);
+            //Test devices used in the routines
+            if (testRoutineDevices()) {
+                //Error with devices, add a 404 header code to the response
+                response += HTTP_STATUS_LINE_404;
 
-            for (int i = 0; i < devices.size(); i++) {
-                if (id == devices[i]->getID()) {
-                    devices[i]->testDevice();
-                    //Add a 200 header code to the response
-                    response += HTTP_STATUS_LINE_200;
+                //Add a line feed and carriage return to the response
+                response += "\r\n";
+            }
 
-                    //Add a line feed and carriage return to the response
-                    response += "\r\n";
-                }
+            else {
+                //Success, add a 200 header code to the response
+                response += HTTP_STATUS_LINE_200;
+
+                //Add a line feed and carriage return to the response
+                response += "\r\n";
             }
 
         } else if (address.find("devices.json") != string::npos) {
