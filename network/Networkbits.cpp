@@ -59,34 +59,34 @@ void network(void) {
         clt_sock->recv(buffer, 1023);
 
         //Debuging, print this out over serial
-        serialQueue.call(printf, "Received Msg: %s\n\n", buffer); //this was missing in original example.
+        serialQueue.call(printf, "Received Msg: %s\n\n", buffer);
 
-        //Find the HTTP request version so that the address can be parsed properly
-        
+        //Create a sting based on the recieved data from the client
+        string clientData(buffer);
+
+        //Find the HTTP request version so that the address can be parsed properly - only data before this is parsed
+        uint16_t httpLoc = clientData.find("HTTP/");
+
+        //Debuging, print this out over serial
+        serialQueue.call(printf, "Found HTTP designator at position: %u\n\n", httpLoc);
 
         //Address parser logic, decide what repsonse is required dependant on the incoming address
 
-        //Declare a string for the favicon url request - this needs to move to a more central location, header file
-        string addFavicon("favicon.ico");
-        string addStyles("styles.css");
-        string addJquery("jquery.js");
-        string addTest("test");
-
-        //Create a sting based on the recieved data from the client
-        string address(buffer);
+        //Create a string based on the http get request data from the client
+        string address = clientData.substr(0, httpLoc);
 
         //Create a string to hold the response to be sent to the client
         string response;
 
         //If the address contains the word favicon, return a 404 error
-        if (address.find(addFavicon) != string::npos) {
+        if (address.find("favicon.ico") != string::npos) {
 
             //Add a 404 header to the response
             response += HTTP_STATUS_LINE_404;
 
             //Add a line feed and carriage return to the response
             response += "\r\n";
-        } else if (address.find(addStyles) != string::npos) {
+        } else if (address.find("styles.css") != string::npos) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -102,7 +102,7 @@ void network(void) {
 
             //Add the body
             response += STYLES;
-        } else if (address.find(addJquery) != string::npos) {
+        } else if (address.find("jquery.js") != string::npos) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -201,7 +201,7 @@ void network(void) {
 
             //Add the body
             response += HTTP_MESSAGE_BODY_DEVICE_CONFIG;
-        } else if (address.find("GET / HTTP/1.1") != string::npos) {
+        } else if (address.find("routines") != string::npos) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -216,8 +216,8 @@ void network(void) {
             response += "\r\n\r\n";
 
             //Add the body
-            response += HTTP_MESSAGE_BODY_DEVICE_CONFIG;
-        } else if (address.find("routines") != string::npos) {
+            response += HTTP_MESSAGE_BODY_ROUTINES;
+        } else if ((address.find("GET / ") != string::npos) || (address.find("GET /index ") != string::npos)) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
