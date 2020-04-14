@@ -39,7 +39,14 @@ public:
     //Get the ID of the device
     unsigned short getID(void);
 
+    //Virtual function, to be overriden by child classes
+    //Changes the state of the device
     virtual unsigned short changeState(unsigned short newState);
+
+    //Virtual function, to be overriden by child classes
+    //Tests the operation of the device
+    //Returns 0 if the device is operating normally, non-zero otherwise
+    virtual unsigned short testDevice();
 
     //Protected methods
 protected:

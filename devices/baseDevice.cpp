@@ -67,6 +67,14 @@ unsigned short baseDevice::changeState(unsigned short newState) {
     return this->state;
 }
 
+//Virtual function, to be overriden by child classes
+//Tests the operation of the device
+//Returns 0 if the device is operating normally, non-zero otherwise
+unsigned short baseDevice::changeState(unsigned short newState) {
+    //This function should be overridden, therefore return 1 indicating that the device is not operating normally
+    return 1;
+}
+
 //Print an error message from a device
 //msg if the error string to print
 void baseDevice::printError(const char *msg) {
