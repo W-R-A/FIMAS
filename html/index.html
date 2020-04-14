@@ -58,13 +58,13 @@
             var opHTML = '';
 
             //Testing the parsing of the json
-            var jsonData = "[{\"routineID\":\"1004\",\"name\":\"AlCl\",\"timings\":[{\"devID\":\"1000\",\"timeStart\":\"0\",\"timeStop\":\"4\",\"state\":\"1\"},{\"devID\":\"1000\",\"timeStart\":\"4\",\"timeStop\":\"9\",\"state\":\"0\"},{\"devID\":\"1000\",\"timeStart\":\"9\",\"timeStop\":\"15\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"0\",\"timeStop\":\"6\",\"state\":\"0\"},{\"devID\":\"1001\",\"timeStart\":\"6\",\"timeStop\":\"8\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"8\",\"timeStop\":\"15\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"0\",\"timeStop\":\"3\",\"state\":\"1\"},{\"devID\":\"1002\",\"timeStart\":\"3\",\"timeStop\":\"7\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"7\",\"timeStop\":\"15\",\"state\":\"1\"}]},{\"name\":\"CuSO4\",\"timings\":[{\"devID\":\"1000\",\"timeStart\":\"0\",\"timeStop\":\"4\",\"state\":\"1\"},{\"devID\":\"1000\",\"timeStart\":\"4\",\"timeStop\":\"9\",\"state\":\"0\"},{\"devID\":\"1000\",\"timeStart\":\"9\",\"timeStop\":\"15\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"0\",\"timeStop\":\"6\",\"state\":\"0\"},{\"devID\":\"1001\",\"timeStart\":\"6\",\"timeStop\":\"8\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"8\",\"timeStop\":\"15\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"0\",\"timeStop\":\"3\",\"state\":\"1\"},{\"devID\":\"1002\",\"timeStart\":\"3\",\"timeStop\":\"7\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"7\",\"timeStop\":\"15\",\"state\":\"1\"}]}]";
+            var jsonData = "[{\"routineID\":\"1004\",\"name\":\"AlCl\",\"timings\":[{\"devID\":\"1000\",\"timeStart\":\"0\",\"timeStop\":\"4\",\"state\":\"1\"},{\"devID\":\"1000\",\"timeStart\":\"4\",\"timeStop\":\"9\",\"state\":\"0\"},{\"devID\":\"1000\",\"timeStart\":\"9\",\"timeStop\":\"15\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"0\",\"timeStop\":\"6\",\"state\":\"0\"},{\"devID\":\"1001\",\"timeStart\":\"6\",\"timeStop\":\"8\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"8\",\"timeStop\":\"15\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"0\",\"timeStop\":\"3\",\"state\":\"1\"},{\"devID\":\"1002\",\"timeStart\":\"3\",\"timeStop\":\"7\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"7\",\"timeStop\":\"15\",\"state\":\"1\"}]},{\"routineID\":\"1003\",\"name\":\"CuSO4\",\"timings\":[{\"devID\":\"1000\",\"timeStart\":\"0\",\"timeStop\":\"4\",\"state\":\"1\"},{\"devID\":\"1000\",\"timeStart\":\"4\",\"timeStop\":\"9\",\"state\":\"0\"},{\"devID\":\"1000\",\"timeStart\":\"9\",\"timeStop\":\"15\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"0\",\"timeStop\":\"6\",\"state\":\"0\"},{\"devID\":\"1001\",\"timeStart\":\"6\",\"timeStop\":\"8\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"8\",\"timeStop\":\"15\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"0\",\"timeStop\":\"3\",\"state\":\"1\"},{\"devID\":\"1002\",\"timeStart\":\"3\",\"timeStop\":\"7\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"7\",\"timeStop\":\"15\",\"state\":\"1\"}]}]";
 
             //Testing - use static json
-            response = $.parseJSON(jsonData)
+            //response = $.parseJSON(jsonData)
 
             //Get the devices on the system in a JSON format
-            //$.getJSON("/devices.json", function (response) {
+            $.getJSON("/routines.json", function (response) {
             //Loop through the response and fill in the table and dropdown
             $.each(response, function (i, item) {
                 //Generate the dropdown html
@@ -73,7 +73,7 @@
 
             //Append the html to the dropdown
             $('#routines_dropdown').append(opHTML);
-            //});
+            });
         }
     </script>
     <script>
