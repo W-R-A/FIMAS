@@ -132,6 +132,9 @@ void printRoutine(void) {
 //Takes no inputs
 //Returns 0 on sucess, non-zero on failure to pass a device test, with the value being the number of devices to fail testing
 uint8_t testRoutineDevices(void) {
+    //Create a variable to hold the numner of devices failing testing, and set its initial value to be zero
+    uint8_t devFails = 0;
+
     //Create a set to hold the extracted deviceID's
     std::set<uint16_t> ids;
 
@@ -152,12 +155,18 @@ uint8_t testRoutineDevices(void) {
 
         //Loop through all of the devices, testing the one which matches the given id
         for (int i = 0; i < devices.size(); i++) {
+
+            //If the current devies matches the requested device ID, test it
             if (*it == devices[i]->getID()) {
-                devices[i]->testDevice();
+
+                //Test the device, if it fails, increment devFails
+                if (devices[i]->testDevice()) {
+                    devFails++;
+                }
             }
         }
-
-        if (*it == devices[it]->getID()) {
-            devices[it]->testDevice();
-        }
     }
+
+    //Return the number of device failures, which should be zero
+    return devFails;
+}
