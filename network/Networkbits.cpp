@@ -238,7 +238,7 @@ void network(void) {
 
             //Add the body
             response += HTTP_MESSAGE_BODY_ROUTINES;
-        } else if ((address.find("GET / ") != string::npos) || (address.find("GET /index ") != string::npos)) {
+        } else if ((address.find("GET /") != string::npos) || (address.find("GET /index") != string::npos)) {
 
             //Add a 200 header code to the response
             response += HTTP_STATUS_LINE_200;
@@ -253,7 +253,7 @@ void network(void) {
             response += "\r\n\r\n";
 
             //Add the body
-            response += HTTP_MESSAGE_BODY_ROUTINES;
+            response += HTTP_MESSAGE_BODY_INDEX;
         } else {
 
             //If we get to this else statement, then no route exists for this request, throw a 404 to the client
