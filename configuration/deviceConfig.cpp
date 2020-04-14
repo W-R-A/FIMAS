@@ -9,7 +9,7 @@ uint8_t configDevices(const char *configJSON) {
     parse(jsonParser, configJSON);
 
     //Loop through the JSON, extracting the device configuration for each device ID
-    for (uint8_t i = 0; jsonParser[i].hasMember("devID"); i++) {
+    for (uint8_t i = 0; jsonParser[i].hasMember((char *)"devID"); i++) {
         //Create variables to hold the extracted values
         uint16_t devID;
         uint16_t devPin1;
