@@ -178,12 +178,11 @@ void network(void) {
             int id = stoi(IDstr);
 
             //Confgure the routine with id id for use with the system
-            if (configRoutine(ROUTINE1, id)) {
+            if (configRoutine(ROUTINES, id)) {
                 serialQueue.call(printf, "Error loading routine\n");
             } else {
                 printRoutine();
             }
-
 
             serialQueue.call(printf, "Routine ID:%d \n", id);
 
@@ -214,6 +213,22 @@ void network(void) {
 
             //Add the body
             response += CONFIGURATION;
+        } else if (address.find("routines.json") != string::npos) {
+
+            //Add a 200 header code to the response
+            response += HTTP_STATUS_LINE_200;
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+
+            //Add the header fields
+            response += "Content-Type: application/json";
+
+            //Add 2 line feeds and carriage returns to the response to signal the end of the headers
+            response += "\r\n\r\n";
+
+            //Add the body
+            response += ROUTINES;
         } else if (address.find("deviceConfig") != string::npos) {
 
             //Add a 200 header code to the response
