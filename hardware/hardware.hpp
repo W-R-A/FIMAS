@@ -10,7 +10,7 @@
 //Include the base device class
 #include "baseDevice.hpp"
 
-//Include derrived device classes
+//Include derived device classes
 #include "perPump.hpp"
 #include "sixValve.hpp"
 #include "solValve.hpp"
@@ -25,7 +25,7 @@ extern const array<PinName, 4> digitalInputs;
 //Calculate the number of digital inputs and outpus defined
 const short maxDevices = digitalOutputs.size() + digitalInputs.size();
 
-//Declare an array to hold the devices given that each device requires an minimium of one pin, this means that the number of devices is limited by the number of digital output and input pins defined
+//Declare an array to hold the devices given that each device requires an minimum of one pin, this means that the number of devices is limited by the number of digital output and input pins defined
 //Contents will be populated at run-time
 extern array<baseDevice *, maxDevices> devices;
 
@@ -62,7 +62,7 @@ extern Serial pc;
 */
 // void post (uint8_t iter);
 
-// //Device timings - This is called once a second and turns devicies on or off based on the timing parameters
+// //Device timings - This is called once a second and turns devices on or off based on the timing parameters
 // void checkTiming (void);
 
 // //Turn on a device
