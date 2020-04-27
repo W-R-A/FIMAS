@@ -58,7 +58,7 @@ uint8_t configDevices(const char *configJSON) {
                             //Debugging, send the client information over serial
                             serialQueue.call(printf, "Error creating object, could not determine device type, device ID: %d, device pin 1: %d, device pin 2: %d\n", devID, devPin1, devPin2);
 
-                            //An error has occured, signal failure to configure
+                            //An error has occurred, signal failure to configure
                             return 1;
                         }
 
@@ -66,31 +66,31 @@ uint8_t configDevices(const char *configJSON) {
                         //Debugging, send the client information over serial
                         serialQueue.call(printf, "Error reading device pin 2, device ID: %d, device pin 1: %d\n", devID, devPin1);
 
-                        //An error has occured, signal failure to configure
+                        //An error has occurred, signal failure to configure
                         return 1;
                     }
                 } else {
                     //Debugging, send the client information over serial
                     serialQueue.call(printf, "Error reading device pin 1, device ID: %d, device pin 1: %d\n", devID, devPin1);
 
-                    //An error has occured, signal failure to configure
+                    //An error has occurred, signal failure to configure
                     return 1;
                 }
             } else {
                 //Debugging, send the client information over serial
                 serialQueue.call(printf, "Error reading device pin 1, device ID: %d\n", devID);
 
-                //An error has occured, signal failure to configure
+                //An error has occurred, signal failure to configure
                 return 1;
             }
         } else {
             //Debugging, send the client information over serial
             serialQueue.call(printf, "Error reading device ID\n");
 
-            //An error has occured, signal failure to configure
+            //An error has occurred, signal failure to configure
             return 1;
         }
     }
-    //No errors, signal sucess
+    //No errors, signal success
     return 0;
 }
