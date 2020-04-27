@@ -76,7 +76,7 @@ void turnOff (enum DEVICE device) {
 
         default: {
             //Default case, should not happen
-            //Error log - unregcognised device passed to turnOff
+            //Error log - unrecognised device passed to turnOff
             break;
         }
     }
@@ -112,14 +112,14 @@ void turnOn (enum DEVICE device) {
 
         default: {
             //Default case, should not happen
-            //Error log - unregcognised device passed to turnOn
+            //Error log - unrecognised device passed to turnOn
             break;
         }
     }
 }
 
 
-//Device timings - This is called once a second and turns devicies on or off based on the timing parameters
+//Device timings - This is called once a second and turns devices on or off based on the timing parameters
 void checkTiming (void) {
 
     //Temp, bind to rtc for accuracy
