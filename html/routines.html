@@ -53,29 +53,30 @@
 
     <br>
 
-
     <figure>
-      <div class="row">
-        <h6>Sample Pump</h6>
-        <div class="chart">
-          <span class="block" title="Category A">
-            <span class="value">58%</span>
-          </span>
-          <span class="block" title="Category B">
-            <span class="value">12%</span>
-          </span>
-          <span class="block" title="Category C">
-            <span class="value">8%</span>
-          </span>
-          <span class="block" title="Category D">
-            <span class="value">2%</span>
-          </span>
-          <span class="block" title="Category E">
-            <span class="value">17%</span>
-          </span>
-          <span class="block" title="Category F">
-            <span class="value">3%</span>
-          </span>
+      <div class="graphic">
+        <div class="row">
+          <h6>Sample Pump</h6>
+          <div class="chart">
+            <span class="block" title="Category A">
+              <span class="value">58%</span>
+            </span>
+            <span class="block" title="Category B">
+              <span class="value">12%</span>
+            </span>
+            <span class="block" title="Category C">
+              <span class="value">8%</span>
+            </span>
+            <span class="block" title="Category D">
+              <span class="value">2%</span>
+            </span>
+            <span class="block" title="Category E">
+              <span class="value">17%</span>
+            </span>
+            <span class="block" title="Category F">
+              <span class="value">3%</span>
+            </span>
+          </div>
         </div>
       </div>
     </figure>
@@ -328,19 +329,19 @@
         response = $.parseJSON(jsonData)
         //$.getJSON("/devices.json", function (response) {
 
-          $.each(response, function (i, item) {
-            opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
-          });
+        $.each(response, function (i, item) {
+          opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
+        });
 
-          $('#devices_dropdown').append(opHTML);
+        $('#devices_dropdown').append(opHTML);
 
-          //Visualisation
-          $('.value').each(function () {
-            var text = $(this).text();
-            $(this).parent().css('width', text);
-          });
+        //Visualisation
+        $('.value').each(function () {
+          var text = $(this).text();
+          $(this).parent().css('width', text);
+        });
 
-          //$('.block').tooltip();
+        //$('.block').tooltip();
         //});
       });
     </script>
