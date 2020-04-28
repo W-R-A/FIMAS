@@ -43,41 +43,9 @@
 
     </div>
     <script src="jquery.js"></script>
+    <script src="functions.js"></script>
     <script>
-        //Declare the populate routines function - This will popuate the routines dropdown based on the routines.json file
-        function populateRoutines() {
-
-            //Ensure that the dropdown is empty
-            $('#routines_dropdown').empty();
-
-            //Set default option as select device, and make it disabled
-            $('#routines_dropdown').append('<option selected="true" disabled>Select Routine</option>');
-            $('#routines_dropdown').prop('selectedIndex', 0);
-
-            //Define some temporary variables to hold the HTML
-            var opHTML = '';
-
-            //Testing the parsing of the json
-            var jsonData = "[{\"routineID\":\"1004\",\"name\":\"AlCl\",\"timings\":[{\"devID\":\"1000\",\"timeStart\":\"0\",\"timeStop\":\"4\",\"state\":\"1\"},{\"devID\":\"1000\",\"timeStart\":\"4\",\"timeStop\":\"9\",\"state\":\"0\"},{\"devID\":\"1000\",\"timeStart\":\"9\",\"timeStop\":\"15\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"0\",\"timeStop\":\"6\",\"state\":\"0\"},{\"devID\":\"1001\",\"timeStart\":\"6\",\"timeStop\":\"8\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"8\",\"timeStop\":\"15\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"0\",\"timeStop\":\"3\",\"state\":\"1\"},{\"devID\":\"1002\",\"timeStart\":\"3\",\"timeStop\":\"7\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"7\",\"timeStop\":\"15\",\"state\":\"1\"}]},{\"routineID\":\"1003\",\"name\":\"CuSO4\",\"timings\":[{\"devID\":\"1000\",\"timeStart\":\"0\",\"timeStop\":\"4\",\"state\":\"1\"},{\"devID\":\"1000\",\"timeStart\":\"4\",\"timeStop\":\"9\",\"state\":\"0\"},{\"devID\":\"1000\",\"timeStart\":\"9\",\"timeStop\":\"15\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"0\",\"timeStop\":\"6\",\"state\":\"0\"},{\"devID\":\"1001\",\"timeStart\":\"6\",\"timeStop\":\"8\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"8\",\"timeStop\":\"15\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"0\",\"timeStop\":\"3\",\"state\":\"1\"},{\"devID\":\"1002\",\"timeStart\":\"3\",\"timeStop\":\"7\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"7\",\"timeStop\":\"15\",\"state\":\"1\"}]}]";
-
-            //Testing - use static json
-            //response = $.parseJSON(jsonData)
-
-            //Get the devices on the system in a JSON format
-            $.getJSON("/routines.json", function (response) {
-            //Loop through the response and fill in the table and dropdown
-            $.each(response, function (i, item) {
-                //Generate the dropdown html
-                opHTML += '<option class=' + item.routineID + '>' + item.name + '</option>';
-            });
-
-            //Append the html to the dropdown
-            $('#routines_dropdown').append(opHTML);
-            });
-        }
-    </script>
-    <script>
-        //When the webpage has loaded and the the document is ready to be worked on
+        //When the web page has loaded and the the document is ready to be worked on
         $(document).ready(function () {
             //Populate the routines dropdown
             populateRoutines()
@@ -99,7 +67,7 @@
                 //Define the URL to hit
                 var reqURL = '/testdevices/routineid=' + routineID;
 
-                //Debuging, dislay the URL to send a GET request to
+                //Debugging, display the URL to send a GET request to
                 //alert(reqURL);
 
                 //Send the AJAX request to the defined URL

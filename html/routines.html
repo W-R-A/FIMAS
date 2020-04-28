@@ -55,35 +55,6 @@
     <figure>
       <!-- Create a div for the graphic bars to visualise timing -->
       <div class="graphic">
-        <!-- Create a row div -->
-        <!-- This should be generated from the timing.json data in the future -->
-        <div class="row">
-          <!-- The name of the device, possibility of moving to a dropdown in the future -->
-          <h6>Sample Pump</h6>
-          <!-- Create the bar chart div -->
-          <div class="chart">
-            <!-- Create the blocks of the chart, title defines the tooltip -->
-            <span class="block" title="Category A">
-              <!-- This span defines the width of the block, with 58% being displayed in the middle of the block -->
-              <span class="value">58%</span>
-            </span>
-            <span class="block" title="Category B">
-              <span class="value">12%</span>
-            </span>
-            <span class="block" title="Category C">
-              <span class="value">8%</span>
-            </span>
-            <span class="block" title="Category D">
-              <span class="value">2%</span>
-            </span>
-            <span class="block" title="Category E">
-              <span class="value">17%</span>
-            </span>
-            <span class="block" title="Category F">
-              <span class="value">3%</span>
-            </span>
-          </div>
-        </div>
       </div>
     </figure>
 
@@ -342,16 +313,37 @@
         $('#devices_dropdown').append(opHTML);
 
 
+
+
+
+
+
+
         //Create timing visualisation
+
+        //Fetch timings.json file/data
+        //Parse data, looking for the largest time stop - this is 100% width scale.
+        //For other steps, work out duration, and scale by the width scale
+        //For steps not starting at time zero, add on previous width data to 
+
+
         var timings = '[{"routineID":"1004","name":"AlCl","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"}]},{"routineID":"1003","name":"CuSO4","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"}]}]';
 
+        var lastTime = -1;
+        response = $.parseJSON(timings)
+        //$.getJSON("/timings.json", function (response) {
+        $.each(response, function (i, item) {
+//Look for the last time in the routine
+
+          opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
+        });
 
 
         //Visualisation
-        $('.value').each(function () {
-          var text = $(this).text();
-          $(this).parent().css('width', text);
-        });
+        // $('.value').each(function () {
+        //   var text = $(this).text();
+        //   $(this).parent().css('width', text);
+        // });
 
         //$('.block').tooltip();
         //});
