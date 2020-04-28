@@ -30,6 +30,10 @@
   <div class="main">
     <h1>Routines Configuration</h1>
 
+    <p>Select a routine to configure</p>
+    <!-- Dropdown to select the routine to configure -->
+    <select id="routines_dropdown"></select>
+
     <p>Select Device: </p>
 
     <!-- Dropdown to edit the configuration of a device -->
@@ -58,11 +62,26 @@
       </div>
     </figure>
 
+    <script src="functions.js"></script>
     <script src="jquery.js"></script>
+
     <script>
       $(document).ready(function () {
         // Your code here.
         //Document is ready to be manipulated
+
+        //Populate the routines dropdown
+        var res = populateRoutines("routines_dropdown");
+
+        //Check if succeeded - code non-zero
+        if (res.code) {
+          //Alert that an error occurred
+          alert("Error populating routines");
+
+          //Log specific error
+          console.log(res.msg);
+        }
+
 
         var routines = [];
 
@@ -333,7 +352,7 @@
         response = $.parseJSON(timings)
         //$.getJSON("/timings.json", function (response) {
         $.each(response, function (i, item) {
-//Look for the last time in the routine
+          //Look for the last time in the routine
 
           opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
         });
