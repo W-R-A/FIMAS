@@ -61,6 +61,7 @@
       <div class="graphic">
       </div>
     </figure>
+    <div id="timings"></div>
 
     <script src="functions.js"></script>
     <script src="jquery.js"></script>
@@ -312,7 +313,7 @@
           var selRoutineID = $('select[id="routines_dropdown"] option:selected').attr('class');
 
           //Debugging, display the ID to be requested
-          alert(routineID);
+          //alert(selRoutineID);
 
 
           //Create a variable to hold the longest time
@@ -328,68 +329,74 @@
           $.each(response, function (i, routines) {
             if (selRoutineID == routines.routineID) {
               $.each(routines.timings, function (i, timing) {
-                alert(timing.devID)
-              }
+                if (timing.timeStop >= lastTime) {
+                  lastTime = timing.timeStop;
+                }
 
 
 
 
-              //Generate the dropdown html
-              //opHTML += '<option class=' + item.routineID + '>' + item.name + '</option>';
-            });
 
-          //Generate the dropdown html
-          //opHTML += '<option class=' + item.routineID + '>' + item.name + '</option>';
+                $('<p> Device ID: ' + timing.devID + ', Start time: ' + timing.timeStart + ', Stop Time: ' + timing.timeStop + ', State: ' + timing.state + '</p>').appendTo('#timings');
+
+
+                //Generate the dropdown html
+                //opHTML += '<option class=' + item.routineID + '>' + item.name + '</option>';
+              });
+              $('<p> Last Time: ' + lastTime + '</p>').appendTo('#timings');
+            }
+            //Generate the dropdown html
+            //opHTML += '<option class=' + item.routineID + '>' + item.name + '</option>';
+          });
+
+
+          // });
+
+
+
+          //Create timing visualisation
+
+          //Fetch timings.json file/data
+          //Parse data, looking for the largest time stop - this is 100% width scale.
+          //For other steps, work out duration, and scale by the width scale
+          //For steps not starting at time zero, add on previous width data to 
+
+
+          //Visualisation
+          // $('.value').each(function () {
+          //   var text = $(this).text();
+          //   $(this).parent().css('width', text);
+          // });
+
+          //$('.block').tooltip();
+          //});
+
         });
 
 
-        // });
-
-
-
-        //Create timing visualisation
-
-        //Fetch timings.json file/data
-        //Parse data, looking for the largest time stop - this is 100% width scale.
-        //For other steps, work out duration, and scale by the width scale
-        //For steps not starting at time zero, add on previous width data to 
-
-
-        //Visualisation
-        // $('.value').each(function () {
-        //   var text = $(this).text();
-        //   $(this).parent().css('width', text);
-        // });
-
-        //$('.block').tooltip();
-        //});
-
-      });
 
 
 
 
 
 
+        //Clear dropdown
+        $('#devices_dropdown').empty();
 
+        //Set default option as select device, and make it disabled
+        $('#devices_dropdown').append('<option selected="true" disabled>Select Device</option>');
+        $('#devices_dropdown').prop('selectedIndex', 0);
 
-      //Clear dropdown
-      $('#devices_dropdown').empty();
+        var opHTML = '';
 
-      //Set default option as select device, and make it disabled
-      $('#devices_dropdown').append('<option selected="true" disabled>Select Device</option>');
-      $('#devices_dropdown').prop('selectedIndex', 0);
+        response = $.parseJSON(tstDevices)
+        //$.getJSON("/devices.json", function (response) {
 
-      var opHTML = '';
+        $.each(response, function (i, item) {
+          opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
+        });
 
-      response = $.parseJSON(tstDevices)
-      //$.getJSON("/devices.json", function (response) {
-
-      $.each(response, function (i, item) {
-        opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
-      });
-
-      $('#devices_dropdown').append(opHTML);
+        $('#devices_dropdown').append(opHTML);
 
       });
     </script>
