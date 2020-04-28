@@ -190,7 +190,7 @@
           return 1;
         }
 
-
+        //Check if the inputs are valid
         function checkInputs(values) {
 
           //Check if a valid device selected
@@ -244,7 +244,6 @@
 
         }
 
-
         //Generate timing JSON data from user input
         $(document).on("click", "button.genTiming", function (event) {
 
@@ -268,9 +267,6 @@
             console.log(JSON.stringify(routines));
           }
         });
-
-
-
 
         //Bind the device selection to the following handler - to adjust the state drop down
         $(document).on("change", "#devices_dropdown", function (event) {
@@ -309,32 +305,45 @@
           }
         });
 
-        //alert('Loading Devices Configuration');
+        //Bind the routine selection to the following handler generate the visualisation
+        $(document).on("change", "#routines_dropdown", function (event) {
 
-        //Clear dropdown
-        $('#devices_dropdown').empty();
+          //Get the ID of the selected routine
+          var selRoutineID = $('select[id="routines_dropdown"] option:selected').attr('class');
 
-        //Set default option as select device, and make it disabled
-        $('#devices_dropdown').append('<option selected="true" disabled>Select Device</option>');
-        $('#devices_dropdown').prop('selectedIndex', 0);
+          //Debugging, display the ID to be requested
+          alert(routineID);
 
-        var opHTML = '';
 
-        var jsonData = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
+          //Create a variable to hold the longest time
+          var lastTime = -1;
 
-        response = $.parseJSON(jsonData)
-        //$.getJSON("/devices.json", function (response) {
+          //Testing - use static json
+          response = $.parseJSON(tstRoutines)
 
-        $.each(response, function (i, item) {
-          opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
+          //Get the devices on the system in a JSON format
+          // $.getJSON("/routines.json", function (response) {
+
+          //Loop through the response 
+          $.each(response, function (i, routines) {
+            if (selRoutineID == routines.routineID) {
+              $.each(routines.timings, function (i, timing) {
+                alert(timing.devID)
+              }
+
+
+
+
+              //Generate the dropdown html
+              //opHTML += '<option class=' + item.routineID + '>' + item.name + '</option>';
+            });
+
+          //Generate the dropdown html
+          //opHTML += '<option class=' + item.routineID + '>' + item.name + '</option>';
         });
 
-        $('#devices_dropdown').append(opHTML);
 
-
-
-
-
+        // });
 
 
 
@@ -346,18 +355,6 @@
         //For steps not starting at time zero, add on previous width data to 
 
 
-        var timings = '[{"routineID":"1004","name":"AlCl","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"}]},{"routineID":"1003","name":"CuSO4","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"}]}]';
-
-        var lastTime = -1;
-        response = $.parseJSON(timings)
-        //$.getJSON("/timings.json", function (response) {
-        $.each(response, function (i, item) {
-          //Look for the last time in the routine
-
-          opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
-        });
-
-
         //Visualisation
         // $('.value').each(function () {
         //   var text = $(this).text();
@@ -366,6 +363,34 @@
 
         //$('.block').tooltip();
         //});
+
+      });
+
+
+
+
+
+
+
+
+      //Clear dropdown
+      $('#devices_dropdown').empty();
+
+      //Set default option as select device, and make it disabled
+      $('#devices_dropdown').append('<option selected="true" disabled>Select Device</option>');
+      $('#devices_dropdown').prop('selectedIndex', 0);
+
+      var opHTML = '';
+
+      response = $.parseJSON(tstDevices)
+      //$.getJSON("/devices.json", function (response) {
+
+      $.each(response, function (i, item) {
+        opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
+      });
+
+      $('#devices_dropdown').append(opHTML);
+
       });
     </script>
 
