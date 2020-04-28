@@ -33,8 +33,7 @@
     <p>Select Device: </p>
 
     <!-- Dropdown to edit the configuration of a device -->
-    <select id="devices_dropdown" title="Select a device">
-    </select>
+    <select id="devices_dropdown" title="Select a device"></select>
 
     <!-- Create an input box for the timings, and restrict its contents to a number between 0 and 1000 -->
     <input id="timeStart" type="number" min="0" , max="1000" title="The starting time for the step"></input>
@@ -42,23 +41,30 @@
     <!-- Create an input box for the timings, and restrict its contents to a number between 0 and 1000 -->
     <input id="timeStop" type="number" min="0" , max="1000" title="The ending time for the step"></input>
 
+    <!-- Create a dropdown to select the state of the devices during a step -->
+    <select id="state" title="Select the state of the device during the step"></select>
 
-    <select id="state" title="Select the state of the device during the step">
-      <option selected="true" disabled>Select State</option>
-    </select>
-
+    <!-- Create a button to generate the timing data -->
     <button class="genTiming">Generate Timings</button>
 
-    <div id="timings"></div>
-
+    <!-- Linebreaks to move the figure down -->
+    <br>
     <br>
 
+    <!-- Create a figure to hold the timing visualisation -->
     <figure>
+      <!-- Create a div for the graphic bars to visualise timing -->
       <div class="graphic">
+        <!-- Create a row div -->
+        <!-- This should be generated from the timing.json data in the future -->
         <div class="row">
+          <!-- The name of the device, possibility of moving to a dropdown in the future -->
           <h6>Sample Pump</h6>
+          <!-- Create the bar chart div -->
           <div class="chart">
+            <!-- Create the blocks of the chart, title defines the tooltip -->
             <span class="block" title="Category A">
+              <!-- This span defines the width of the block, with 58% being displayed in the middle of the block -->
               <span class="value">58%</span>
             </span>
             <span class="block" title="Category B">
@@ -154,7 +160,7 @@
 
         //Check if the inputs are sane - not conflicting with other inputs
         function checkInputsSanity(values) {
-          //Loop through all of the previous timing data and raise an error if the new data would conflict with the exisiting data
+          //Loop through all of the previous timing data and raise an error if the new data would conflict with the existing data
           //ie if the states are different for the same time - gaps of undefined time 
 
           //Conflict detection
@@ -334,6 +340,12 @@
         });
 
         $('#devices_dropdown').append(opHTML);
+
+
+        //Create timing visualisation
+        var timings = '[{"routineID":"1004","name":"AlCl","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"}]},{"routineID":"1003","name":"CuSO4","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"}]}]';
+
+
 
         //Visualisation
         $('.value').each(function () {
