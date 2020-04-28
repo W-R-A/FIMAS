@@ -32,8 +32,7 @@
         <p>Select a routine to run</p>
 
         <!-- Dropdown to select the routine to run -->
-        <select id="routines_dropdown">
-        </select>
+        <select id="routines_dropdown"></select>
 
         <!-- Test the devices used in the routine -->
         <button class="btnTstDevices">Test Devices</button>
@@ -42,13 +41,23 @@
         <button class="btnRunRoutine">Run the Routine</button>
 
     </div>
-    <script src="jquery.js"></script>
     <script src="functions.js"></script>
+    <script src="jquery.js"></script>
+
     <script>
         //When the web page has loaded and the the document is ready to be worked on
         $(document).ready(function () {
             //Populate the routines dropdown
-            populateRoutines()
+            var res = populateRoutines("routines_dropdown");
+
+            //Check if succeeded - code non-zero
+            if (res.code) {
+                //Alert that an error occurred
+                alert("Error populating routines");
+
+                //Log specific error
+                console.log(res.msg);
+            }
 
             //Bind the test button to the following handler
             $(document).on("click", "button.btnTstDevices", function (event) {
