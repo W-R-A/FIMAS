@@ -1,6 +1,16 @@
 //Functions.js
 //Used within FIMAS to hold functions such as the population of drop-down boxes, and fetching JSON data
 
+//Test JSON data for devices and routines
+var tstDevices = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
+
+var tstRoutines = '[{"routineID":"1004","name":"AlCl","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"}]},{"routineID":"1003","name":"CuSO4","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"}]}]';
+
+
+
+
+
+
 //Declare the populate routines function - This will populate a specified dropdown based on the routines.json file
 //Need to pass the dropdown element ID, as a string
 //Returns an array with a code and message which can be accessed in return .code and .msg
@@ -54,11 +64,8 @@ function populateRoutines(ddID) {
     //Define some temporary variables to hold the HTML
     var opHTML = '';
 
-    //Testing the parsing of the json
-    var jsonData = "[{\"routineID\":\"1004\",\"name\":\"AlCl\",\"timings\":[{\"devID\":\"1000\",\"timeStart\":\"0\",\"timeStop\":\"4\",\"state\":\"1\"},{\"devID\":\"1000\",\"timeStart\":\"4\",\"timeStop\":\"9\",\"state\":\"0\"},{\"devID\":\"1000\",\"timeStart\":\"9\",\"timeStop\":\"15\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"0\",\"timeStop\":\"6\",\"state\":\"0\"},{\"devID\":\"1001\",\"timeStart\":\"6\",\"timeStop\":\"8\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"8\",\"timeStop\":\"15\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"0\",\"timeStop\":\"3\",\"state\":\"1\"},{\"devID\":\"1002\",\"timeStart\":\"3\",\"timeStop\":\"7\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"7\",\"timeStop\":\"15\",\"state\":\"1\"}]},{\"routineID\":\"1003\",\"name\":\"CuSO4\",\"timings\":[{\"devID\":\"1000\",\"timeStart\":\"0\",\"timeStop\":\"4\",\"state\":\"1\"},{\"devID\":\"1000\",\"timeStart\":\"4\",\"timeStop\":\"9\",\"state\":\"0\"},{\"devID\":\"1000\",\"timeStart\":\"9\",\"timeStop\":\"15\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"0\",\"timeStop\":\"6\",\"state\":\"0\"},{\"devID\":\"1001\",\"timeStart\":\"6\",\"timeStop\":\"8\",\"state\":\"1\"},{\"devID\":\"1001\",\"timeStart\":\"8\",\"timeStop\":\"15\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"0\",\"timeStop\":\"3\",\"state\":\"1\"},{\"devID\":\"1002\",\"timeStart\":\"3\",\"timeStop\":\"7\",\"state\":\"0\"},{\"devID\":\"1002\",\"timeStart\":\"7\",\"timeStop\":\"15\",\"state\":\"1\"}]}]";
-
     //Testing - use static json
-    response = $.parseJSON(jsonData)
+    response = $.parseJSON(tstRoutines)
 
     //Get the devices on the system in a JSON format
     // $.getJSON("/routines.json", function (response) {
