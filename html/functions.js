@@ -155,6 +155,7 @@ function getDeviceName(deviceID) {
 //Code, msg
 //0 - Success
 //1 - There was a problem parsing the JSON string
+//2 - There was an issue extracting the timings data from the JSON string
 function getDuration(timings) {
     //Parse JSON string containing the timings array
     //Loop through the array looking for the largest value of timeStop
@@ -173,22 +174,32 @@ function getDuration(timings) {
     }
 
     //Declare a variable for the duration
-    var duration = 0;
+    var duration = -1;
 
     //Loop through the timings array and look for the largest value of timeStop
     for (i in times) {
         //If the stop time for the current step is greater than any previous stop time
-        if (parseInt(times.timeStop) >= duration) {
+        if (parseInt(times[i].timeStop) >= duration) {
 
             //Update the last time value with the new greatest value
-            duration = parseInt(times.timeStop);
+            duration = parseInt(times[i].timeStop);
         }
     }
 
-    //Return the duration of the routine
+    //If the duration is valid, greater than 0, return in, else return an error
+    if (duration > 0) {
+        //Return the duration of the routine
+        return {
+            code: 0,
+            msg: "Success",
+            dur: duration,
+        };
+    }
+
+    //There was an issue extracting the timings data from the JSON string, return an error
     return {
-        code: 0,
-        msg: "Success",
-        dur: duration,
+        code: 2,
+        msg: "There was an issue extracting the timings data from the JSON string",
+        dur: 0,
     };
 }
