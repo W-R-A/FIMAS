@@ -61,7 +61,6 @@
       <div id="visualisation" class="graphic">
       </div>
     </figure>
-    <div id="timings"></div>
 
     <script src="functions.js"></script>
     <script src="jquery.js"></script>
@@ -315,6 +314,9 @@
           //Debugging, display the ID to be requested
           //alert(selRoutineID);
 
+          //Clear the previous visualisation bars
+          $("#visualisation").empty();
+
           //Testing - use static json
           response = $.parseJSON(tstRoutines)
 
@@ -362,14 +364,23 @@
                 var blockWidth = stepDur * (100 / duration.dur);
 
 
-                //Create visualisation HTMl
-                var rowHTML = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart"><span style="width:' + blockWidth + '%;"class="block" title="' + timing.state + '">';
+                //Create visualisation HTML span
+                var rowHTML = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart"><span style="width:' + blockWidth + '%;"class="block" title="' + timing.state + ' </span></div></div>">';
+
+
+                //Create visualisation HTML span
+                //var rowsHTML = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart">' + spansHTML + '</div></div>">';
+
+
+
+                //Create visualisation HTML span
+                var spanHTML = '<span style="width:' + blockWidth + '%;"class="block" title="' + timing.state + '"</span>>';
 
                 //Print out the routine timing data
                 $(rowHTML).appendTo('#visualisation');
 
                 //Print out the routine timing data
-                //$('<p> Device ID: ' + timing.devID + ', Device Name: ' + devName.name + ', Start time: ' + timing.timeStart + ', Stop Time: ' + timing.timeStop + ', State: ' + timing.state + '</p>').appendTo('#timings');
+                $('<p> Device ID: ' + timing.devID + ', Device Name: ' + devName.name + ', Start time: ' + timing.timeStart + ', Stop Time: ' + timing.timeStop + ', State: ' + timing.state + '</p>').appendTo('#visualisation');
               });
 
               //Print out the last time found in the routine
