@@ -58,7 +58,7 @@
     <!-- Create a figure to hold the timing visualisation -->
     <figure>
       <!-- Create a div for the graphic bars to visualise timing -->
-      <div class="graphic">
+      <div id="visualisation" class="graphic">
       </div>
     </figure>
     <div id="timings"></div>
@@ -354,8 +354,22 @@
                   console.log(devName.msg);
                 }
 
+                //Calculate the width of the block in the figure, in %
+                //Calculate the duration of the block
+                var stepDur = timing.timeStop - timing.timeStart;
+
+                //Convert this to the width of the block by multiplying by 100/duration
+                var blockWidth = stepDur * (100 / duration.dur);
+
+
+                //Create visualisation HTMl
+                var rowHTML = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart"><span style="width:' + blockWidth + '%;"class="block" title="' + timing.state + '">';
+
                 //Print out the routine timing data
-                $('<p> Device ID: ' + timing.devID + ', Device Name: ' + devName.name + ', Start time: ' + timing.timeStart + ', Stop Time: ' + timing.timeStop + ', State: ' + timing.state + '</p>').appendTo('#timings');
+                $(rowHTML).appendTo('#visualisation');
+
+                //Print out the routine timing data
+                //$('<p> Device ID: ' + timing.devID + ', Device Name: ' + devName.name + ', Start time: ' + timing.timeStart + ', Stop Time: ' + timing.timeStop + ', State: ' + timing.state + '</p>').appendTo('#timings');
               });
 
               //Print out the last time found in the routine
