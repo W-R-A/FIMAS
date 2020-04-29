@@ -72,15 +72,15 @@
         //Document is ready to be manipulated
 
         //Populate the routines dropdown
-        var res = populateRoutines("routines_dropdown");
+        var attRou = populateRoutines("routines_dropdown");
 
         //Check if failed - code non-zero
-        if (res.code) {
+        if (attRou.code) {
           //Alert that an error occurred
           alert("Error populating routines");
 
           //Log specific error
-          console.log(res.msg);
+          console.log(attRou.msg);
         }
 
 
@@ -315,10 +315,6 @@
           //Debugging, display the ID to be requested
           //alert(selRoutineID);
 
-
-          //Create a variable to hold the longest time
-          var lastTime = -1;
-
           //Testing - use static json
           response = $.parseJSON(tstRoutines)
 
@@ -331,38 +327,42 @@
             //If the routineID is the one that needs to be visualised
             if (selRoutineID == routines.routineID) {
 
+              //Attempt to get the duration of the routine
+              var duration = getDuration(JSON.stringify(routines.timings));
+
+              //Check if failed - code non-zero
+              if (duration.code) {
+                //Alert that an error occurred
+                alert("Error getting the duration of the routine");
+
+                //Log specific error
+                console.log(duration.msg);
+              }
+
               //Loop through all of the timings in the selected routine, looking for the last stop time - I.E the duration of the whole routine
               $.each(routines.timings, function (i, timing) {
 
-                //If the stop time for the current step is greater than any previous stop time
-                if (parseInt(timing.timeStop) >= lastTime) {
-
-                  //Update the last time value with the new greatest value
-                  lastTime = parseInt(timing.timeStop);
-                }
-
                 //Attempt to get the device name from the deviceID
-                var res = getDeviceName(timing.devID);
+                var devName = getDeviceName(timing.devID);
 
                 //Check if failed - code non-zero
-                if (res.code) {
+                if (devName.code) {
                   //Alert that an error occurred
                   alert("Error getting device name");
 
                   //Log specific error
-                  console.log(res.msg);
+                  console.log(devName.msg);
                 }
 
                 //Print out the routine timing data
-                $('<p> Device ID: ' + timing.devID + ', Device Name: ' + res.name + ', Start time: ' + timing.timeStart + ', Stop Time: ' + timing.timeStop + ', State: ' + timing.state + '</p>').appendTo('#timings');
-
+                $('<p> Device ID: ' + timing.devID + ', Device Name: ' + devName.name + ', Start time: ' + timing.timeStart + ', Stop Time: ' + timing.timeStop + ', State: ' + timing.state + '</p>').appendTo('#timings');
               });
 
               //Print out the last time found in the routine
-              $('<p> Last Time: ' + lastTime + '</p>').appendTo('#timings');
+              $('<p> Duration: ' + duration.dur + '</p>').appendTo('#timings');
 
               //Calculate item width per second
-              var widthPerSec = 100.00 / lastTime
+              var widthPerSec = 100.00 / duration.dur
               //Print out the last time found in the routine
               $('<p> Width per second: ' + widthPerSec + '</p>').appendTo('#timings');
             }
