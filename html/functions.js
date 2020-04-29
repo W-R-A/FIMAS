@@ -117,7 +117,7 @@ function getDeviceName(deviceID) {
         //Check if the current device has the ID requested
         if (parseInt(deviceID) == parseInt(response[i].devID)) {
             //Check if the device name exists
-            if (typeof(response[i].devName) != "undefined") {
+            if (typeof (response[i].devName) != "undefined") {
                 //Return success with the device name
                 return {
                     code: 0,
@@ -141,4 +141,54 @@ function getDeviceName(deviceID) {
     };
 
     // });
+}
+
+
+
+
+
+
+//Declare the get duration function - This will return the duration of the routine given the timings array
+//Need to pass the timings array in as a string
+//Returns an array with a code, message and duration which can be accessed in return .dur, .code and .msg
+//Code 0 on success, non-zero on failure
+//Code, msg
+//0 - Success
+//1 - There was a problem parsing the JSON string
+function getDuration(timings) {
+    //Parse JSON string containing the timings array
+    //Loop through the array looking for the largest value of timeStop
+    //Return the longest found timeStop as duration
+
+    //Try to parse the JSON, return an error is it cannot be parsed
+    try {
+        times = JSON.parse(timings);
+    } catch (e) {
+        //If there was an error parsing the JSON, return an error
+        return {
+            code: 1,
+            msg: "There was a problem parsing the JSON string",
+            dur: 0,
+        };
+    }
+
+    //Declare a variable for the duration
+    var duration = 0;
+
+    //Loop through the timings array and look for the largest value of timeStop
+    for (i in times) {
+        //If the stop time for the current step is greater than any previous stop time
+        if (parseInt(times.timeStop) >= duration) {
+
+            //Update the last time value with the new greatest value
+            duration = parseInt(times.timeStop);
+        }
+    }
+
+    //Return the duration of the routine
+    return {
+        code: 0,
+        msg: "Success",
+        dur: duration,
+    };
 }
