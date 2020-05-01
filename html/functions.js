@@ -290,19 +290,34 @@ function sortByProperty(property) {
 //Code, msg
 //0 - Success
 //1 - There was a problem parsing the JSON string
-//2 - There was an issue extracting the timings data from the JSON string
 function genVisHTML(timings) {
+
+    //Parse timings JSON
+    //Sort the timings array by start time
     //Create a unique list of the deviceIDs used in the routine buy using getUniqueDevices()
     //Create an array to hold the unique deviceID timing span blocks
     //Get the names of the devices using getDeviceName()
-    //Sort the timings array by start time
     //Loop through the timings array, generating the span blocks and appending to the specified deviceID row
     //Append closing div tags to each device row
     //Concatenate the html together and return as .html
 
+    //Try to parse the JSON, return an error is it cannot be parsed
+    try {
+        times = JSON.parse(timings);
+    } catch (e) {
+        //If there was an error parsing the JSON, return an error
+        return {
+            code: 1,
+            msg: "There was a problem parsing the JSON string",
+            devices: [],
+        };
+    }
+
+    //Sort the timings by start time
+    times.sortByProperty(sortByProperty("timeStart"));
+
     //Get a list of all devices used
     var uniqueDevices = getUniqueDevices(timings);
-
 
     //Check if failed - code non-zero
     if (uniqueDevices.code) {
