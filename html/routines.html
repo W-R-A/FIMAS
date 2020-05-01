@@ -365,7 +365,7 @@
 
 
                 //Create visualisation HTML span
-                var rowHTML = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart"><span style="width:' + blockWidth + '%;"class="block" title="' + timing.state + ' </span></div></div>">';
+                var rowHTML = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart"><span style="width:' + blockWidth + '%;"class="block" title="' + timing.state + '"></span></div></div>';
 
 
                 //Create visualisation HTML span
@@ -374,13 +374,13 @@
 
 
                 //Create visualisation HTML span
-                var spanHTML = '<span style="width:' + blockWidth + '%;"class="block" title="' + timing.state + '"</span>>';
+                //var spanHTML = '<span style="width:' + blockWidth + '%;"class="block" title="' + timing.state + '"</span>>';
 
                 //Print out the routine timing data
                 $(rowHTML).appendTo('#visualisation');
 
                 //Print out the routine timing data
-                $('<p> Device ID: ' + timing.devID + ', Device Name: ' + devName.name + ', Start time: ' + timing.timeStart + ', Stop Time: ' + timing.timeStop + ', State: ' + timing.state + '</p>').appendTo('#visualisation');
+                //$('<p> Device ID: ' + timing.devID + ', Device Name: ' + devName.name + ', Start time: ' + timing.timeStart + ', Stop Time: ' + timing.timeStop + ', State: ' + timing.state + '</p>').appendTo('#visualisation');
               });
 
               //Print out the last time found in the routine
@@ -404,6 +404,10 @@
           //Parse data, looking for the largest time stop - this is 100% width scale.
           //For other steps, work out duration, and scale by the width scale
           //For steps not starting at time zero, add on previous width data to 
+
+
+          //Create rows using all deviceID's found
+          //Create blocks in the rows for the same DeviceID
 
 
           //Visualisation
