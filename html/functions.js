@@ -203,3 +203,134 @@ function getDuration(timings) {
         dur: 0,
     };
 }
+
+
+
+
+
+
+//Declare the unique ids function - This will return an array of unique deviceIds given the timings array
+//Need to pass the timings array in as a string
+//Returns an array with a code, message and device id array which can be accessed in return ..devices, .code and .msg
+//Code 0 on success, non-zero on failure
+//Code, msg
+//0 - Success
+//1 - There was a problem parsing the JSON string
+//2 - There was an issue extracting the deviceID's data from the JSON string
+function getUniqueDevices(timings) {
+    //Parse JSON string containing the timings array
+    //Loop through the array looking for unique deviceID's 
+    //Return an array of deviceIDs
+
+    //Try to parse the JSON, return an error is it cannot be parsed
+    try {
+        times = JSON.parse(timings);
+    } catch (e) {
+        //If there was an error parsing the JSON, return an error
+        return {
+            code: 1,
+            msg: "There was a problem parsing the JSON string",
+            dur: 0,
+        };
+    }
+
+    //Declare a array to hold the deviceID's
+    var devices = [];
+
+    //Loop through the timings array and extract all of the deviceID's
+    for (i in times) {
+        //Extract all of the deviceID's to the devices array
+
+    }
+
+    //If the duration is valid, greater than 0, return in, else return an error
+    if (duration > 0) {
+        //Return the duration of the routine
+        return {
+            code: 0,
+            msg: "Success",
+            dur: duration,
+        };
+    }
+
+    //There was an issue extracting the timings data from the JSON string, return an error
+    return {
+        code: 2,
+        msg: "There was an issue extracting the timings data from the JSON string",
+        dur: 0,
+    };
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Declare the genVisHTML function - This will return the a string containing the rows html to append to the appropriate figure 
+//Need to pass the timings array in as a string
+//Returns an array with a code, message and the html which can be accessed in return .html, .code and .msg
+//Code 0 on success, non-zero on failure
+//Code, msg
+//0 - Success
+//1 - There was a problem parsing the JSON string
+//2 - There was an issue extracting the timings data from the JSON string
+function genVisHTML(timings) {
+    //Parse JSON string containing the timings array
+    //Create a unique list of the deviceIDs used in the routine
+    //Create an array to hold the unique deviceID timing span blocks
+    //Get the names of the devices using getDeviceName
+    //Sort the timings array by start time
+    //Loop through the timings array, generating the span blocks and appending to the specified deviceID row
+    //Append closing div tags to each device row
+    //Concatenate the html together and return as .html
+
+
+    //Try to parse the JSON, return an error is it cannot be parsed
+    try {
+        times = JSON.parse(timings);
+    } catch (e) {
+        //If there was an error parsing the JSON, return an error
+        return {
+            code: 1,
+            msg: "There was a problem parsing the JSON string",
+            dur: 0,
+        };
+    }
+
+    //Declare a variable for the duration
+    var duration = -1;
+
+    //Loop through the timings array and look for the largest value of timeStop
+    for (i in times) {
+        //If the stop time for the current step is greater than any previous stop time
+        if (parseInt(times[i].timeStop) >= duration) {
+
+            //Update the last time value with the new greatest value
+            duration = parseInt(times[i].timeStop);
+        }
+    }
+
+    //If the duration is valid, greater than 0, return in, else return an error
+    if (duration > 0) {
+        //Return the duration of the routine
+        return {
+            code: 0,
+            msg: "Success",
+            dur: duration,
+        };
+    }
+
+    //There was an issue extracting the timings data from the JSON string, return an error
+    return {
+        code: 2,
+        msg: "There was an issue extracting the timings data from the JSON string",
+        dur: 0,
+    };
+}
