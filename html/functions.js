@@ -211,7 +211,7 @@ function getDuration(timings) {
 
 //Declare the unique ids function - This will return an array of unique deviceIds given the timings array
 //Need to pass the timings array in as a string
-//Returns an array with a code, message and device id array which can be accessed in return ..devices, .code and .msg
+//Returns an array with a code, message and device id array which can be accessed in return .devices, .code and .msg
 //Code 0 on success, non-zero on failure
 //Code, msg
 //0 - Success
@@ -235,29 +235,22 @@ function getUniqueDevices(timings) {
     }
 
     //Declare a array to hold the deviceID's
-    var devices = [];
+    let devices = [];
 
     //Loop through the timings array and extract all of the deviceID's
     for (i in times) {
         //Extract all of the deviceID's to the devices array
-
+        devices[i] = parseInt(times[i].devID);
     }
 
-    //If the duration is valid, greater than 0, return in, else return an error
-    if (duration > 0) {
-        //Return the duration of the routine
-        return {
-            code: 0,
-            msg: "Success",
-            dur: duration,
-        };
-    }
+    //Get a array of non-duplicate deviceIDs used in the routine
+    let uniqueDevices = [...new Set(devices)];
 
-    //There was an issue extracting the timings data from the JSON string, return an error
+    //Return the devices used in the routine
     return {
-        code: 2,
-        msg: "There was an issue extracting the timings data from the JSON string",
-        dur: 0,
+        code: 0,
+        msg: "Success",
+        devices: uniqueDevices,
     };
 }
 
