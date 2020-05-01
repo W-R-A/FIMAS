@@ -216,7 +216,6 @@ function getDuration(timings) {
 //Code, msg
 //0 - Success
 //1 - There was a problem parsing the JSON string
-//2 - There was an issue extracting the deviceID's data from the JSON string
 function getUniqueDevices(timings) {
     //Parse JSON string containing the timings array
     //Loop through the array looking for unique deviceID's 
@@ -230,7 +229,7 @@ function getUniqueDevices(timings) {
         return {
             code: 1,
             msg: "There was a problem parsing the JSON string",
-            dur: 0,
+            devices: [],
         };
     }
 
@@ -240,7 +239,7 @@ function getUniqueDevices(timings) {
     //Loop through the timings array and extract all of the deviceID's
     for (i in times) {
         //Extract all of the deviceID's to the devices array
-        devices[i] = parseInt(times[i].devID);
+        devices.push(parseInt(times[i].devID));
     }
 
     //Get a array of non-duplicate deviceIDs used in the routine
@@ -256,13 +255,31 @@ function getUniqueDevices(timings) {
 
 
 
+//Declare the sortByProperty function - This will sort a JSON array of objects by property, when called in array.sort();
+//From https://medium.com/@asadise/sorting-a-json-array-according-one-property-in-javascript-18b1d22cd9e9
+//Accessed 01/05/2020
+function sortByProperty(property) {
 
+    //Get the two values to compare, a and b
+    return function (a, b) {
 
+        //If the element in a is greater than the element in b
+        if (a[property] > b[property]) {
 
+            //Return 1 indicating that a is bigger 
+            return 1;
+        }
 
+        //If the element in b is greater than the element in a
+        else if (a[property] < b[property])
 
+            //Return 1 indicating that b is bigger 
+            return -1;
 
-
+        //Return 0 is the value of the elements is the same
+        return 0;
+    }
+}
 
 
 
@@ -275,30 +292,56 @@ function getUniqueDevices(timings) {
 //1 - There was a problem parsing the JSON string
 //2 - There was an issue extracting the timings data from the JSON string
 function genVisHTML(timings) {
-    //Parse JSON string containing the timings array
-    //Create a unique list of the deviceIDs used in the routine
+    //Create a unique list of the deviceIDs used in the routine buy using getUniqueDevices()
     //Create an array to hold the unique deviceID timing span blocks
-    //Get the names of the devices using getDeviceName
+    //Get the names of the devices using getDeviceName()
     //Sort the timings array by start time
     //Loop through the timings array, generating the span blocks and appending to the specified deviceID row
     //Append closing div tags to each device row
     //Concatenate the html together and return as .html
 
+    //Get a list of all devices used
+    var uniqueDevices = getUniqueDevices(timings);
 
-    //Try to parse the JSON, return an error is it cannot be parsed
-    try {
-        times = JSON.parse(timings);
-    } catch (e) {
-        //If there was an error parsing the JSON, return an error
-        return {
-            code: 1,
-            msg: "There was a problem parsing the JSON string",
-            dur: 0,
-        };
+
+    //Check if failed - code non-zero
+    if (uniqueDevices.code) {
+        //Alert that an error occurred
+        alert("Error getting the list of devices used");
+
+        //Log specific error
+        console.log(duration.msg);
+
+        //Break
+        break;
     }
 
-    //Declare a variable for the duration
-    var duration = -1;
+    //Create an array to store the html row data
+    var htmlRows = [];
+
+    //Loop through the unique devices, and create the initial row html
+    for (i in uniqueDevices.devices) {
+        //Attempt to get the device name from the deviceID
+        let devName = getDeviceName(uniqueDevices.devices[i]);
+
+        //Check if failed - code non-zero
+        if (devName.code) {
+            //Alert that an error occurred
+            alert("Error getting device name");
+
+            //Log specific error
+            console.log(devName.msg);
+
+            //Break
+            break;
+        }
+
+        //Initialise the row with the name of the device and the class for the chart
+        htmlRows[i] = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart">';
+    }
+
+
+
 
     //Loop through the timings array and look for the largest value of timeStop
     for (i in times) {
