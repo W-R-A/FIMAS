@@ -314,21 +314,19 @@ function genVisHTML(timings) {
     }
 
     //Sort the timings by start time
-    times.sortByProperty(sortByProperty("timeStart"));
+    times.sort(sortByProperty("timeStart"));
 
     //Get a list of all devices used
     var uniqueDevices = getUniqueDevices(timings);
 
     //Check if failed - code non-zero
     if (uniqueDevices.code) {
+
         //Alert that an error occurred
         alert("Error getting the list of devices used");
 
         //Log specific error
         console.log(duration.msg);
-
-        //Break
-        break;
     }
 
     //Create an array to store the html row data
@@ -336,52 +334,77 @@ function genVisHTML(timings) {
 
     //Loop through the unique devices, and create the initial row html
     for (i in uniqueDevices.devices) {
+
         //Attempt to get the device name from the deviceID
         let devName = getDeviceName(uniqueDevices.devices[i]);
 
         //Check if failed - code non-zero
         if (devName.code) {
+
             //Alert that an error occurred
             alert("Error getting device name");
 
             //Log specific error
             console.log(devName.msg);
-
-            //Break
-            break;
         }
 
         //Initialise the row with the name of the device and the class for the chart
         htmlRows[i] = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart">';
     }
 
+    //Attempt to get the duration of the routine
+    var duration = getDuration(timings);
 
+    //Check if failed - code non-zero
+    if (duration.code) {
 
+        //Alert that an error occurred
+        alert("Error getting the duration of the routine");
 
-    //Loop through the timings array and look for the largest value of timeStop
+        //Log specific error
+        console.log(duration.msg);
+    }
+
+    //Loop through the timings array and generate the span blocks
     for (i in times) {
-        //If the stop time for the current step is greater than any previous stop time
-        if (parseInt(times[i].timeStop) >= duration) {
 
-            //Update the last time value with the new greatest value
-            duration = parseInt(times[i].timeStop);
+        //Calculate the width of the block in the figure, in %
+        //Calculate the duration of the block
+        var stepDur = times[i].timeStop - times[i].timeStart;
+
+        //Convert this to the width of the block by multiplying by 100/duration
+        var blockWidth = stepDur * (100 / duration.dur);
+
+
+        //Create visualisation HTML span
+        var rowHTML = '<span style="width:' + blockWidth + '%;"class="block" title="' + times[i].state + '"></span>';
+
+        //If the deviceID can be found in the timings array, append the ned span block to it
+        if (uniqueDevices.devices.indexOf(parseInt(times[i].devID)) != -1) {
+
+            //Get the index of the deviceID row specified in the timings block
+            let index = uniqueDevices.devices.indexOf(parseInt(times[i].devID));
+
+            //Append the new block to the existing HTML
+            htmlRows[index] += rowHTML;
         }
     }
 
-    //If the duration is valid, greater than 0, return in, else return an error
-    if (duration > 0) {
-        //Return the duration of the routine
-        return {
-            code: 0,
-            msg: "Success",
-            dur: duration,
-        };
+    //Loop through the unique devices, and append the closing div tags
+    for (i in uniqueDevices.devices) {
+
+        //Append the closing div tags to each of the rows
+        htmlRows[i] += '</div></div>';
     }
 
-    //There was an issue extracting the timings data from the JSON string, return an error
+    //Join the rows together into 1 string to return
+    visHtml = htmlRows.join("");
+
+    //Return the duration of the routine
     return {
-        code: 2,
-        msg: "There was an issue extracting the timings data from the JSON string",
-        dur: 0,
+        code: 0,
+        msg: "Success",
+        html: visHtml,
     };
+
 }
