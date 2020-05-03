@@ -377,7 +377,7 @@ function genVisHTML(timings) {
 
 
         //Create visualisation HTML span
-        var rowHTML = '<span style="width:' + blockWidth + '%;"class="block" title="' + times[i].state + '"></span>';
+        var rowHTML = '<span style="width:' + blockWidth + '%;"class="block" title="' + times[i].state + '"><span class="dspState">' + times[i].state + '</span></span>';
 
         //If the deviceID can be found in the timings array, append the ned span block to it
         if (uniqueDevices.devices.indexOf(parseInt(times[i].devID)) != -1) {

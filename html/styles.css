@@ -200,7 +200,7 @@ figure {
   opacity: .65;
 }
 
-.value {
+.dspState {
   display: block;
   line-height: 1em;
   position: absolute;
