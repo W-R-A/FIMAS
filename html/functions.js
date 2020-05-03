@@ -283,7 +283,7 @@ function getPrettyState(state, devType) {
 
         //If the device is a peristaltic pump, two states, on and off
         //Any other states should throw and an error
-        case "perPump":
+        case "perPump": {
             switch (state) {
                 case 0:
                     prettyState = "Off";
@@ -294,55 +294,64 @@ function getPrettyState(state, devType) {
                 default:
                     break;
             }
+            //Break out of the case
+            break;
+        }
 
         //If the device is a solenoid valve, two states, on and off
         //Any other states should throw and an error
-        case "solValve":
-            $('#state').append('<option selected="true" disabled>Select State</option>');
-            $('#state').append('<option class="1">On</option>');
-            $('#state').append('<option class="0">Off</option>');
-            $('#state').prop('selectedIndex', 0);
+        case "solValve": {
+            switch (state) {
+                case 0:
+                    prettyState = "Off";
+                    break;
+                case 1:
+                    prettyState = "On";
+                    break;
+                default:
+                    break;
+            }
+            //Break out of the case
             break;
-
-        case "sixValve":
-            $('#state').append('<option selected="true" disabled>Select State</option>');
-            $('#state').append('<option class="0">Position A</option>');
-            $('#state').append('<option class="1">Position B</option>');
-            $('#state').prop('selectedIndex', 0);
-            break;
-
-        default:
-
-    }
-
-
-
-
-    //Loop through the timings array and look for the largest value of timeStop
-    for (i in times) {
-        //If the stop time for the current step is greater than any previous stop time
-        if (parseInt(times[i].timeStop) >= duration) {
-
-            //Update the last time value with the new greatest value
-            duration = parseInt(times[i].timeStop);
         }
+
+        //If the device is a six-port valve, two states, A and B
+        //Any other states should throw and an error
+        case "sixValve": {
+            switch (state) {
+                case 0:
+                    prettyState = "A";
+                    break;
+                case 1:
+                    prettyState = "B";
+                    break;
+                default:
+                    break;
+            }
+            //Break out of the case
+            break;
+        }
+        default:
+            //Break
+            break;
+
     }
 
-    //If the duration is valid, greater than 0, return in, else return an error
-    if (duration > 0) {
-        //Return the duration of the routine
+    //If the prettyState is valid, not -1, return it, else return an error
+    if (prettyState != -1) {
+        //Return the prettyState
         return {
             code: 0,
             msg: "Success",
-            dur: duration,
+            pState: prettyState,
         };
     }
 
     //There was an issue extracting the timings data from the JSON string, return an error
     return {
-        code: 2,
-        msg: "There was an issue extracting the timings data from the JSON string",
-        dur: 0,
+        code: 1,
+        msg: "The state and deviceType do not match",
+        pState: 0,
     };
 }
 
