@@ -320,7 +320,7 @@
           //Testing - use static json routine
           response = $.parseJSON(tstRoutines)
 
-          //Get the devices on the system in a JSON format
+          //Get the routines on the system in a JSON format
           // $.getJSON("/routines.json", function (response) {
 
           //Loop through all of the routines in the file
@@ -344,81 +344,9 @@
 
               //Print out the routine timing data
               $(visualisationHtml.html).appendTo('#visualisation');
-
-
-              // //Loop through all of the timings in the selected routine
-              // $.each(routines.timings, function (i, timing) {
-
-
-
-              //   // //Calculate the width of the block in the figure, in %
-              //   // //Calculate the duration of the block
-              //   // var stepDur = timing.timeStop - timing.timeStart;
-
-              //   // //Convert this to the width of the block by multiplying by 100/duration
-              //   // var blockWidth = stepDur * (100 / duration.dur);
-
-
-              //   // //Create visualisation HTML span
-              //   // var rowHTML = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart"><span style="width:' + blockWidth + '%;"class="block" title="' + timing.state + '"></span></div></div>';
-
-
-              //   // //Create visualisation HTML span
-              //   // //var rowsHTML = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart">' + spansHTML + '</div></div>">';
-
-
-
-              //   // //Create visualisation HTML span
-              //   // //var spanHTML = '<span style="width:' + blockWidth + '%;"class="block" title="' + timing.state + '"</span>>';
-
-
-
-              //   //Print out the routine timing data
-              //   //$('<p> Device ID: ' + timing.devID + ', Device Name: ' + devName.name + ', Start time: ' + timing.timeStart + ', Stop Time: ' + timing.timeStop + ', State: ' + timing.state + '</p>').appendTo('#visualisation');
-              // });
-
-              //Print out the last time found in the routine
-              // $('<p> Duration: ' + duration.dur + '</p>').appendTo('#timings');
-
-              // //Calculate item width per second
-              // var widthPerSec = 100.00 / duration.dur
-              // //Print out the last time found in the routine
-              // $('<p> Width per second: ' + widthPerSec + '</p>').appendTo('#timings');
             }
           });
-
-
-          // });
-
-
-
-          //Create timing visualisation
-
-          //Fetch timings.json file/data
-          //Parse data, looking for the largest time stop - this is 100% width scale.
-          //For other steps, work out duration, and scale by the width scale
-          //For steps not starting at time zero, add on previous width data to 
-
-
-          //Create rows using all deviceID's found
-          //Create blocks in the rows for the same DeviceID
-
-
-          //Visualisation
-          // $('.value').each(function () {
-          //   var text = $(this).text();
-          //   $(this).parent().css('width', text);
-          // });
-
-          //$('.block').tooltip();
-          //});
-
         });
-
-
-
-
-
 
 
 
