@@ -153,7 +153,7 @@ function getDeviceName(deviceID) {
 //1 - The given device ID does not exist in the devices.json file 
 //2 - There is an issue loading the devices.json file
 //3 - There is no type associated with the deviceID
-function getDeviceName(deviceID) {
+function getDeviceType(deviceID) {
 
     //Load devices file
     //Check if ID exists
@@ -260,6 +260,91 @@ function getDuration(timings) {
     };
 }
 
+
+
+//Declare the get pretty state function - This will return a string containing the pretty state given a state and deviceType
+//Need to pass the state and deviceType
+//Returns an array with a code, message and prettyState which can be accessed in return .pState, .code and .msg
+//Code 0 on success, non-zero on failure
+//Code, msg
+//0 - Success
+//1 - The state and deviceType do not match
+function getPrettyState(state, devType) {
+
+    //Lookup state and device type and return as pretty state as a string
+    //If type and state do not match, throw an error
+
+
+    //Declare a variable to hold the pretty state of the device
+    var prettyState = -1;
+
+    //Switch based on the device type
+    switch (devType) {
+
+        //If the device is a peristaltic pump, two states, on and off
+        //Any other states should throw and an error
+        case "perPump":
+            switch (state) {
+                case 0:
+                    prettyState = "Off";
+                    break;
+                case 1:
+                    prettyState = "On";
+                    break;
+                default:
+                    break;
+            }
+
+        //If the device is a solenoid valve, two states, on and off
+        //Any other states should throw and an error
+        case "solValve":
+            $('#state').append('<option selected="true" disabled>Select State</option>');
+            $('#state').append('<option class="1">On</option>');
+            $('#state').append('<option class="0">Off</option>');
+            $('#state').prop('selectedIndex', 0);
+            break;
+
+        case "sixValve":
+            $('#state').append('<option selected="true" disabled>Select State</option>');
+            $('#state').append('<option class="0">Position A</option>');
+            $('#state').append('<option class="1">Position B</option>');
+            $('#state').prop('selectedIndex', 0);
+            break;
+
+        default:
+
+    }
+
+
+
+
+    //Loop through the timings array and look for the largest value of timeStop
+    for (i in times) {
+        //If the stop time for the current step is greater than any previous stop time
+        if (parseInt(times[i].timeStop) >= duration) {
+
+            //Update the last time value with the new greatest value
+            duration = parseInt(times[i].timeStop);
+        }
+    }
+
+    //If the duration is valid, greater than 0, return in, else return an error
+    if (duration > 0) {
+        //Return the duration of the routine
+        return {
+            code: 0,
+            msg: "Success",
+            dur: duration,
+        };
+    }
+
+    //There was an issue extracting the timings data from the JSON string, return an error
+    return {
+        code: 2,
+        msg: "There was an issue extracting the timings data from the JSON string",
+        dur: 0,
+    };
+}
 
 
 
