@@ -65,7 +65,7 @@ function populateRoutines(ddID) {
     var opHTML = '';
 
     //Testing - use static json
-    response = $.parseJSON(tstRoutines)
+    var response = $.parseJSON(tstRoutines)
 
     //Get the devices on the system in a JSON format
     // $.getJSON("/routines.json", function (response) {
@@ -107,10 +107,10 @@ function getDeviceName(deviceID) {
     //Return name of the device
 
     //Testing - use static json
-    response = $.parseJSON(tstDevices)
+    var response = $.parseJSON(tstDevices)
 
     //Get the devices on the system in a JSON format
-    // $.getJSON("/routines.json", function (response) {
+    // $.getJSON("/devices.json", function (response) {
 
     //Loop through the response and look for the requested deviceID
     for (i in response) {
@@ -160,34 +160,34 @@ function getDeviceType(deviceID) {
     //Return type of the device
 
     //Testing - use static json
-    response = $.parseJSON(tstDevices)
+    var response = $.parseJSON(tstDevices);
 
     //Get the devices on the system in a JSON format
-    // $.getJSON("/routines.json", function (response) {
+    // $.getJSON("/devices.json", function (response) {
 
     //Loop through the response and look for the requested deviceID
     for (i in response) {
 
-        //Check if the current device has the ID requested
-        if (parseInt(deviceID) == parseInt(response[i].devID)) {
+        // //Check if the current device has the ID requested
+        // if (parseInt(deviceID) == parseInt(response[i].devID)) {
 
-            //Check if the device type exists
-            if (typeof (response[i].devType) != "undefined") {
+        //     //Check if the device type exists
+        //     if (typeof (response[i].devType) != "undefined") {
 
-                //Return success with the device type
-                return {
-                    code: 0,
-                    msg: "Success!",
-                    type: toString(response[i].devType),
-                };
-            }
-            //If there is a device ID with no type, return an error
-            return {
-                code: 3,
-                msg: "There is no type associated with the deviceID",
-                type: "undefined",
-            };
-        }
+        //         //Return success with the device type
+        //         return {
+        //             code: 0,
+        //             msg: "Success!",
+        //             type: toString(response[i].devType),
+        //         };
+        //     }
+        //     //If there is a device ID with no type, return an error
+        //     return {
+        //         code: 3,
+        //         msg: "There is no type associated with the deviceID",
+        //         type: "undefined",
+        //     };
+        // }
     }
     //If at the end of the routines file there is no matching deviceID, return an error
     return {
@@ -262,42 +262,20 @@ function getDuration(timings) {
 
 
 
-//Declare the get pretty state function - This will return a string containing the pretty state given a state and deviceID
-//Need to pass the state and deviceID
+//Declare the get pretty state function - This will return a string containing the pretty state given a state and device type
+//Need to pass the state and device type
 //Returns an array with a code, message and prettyState which can be accessed in return .pState, .code and .msg
 //Code 0 on success, non-zero on failure
 //Code, msg
 //0 - Success
 //1 - The state and deviceType do not match
-//2 - There was an issue determining the device type
 function getPrettyState(state, devID) {
 
-    //Get device type from the device ID
     //Lookup state and device type and return as pretty state as a string
     //If type and state do not match, throw an error
 
     //Convert state to an integer
     state = parseInt(state);
-
-    // //Get the type of the device
-    // //var deviceType = getDeviceType(devID);
-
-    // //Check if failed - code non-zero
-    // if (deviceType.code) {
-
-    //     //Alert that an error occurred
-    //     alert("Error getting the type of the device");
-
-    //     //Log specific error
-    //     console.log(deviceType.msg);
-
-    //     //There was an issue determining the device type, return an error
-    //     return {
-    //         code: 2,
-    //         msg: "There was an issue determining the device type",
-    //         pState: "undefined",
-    //     };
-    // }
 
     //Declare a variable to hold the pretty state of the device
     var prettyState = "undefined";
@@ -542,8 +520,21 @@ function genVisHTML(timings) {
     //Loop through the timings array and generate the span blocks
     for (i in times) {
 
+        // //Get the type of the device
+        var deviceType = getDeviceType(times[i].devID);
+
+        // //Check if failed - code non-zero
+        // if (deviceType.code) {
+
+        //     //Alert that an error occurred
+        //     alert("Error getting the type of the device");
+
+        //     //Log specific error
+        //     console.log(deviceType.msg);
+        // }
+
         //Get the pretty name of the current state
-        var pName = getPrettyState(times[i].state, "perPump");
+        var pName = getPrettyState(times[i].state, "sixValve");
 
         //Check if failed - code non-zero
         if (pName.code) {
