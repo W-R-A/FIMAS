@@ -178,7 +178,7 @@ function getDeviceType(deviceID) {
                 return {
                     code: 0,
                     msg: "Success!",
-                    type: response[i].devType,
+                    type: toString(response[i].devType),
                 };
             }
             //If there is a device ID with no type, return an error
@@ -262,24 +262,48 @@ function getDuration(timings) {
 
 
 
-//Declare the get pretty state function - This will return a string containing the pretty state given a state and deviceType
-//Need to pass the state and deviceType
+//Declare the get pretty state function - This will return a string containing the pretty state given a state and deviceID
+//Need to pass the state and deviceID
 //Returns an array with a code, message and prettyState which can be accessed in return .pState, .code and .msg
 //Code 0 on success, non-zero on failure
 //Code, msg
 //0 - Success
 //1 - The state and deviceType do not match
-function getPrettyState(state, devType) {
+//2 - There was an issue determining the device type
+function getPrettyState(state, devID) {
 
+    //Get device type from the device ID
     //Lookup state and device type and return as pretty state as a string
     //If type and state do not match, throw an error
 
+    //Convert state to an integer
+    state = parseInt(state);
+
+    // //Get the type of the device
+    // //var deviceType = getDeviceType(devID);
+
+    // //Check if failed - code non-zero
+    // if (deviceType.code) {
+
+    //     //Alert that an error occurred
+    //     alert("Error getting the type of the device");
+
+    //     //Log specific error
+    //     console.log(deviceType.msg);
+
+    //     //There was an issue determining the device type, return an error
+    //     return {
+    //         code: 2,
+    //         msg: "There was an issue determining the device type",
+    //         pState: "undefined",
+    //     };
+    // }
 
     //Declare a variable to hold the pretty state of the device
-    var prettyState = -1;
+    var prettyState = "undefined";
 
     //Switch based on the device type
-    switch (devType) {
+    switch (devID) {
 
         //If the device is a peristaltic pump, two states, on and off
         //Any other states should throw and an error
@@ -338,7 +362,7 @@ function getPrettyState(state, devType) {
     }
 
     //If the prettyState is valid, not -1, return it, else return an error
-    if (prettyState != -1) {
+    if (prettyState != "undefined") {
         //Return the prettyState
         return {
             code: 0,
@@ -347,11 +371,11 @@ function getPrettyState(state, devType) {
         };
     }
 
-    //There was an issue extracting the timings data from the JSON string, return an error
+    //The state and deviceType do not match, return an error
     return {
         code: 1,
         msg: "The state and deviceType do not match",
-        pState: 0,
+        pState: "undefined",
     };
 }
 
@@ -518,6 +542,19 @@ function genVisHTML(timings) {
     //Loop through the timings array and generate the span blocks
     for (i in times) {
 
+        //Get the pretty name of the current state
+        var pName = getPrettyState(times[i].state, "perPump");
+
+        //Check if failed - code non-zero
+        if (pName.code) {
+
+            //Alert that an error occurred
+            alert("Error getting the pretty name of the current state");
+
+            //Log specific error
+            console.log(pName.msg);
+        }
+
         //Calculate the width of the block in the figure, in %
         //Calculate the duration of the block
         var stepDur = times[i].timeStop - times[i].timeStart;
@@ -526,7 +563,7 @@ function genVisHTML(timings) {
         var blockWidth = stepDur * (100 / duration.dur);
 
         //Create visualisation HTML span
-        var rowHTML = '<span style="width:' + blockWidth + '%;"class="block" title="' + times[i].state + '"><span class="dspState">' + times[i].state + '</span></span>';
+        var rowHTML = '<span style="width:' + blockWidth + '%;"class="block" title="' + times[i].state + '"><span class="dspState">' + pName.pState + '</span></span>';
 
         //If the deviceID can be found in the timings array, append the next span block to it
         if (uniqueDevices.devices.indexOf(parseInt(times[i].devID)) != -1) {
