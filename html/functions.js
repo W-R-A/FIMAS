@@ -166,28 +166,28 @@ function getDeviceType(deviceID) {
     // $.getJSON("/devices.json", function (response) {
 
     //Loop through the response and look for the requested deviceID
-    for (i in response) {
+    for (j in response) {
 
-        // //Check if the current device has the ID requested
-        // if (parseInt(deviceID) == parseInt(response[i].devID)) {
+        //Check if the current device has the ID requested
+        if (parseInt(deviceID) == parseInt(response[j].devID)) {
 
-        //     //Check if the device type exists
-        //     if (typeof (response[i].devType) != "undefined") {
+            //Check if the device type exists
+            if (typeof (response[j].devType) != "undefined") {
 
-        //         //Return success with the device type
-        //         return {
-        //             code: 0,
-        //             msg: "Success!",
-        //             type: toString(response[i].devType),
-        //         };
-        //     }
-        //     //If there is a device ID with no type, return an error
-        //     return {
-        //         code: 3,
-        //         msg: "There is no type associated with the deviceID",
-        //         type: "undefined",
-        //     };
-        // }
+                //Return success with the device type
+                return {
+                    code: 0,
+                    msg: "Success!",
+                    type: toString(response[j].devType),
+                };
+            }
+            //If there is a device ID with no type, return an error
+            return {
+                code: 3,
+                msg: "There is no type associated with the deviceID",
+                type: "undefined",
+            };
+        }
     }
     //If at the end of the routines file there is no matching deviceID, return an error
     return {
