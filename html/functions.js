@@ -178,7 +178,7 @@ function getDeviceType(deviceID) {
                 return {
                     code: 0,
                     msg: "Success!",
-                    type: toString(response[j].devType),
+                    type: response[j].devType,
                 };
             }
             //If there is a device ID with no type, return an error
@@ -233,12 +233,12 @@ function getDuration(timings) {
     var duration = -1;
 
     //Loop through the timings array and look for the largest value of timeStop
-    for (i in times) {
+    for (k in times) {
         //If the stop time for the current step is greater than any previous stop time
-        if (parseInt(times[i].timeStop) >= duration) {
+        if (parseInt(times[k].timeStop) >= duration) {
 
             //Update the last time value with the new greatest value
-            duration = parseInt(times[i].timeStop);
+            duration = parseInt(times[k].timeStop);
         }
     }
 
@@ -389,9 +389,9 @@ function getUniqueDevices(timings) {
     let devices = [];
 
     //Loop through the timings array and extract all of the deviceID's
-    for (i in times) {
+    for (ii in times) {
         //Extract all of the deviceID's to the devices array
-        devices.push(parseInt(times[i].devID));
+        devices.push(parseInt(times[ii].devID));
     }
 
     //Get a array of non-duplicate deviceIDs used in the routine
@@ -485,10 +485,10 @@ function genVisHTML(timings) {
     var htmlRows = [];
 
     //Loop through the unique devices, and create the initial row html
-    for (i in uniqueDevices.devices) {
+    for (ij in uniqueDevices.devices) {
 
         //Attempt to get the device name from the deviceID
-        let devName = getDeviceName(uniqueDevices.devices[i]);
+        let devName = getDeviceName(uniqueDevices.devices[ij]);
 
         //Check if failed - code non-zero
         if (devName.code) {
@@ -501,7 +501,7 @@ function genVisHTML(timings) {
         }
 
         //Initialise the row with the name of the device and the class for the chart
-        htmlRows[i] = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart">';
+        htmlRows[ij] = '<div class="row"> <h6>' + devName.name + '</h6><div class="chart">';
     }
 
     //Attempt to get the duration of the routine
@@ -518,23 +518,23 @@ function genVisHTML(timings) {
     }
 
     //Loop through the timings array and generate the span blocks
-    for (i in times) {
+    for (ik in times) {
 
-        // //Get the type of the device
-        var deviceType = getDeviceType(times[i].devID);
+        //Get the type of the device
+        var deviceType = getDeviceType(times[ik].devID);
 
-        // //Check if failed - code non-zero
-        // if (deviceType.code) {
+        //Check if failed - code non-zero
+        if (deviceType.code) {
 
-        //     //Alert that an error occurred
-        //     alert("Error getting the type of the device");
+            //Alert that an error occurred
+            alert("Error getting the type of the device");
 
-        //     //Log specific error
-        //     console.log(deviceType.msg);
-        // }
+            //Log specific error
+            console.log(deviceType.msg);
+        }
 
         //Get the pretty name of the current state
-        var pName = getPrettyState(times[i].state, "sixValve");
+        var pName = getPrettyState(times[ik].state, deviceType.type);
 
         //Check if failed - code non-zero
         if (pName.code) {
@@ -548,19 +548,19 @@ function genVisHTML(timings) {
 
         //Calculate the width of the block in the figure, in %
         //Calculate the duration of the block
-        var stepDur = times[i].timeStop - times[i].timeStart;
+        var stepDur = times[ik].timeStop - times[ik].timeStart;
 
         //Convert this to the width of the block by multiplying by 100/duration
         var blockWidth = stepDur * (100 / duration.dur);
 
         //Create visualisation HTML span
-        var rowHTML = '<span style="width:' + blockWidth + '%;"class="block" title="' + times[i].state + '"><span class="dspState">' + pName.pState + '</span></span>';
+        var rowHTML = '<span style="width:' + blockWidth + '%;"class="block" title="' + times[ik].state + '"><span class="dspState">' + pName.pState + '</span></span>';
 
         //If the deviceID can be found in the timings array, append the next span block to it
-        if (uniqueDevices.devices.indexOf(parseInt(times[i].devID)) != -1) {
+        if (uniqueDevices.devices.indexOf(parseInt(times[ik].devID)) != -1) {
 
             //Get the index of the deviceID row specified in the timings block
-            let index = uniqueDevices.devices.indexOf(parseInt(times[i].devID));
+            let index = uniqueDevices.devices.indexOf(parseInt(times[ik].devID));
 
             //Append the new block to the existing HTML
             htmlRows[index] += rowHTML;
@@ -568,10 +568,10 @@ function genVisHTML(timings) {
     }
 
     //Loop through the unique devices, and append the closing div tags
-    for (i in uniqueDevices.devices) {
+    for (ji in uniqueDevices.devices) {
 
         //Append the closing div tags to each of the rows
-        htmlRows[i] += '</div></div>';
+        htmlRows[ji] += '</div></div>';
     }
 
     //Join the rows together into 1 string to return
