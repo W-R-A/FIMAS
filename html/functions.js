@@ -217,7 +217,7 @@ function populateDevices(ddID) {
     //Loop through the response and fill in the dropdown
     $.each(response, function (i, item) {
         //Generate the dropdown html
-        opHTML += '<option class=' + item.devID + '>' + item.devName + '</option>';
+        opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
     });
 
     //Append the html to the dropdown
