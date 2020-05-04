@@ -163,6 +163,7 @@ function populateRoutines(ddID) {
 //3 - The given ID does not correspond to a dropdown type 
 //4 - There is an issue loading the devices file
 function populateDevices(ddID) {
+
     //Check to ensure a valid ID has been given
     //Check if ID exists
     //Check for multiple elements with the same ID
@@ -207,22 +208,20 @@ function populateDevices(ddID) {
     //Define some temporary variables to hold the HTML
     var opHTML = '';
 
-    //Testing - use static json
-    var response = $.parseJSON(tstDevices)
+    //Get the device info 
+    let devices = getDevices();
 
-    //Get the devices on the system in a JSON format
-    // $.getJSON("/routines.json", function (response) {
+    //Parse the JSON
+    var response = $.parseJSON(devices);
 
     //Loop through the response and fill in the dropdown
     $.each(response, function (i, item) {
         //Generate the dropdown html
-        opHTML += '<option class=' + item.routineID + '>' + item.name + '</option>';
+        opHTML += '<option class=' + item.devID + '>' + item.devName + '</option>';
     });
-
 
     //Append the html to the dropdown
     $('#' + ddID).append(opHTML);
-    // });
 
     //Return success
     return {
@@ -233,53 +232,6 @@ function populateDevices(ddID) {
 
 
 
-
-
-
-//Declare the populate devices function - This will populate the device table based on the JSON received from the board
-function populateDevices() {
-
-    //Ensure that the dropdown is empty
-    $('#devices_dropdown').empty();
-
-    //Set default option as select device, and make it disabled
-    $('#devices_dropdown').append('<option selected="true" disabled>Select Device</option>');
-    $('#devices_dropdown').prop('selectedIndex', 0);
-
-    //Define some temporary variables to hold the HTML
-    var trHTML = '';
-    var opHTML = '';
-
-    //Testing - use static json
-    response = $.parseJSON(tstDevices)
-
-    //Get the devices on the system in a JSON format
-    //$.getJSON("/devices.json", function (response) {
-    //Loop through the response and fill in the table and dropdown
-    $.each(response, function (i, item) {
-        //Generate the table HTML from the received JSON file
-        trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devPin1 + '</td><td>' + item.devPin2 + '</td><td><button class="btnTest" id ="' + item.devID + '">Test Device</button></td></tr>';
-
-        //Replace -1 pins to not used
-        trHTML = trHTML.replace("-1", "Not Used");
-
-        //Replace the abbreviated device names with the full ones          
-        trHTML = trHTML.replace("perPump", "Peristaltic Pump");
-        trHTML = trHTML.replace("solValve", "Solenoid Valve");
-        trHTML = trHTML.replace("sixValve", "6-Port Valve");
-        trHTML = trHTML.replace("switchValve", "Switching Valve");
-
-        //Generate the dropdown html
-        opHTML += '<option>' + item.devName + '</option>';
-    });
-
-    //Append the html to the devices table
-    $('#devices_table').append(trHTML);
-
-    //Append the html to the dropdown
-    $('#devices_dropdown').append(opHTML);
-    //});
-}
 
 
 //Declare the get device name function - This will return the device name as a string given the device id.
