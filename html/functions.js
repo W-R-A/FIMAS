@@ -9,6 +9,68 @@ var tstRoutines = '[{"routineID":"1004","name":"AlCl","timings":[{"devID":"1000"
 
 
 
+//Declare the getDevices function - This will get the devices.json file when running in production, or some static text when running in development
+//No parameters need to be passed
+//Returns an array with a jsonString code and message which can be accessed in return .code and .msg .json
+//Code 0 on success, non-zero on failure
+//Code, msg
+//0 - Success
+//1 - The devices.json file could not be loaded
+function getDevices() {
+
+    //Get the devices.json file, then return the contents as a string
+
+    //Testing, return a static string
+    return {
+        code: 1,
+        msg: "The given ID does not exist",
+        json: tstDevices,
+    };
+
+    //Production, get the devices.json file from the server
+    // $.getJSON("/devices.json", function (response) {
+    //     return {
+    //         code: 1,
+    //         msg: "The given ID does not exist",
+    //         json: response,
+    //     };
+    // });
+
+}
+
+
+
+//Declare the getRoutines function - This will get the routines.json file when running in production, or some static text when running in development
+//No parameters need to be passed
+//Returns an array with a jsonString code and message which can be accessed in return .code and .msg .json
+//Code 0 on success, non-zero on failure
+//Code, msg
+//0 - Success
+//1 - The routines.json file could not be loaded
+function getRoutines() {
+
+    //Get the devices.json file, then return the contents as a string
+
+    //Testing, return a static string
+    return {
+        code: 1,
+        msg: "The given ID does not exist",
+        json: tstRoutines,
+    };
+
+    //Production, get the devices.json file from the server
+    // $.getJSON("/routines.json", function (response) {
+    //     return {
+    //         code: 1,
+    //         msg: "The given ID does not exist",
+    //         json: response,
+    //     };
+    // });
+
+}
+
+
+
 
 
 //Declare the populate routines function - This will populate a specified dropdown based on the routines.json file
