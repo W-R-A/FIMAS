@@ -166,9 +166,9 @@ figure {
   display: block;
   height: 100px;
   color: #fff;
-  font-size: .75em;
+  font-size: 1em;
   float: left;
-  background-color: #334D5C;
+  /* background-color: #334D5C; */
   position: relative;
   overflow: hidden;
   opacity: 1;
@@ -176,7 +176,23 @@ figure {
   cursor: pointer;
 }
 
-.block:nth-of-type(2), .legend li:nth-of-type(2):before {
+.stateOff {
+  background-color: #334D5C;
+}
+
+.stateOn {
+  background-color: #45B29D;
+}
+
+.stateA {
+  background-color: #EFC94C;
+}
+
+.stateB {
+  background-color: #E27A3F;
+}
+
+/* .block:nth-of-type(2), .legend li:nth-of-type(2):before {
   background-color: #45B29D;
 }
 
@@ -194,7 +210,7 @@ figure {
 
 .block:nth-of-type(6), .legend li:nth-of-type(6):before {
   background-color: #962D3E;
-}
+} */
 
 .block:hover {
   opacity: .65;
@@ -221,27 +237,6 @@ figure {
   left: 0;
 }
 
-.legend {
-  margin: 0 auto;
-  padding: 0;
-  font-size: .9em;
-}
-
-.legend li {
-  display: inline-block;
-  padding: .25em 1em;
-  line-height: 1em;
-}
-
-.legend li:before {
-  content: "";
-  margin-right: .5em;
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  background-color: #334D5C;
-}
-
 @media screen and (min-width: 768px) {
   h6 {
     padding: 0;
@@ -251,8 +246,5 @@ figure {
   }
   .block {
     font-size: 1em;
-  }
-  .legend {
-    width: 50%;
   }
 }
