@@ -161,7 +161,7 @@ function populateRoutines(ddID) {
 //1 - The given ID does not exist
 //2 - There is more than one element with the given ID in the document
 //3 - The given ID does not correspond to a dropdown type 
-//4 - There is an issue loading the devices file
+//4 - There was an issue loading the devices file
 function populateDevices(ddID) {
 
     //Check to ensure a valid ID has been given
@@ -211,8 +211,18 @@ function populateDevices(ddID) {
     //Get the device info 
     let devices = getDevices();
 
+    //Check if failed - code non-zero
+    if (devices.code) {
+
+        //An error has occurred loading the devices file
+        return {
+            code: 4,
+            msg: "There was an issue loading the devices file",
+        };
+    }
+
     //Parse the JSON
-    var response = $.parseJSON(devices);
+    var response = $.parseJSON(devices.json);
 
     //Loop through the response and fill in the dropdown
     $.each(response, function (i, item) {
