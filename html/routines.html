@@ -82,6 +82,17 @@
           console.log(attRou.msg);
         }
 
+        //Populate the device dropdown with the devices on the system
+        let attDev = populateDevices("devices_dropdown");
+
+        //Check if failed - code non-zero
+        if (attDev.code) {
+          //Alert that an error occurred
+          alert("Error populating devices");
+
+          //Log specific error
+          console.log(attDev.msg);
+        }
 
         var routines = [];
 
@@ -344,27 +355,6 @@
             }
           });
         });
-
-
-
-        //Clear dropdown
-        $('#devices_dropdown').empty();
-
-        //Set default option as select device, and make it disabled
-        $('#devices_dropdown').append('<option selected="true" disabled>Select Device</option>');
-        $('#devices_dropdown').prop('selectedIndex', 0);
-
-        var opHTML = '';
-
-        response = $.parseJSON(tstDevices)
-        //$.getJSON("/devices.json", function (response) {
-
-        $.each(response, function (i, item) {
-          opHTML += '<option id=' + item.devID + ' class =' + item.devType + '>' + item.devName + '</option>';
-        });
-
-        $('#devices_dropdown').append(opHTML);
-
       });
     </script>
 
