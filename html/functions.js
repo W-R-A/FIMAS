@@ -22,7 +22,7 @@ function getDevices() {
 
     //Testing, return a static string
     return {
-        code: 1,
+        code: 0,
         msg: "The given ID does not exist",
         json: tstDevices,
     };
@@ -53,7 +53,7 @@ function getRoutines() {
 
     //Testing, return a static string
     return {
-        code: 1,
+        code: 0,
         msg: "The given ID does not exist",
         json: tstRoutines,
     };
