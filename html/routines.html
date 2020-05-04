@@ -34,6 +34,9 @@
     <!-- Dropdown to select the routine to configure -->
     <select id="routines_dropdown"></select>
 
+    <!-- Create a button to add a routine -->
+    <button class="addRoutine">Add Routine</button>
+
     <p>Select Device: </p>
 
     <!-- Dropdown to edit the configuration of a device -->
@@ -54,6 +57,8 @@
     <!-- Linebreaks to move the figure down -->
     <br>
     <br>
+
+    <p id="visMsg"></p>
 
     <!-- Create a figure to hold the timing visualisation -->
     <figure>
@@ -325,11 +330,25 @@
           //Clear the previous visualisation bars
           $("#visualisation").empty();
 
-          //Testing - use static json routine
-          response = $.parseJSON(tstRoutines)
-
           //Get the routines on the system in a JSON format
-          // $.getJSON("/routines.json", function (response) {
+          //Get the device info 
+          let routines = getRoutines();
+
+          //Check if failed - code non-zero
+          if (routines.code) {
+
+            //Alert that an error occurred
+            alert("There was an issue loading the routines on the system");
+
+            //Log specific error
+            console.log(routines.msg);
+
+            //Break out of the function
+            return false;
+          }
+
+          //Parse the JSON
+          response = $.parseJSON(routines.json);
 
           //Loop through all of the routines in the file
           $.each(response, function (i, routines) {
