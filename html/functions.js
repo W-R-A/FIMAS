@@ -126,11 +126,21 @@ function populateRoutines(ddID) {
     //Define some temporary variables to hold the HTML
     var opHTML = '';
 
-    //Testing - use static json
-    var response = $.parseJSON(tstRoutines)
+    //Get the device info 
+    let routines = getRoutines();
 
-    //Get the devices on the system in a JSON format
-    // $.getJSON("/routines.json", function (response) {
+    //Check if failed - code non-zero
+    if (routines.code) {
+
+        //An error has occurred loading the routines file
+        return {
+            code: 4,
+            msg: "There was an issue loading the routines file",
+        };
+    }
+
+    //Parse the JSON
+    var response = $.parseJSON(routines.json);
 
     //Loop through the response and fill in the dropdown
     $.each(response, function (i, item) {
