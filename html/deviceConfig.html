@@ -100,8 +100,16 @@
         //Display the form
         displayForm()
 
+
+        //Add a label for the name field
+        $('#devConfigContainer').append('<label for="devName"><p>Device Name</label></p>');
+
         //Add a device name input with the type of operation required
         $('#devConfigContainer').append('<input type="text" name="devName" placeholder="Enter a name for the device"> <br><br>');
+
+
+        //Add a label for the name field
+        $('#devConfigContainer').append('<label for="devType"><p>Device Type</label></p>');
 
         //Add a device type input with the type of operation required
         $('#devConfigContainer').append('<select id="type_dropdown" name="devType" title="Select a type of device"></select> <br><br>');
@@ -118,10 +126,16 @@
           //Log specific error
           console.log(attTyp.msg);
         }
-        
+
+
+        //Add a label for the Primary Interface field
+        $('#devConfigContainer').append('<label for="priInter"><p>Primary Interface</label></p>');
 
         //Add an input dropdown for the primary interface
         $('#devConfigContainer').append('<select id="primary_dropdown" name="priInter" title="Select the primary interface"></select> <br><br>');
+
+        //Add a label for the Secondary Interface field
+        $('#devConfigContainer').append('<label for="secInter"><p>Secondary Interface</label></p>');
 
         //Add an input dropdown for the secondary interface
         $('#devConfigContainer').append('<select id="secondary_dropdown" name="secInter" title="Select the secondary interface"></select> <br><br>');
