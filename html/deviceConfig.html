@@ -43,18 +43,16 @@
     <div id="devConfig" class="background">
 
       <!-- Create the form to trigger the javascript update device function -->
-      <!-- <form class="bg-content animate" action="#" onsubmit="devicesConfigChange(this)">
+      <form class="bg-content animate" action="#" onsubmit="devicesConfigChange(this)">
 
-        <div class="container">
+        <div id="devConfigContainer" class="container">
 
           <input type="text" placeholder="Enter Username" name="uname" required>
 
 
           <input type="password" placeholder="Enter Password" name="psw" required>
-
-          <button type="submit">Login</button>
         </div>
-      </form> -->
+      </form>
     </div>
 
     <!-- <p>Select Device: </p> -->
@@ -74,23 +72,59 @@
     <script>
 
       //Add device button clicked
-      function addDevice() { displayForm() }
+      function addDevice() {
+
+        //Display the form
+        displayForm()
+
+        //Add a hidden input with the type of operation required
+        $('#devConfigContainer').append('<button type="submit">Add Device</button>');
+
+        //Add the submit button with the appropriate text
+        $('#devConfigContainer').append('<button type="submit">Add Device</button>');
+      }
 
       //Update device button clicked
-      function updateDevice() { displayForm() }
+      function updateDevice() {
+
+        //Display the form
+        displayForm()
+
+        //Add the submit button with the appropriate text
+        $('#devConfigContainer').append('<button type="submit">Update Device</button>');
+      }
 
       //Delete device button clicked
-      function deleteDevice() { displayForm() }
+      function deleteDevice() {
+
+        //Display the form
+        displayForm()
+
+        //Add the submit button with the appropriate text
+        $('#devConfigContainer').append('<button type="submit">Delete Device</button>');
+      }
 
 
       //Display the form 
       function displayForm() {
+
+        //Testing function
         alert("Hello World");
+
+        //Show the form
         document.getElementById('devConfig').style.display = 'block'
       }
 
       //Form object submitted
-      function devicesConfigChange(formObject) { }
+      function devicesConfigChange(formObject) {
+
+        //Display form element
+        alert("Form Submitted");
+
+
+        //Display Data from form - use hidden input to get 
+        alert(formObject.opType.value);
+      }
 
       //When the web page has loaded and the the document is ready to be worked on
       $(document).ready(function () {
