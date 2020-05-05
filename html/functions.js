@@ -548,7 +548,7 @@ function populatePins(ddID) {
     $('#' + ddID).empty();
 
     //Set default option as select device, and make it disabled
-    $('#' + ddID).append('<option selected="true" disabled>Select Device</option>');
+    $('#' + ddID).append('<option selected="true" disabled>Select Interface </option>');
     $('#' + ddID).prop('selectedIndex', 0);
 
     //Define some temporary variables to hold the HTML
@@ -573,7 +573,12 @@ function populatePins(ddID) {
     //Loop through the response and fill in the dropdown
     $.each(response, function (i, item) {
         //Generate the dropdown html
-        opHTML += '<option id=' + item.pin + ' class =' + item.type + '> Interface ' + item.pin + '</option>';
+        if (item.type == "output") {
+            opHTML += '<option id=' + item.pin + ' class =' + item.type + '> Output ' + item.pin + '</option>';
+        }
+        else {
+            opHTML += '<option id=' + item.pin + ' class =' + item.type + '> Input ' + item.pin + '</option>';
+        }
     });
 
     //Append the html to the dropdown
