@@ -75,46 +75,23 @@
         }
 
 
-        //Populate the device table based on the JSON configuration received
-        populateDeviceTable();
+        //Populate the device table with the devices on the system
+        let attDevT = populateDeviceTable("devices_table");
 
+        //Check if failed - code non-zero
+        if (attDevT.code) {
+          //Alert that an error occurred
+          alert("Error populating devices");
 
+          //Log specific error
+          console.log(attDevT.msg);
 
-        //Declare the populate devices function - This will populate the device table based on the JSON received from the board
-        function populateDeviceTable() {
+          //Break
+          return false;
 
-          //Define a variable to hold the table html
-          let trHTML = '';
-
-          //Testing - use static json
-          response = $.parseJSON(tstDevices)
-
-          //Get the devices on the system in a JSON format
-          //$.getJSON("/devices.json", function (response) {
-          //Loop through the response and fill in the table and dropdown
-          $.each(response, function (i, item) {
-            //Generate the table HTML from the received JSON file
-            trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devPin1 + '</td><td>' + item.devPin2 + '</td><td><button class="btnTest" id ="' + item.devID + '">Test Device</button></td></tr>';
-
-            //Replace -1 pins to not used
-            trHTML = trHTML.replace("-1", "Not Used");
-
-            //Replace the abbreviated device names with the full ones          
-            trHTML = trHTML.replace("perPump", "Peristaltic Pump");
-            trHTML = trHTML.replace("solValve", "Solenoid Valve");
-            trHTML = trHTML.replace("sixValve", "6-Port Valve");
-            trHTML = trHTML.replace("switchValve", "Switching Valve");
-
-          });
-
-          //Append the html to the devices table
-          $('#devices_table').append(trHTML);
-          //});
         }
 
-
-
-        //Bind the test buttons to the following handler
+        //Bind the test buttons to the following handler if table population succeeded
         $(document).on("click", "button.btnTest", function (event) {
 
           //Debugging, display the ID to be requested
