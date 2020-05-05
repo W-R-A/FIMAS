@@ -46,8 +46,8 @@
     <div id="devConfig" class="background">
 
       <!-- Create the form to trigger the javascript update device function -->
-      <form class="modal-content animate" action="#" onsubmit=""> 
-      
+      <form class="modal-content animate" action="#" onsubmit="devicesConfigChange(this)">
+
       </form>
     </div>
 
@@ -66,6 +66,8 @@
     <script src="functions.js"></script>
     <script src="jquery.js"></script>
     <script>
+      function devicesConfigChange(formObject) { }
+
       //When the web page has loaded and the the document is ready to be worked on
       $(document).ready(function () {
 
