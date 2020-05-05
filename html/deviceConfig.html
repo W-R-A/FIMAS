@@ -101,16 +101,16 @@
         displayForm()
 
         //Add a device name input with the type of operation required
-        $('#devConfigContainer').append('<input type="text" name="devName" placeholder="Enter a name for the device"> ');
+        $('#devConfigContainer').append('<input type="text" name="devName" placeholder="Enter a name for the device"> <br><br>');
 
         //Add a device type input with the type of operation required
         $('#devConfigContainer').append('<select id="type_dropdown" name="devType" title="Select a type of device"></select> <br><br>');
 
-        //Add a device type input with the type of operation required
-        $('#devConfigContainer').append('<select id="type_dropdown" name="devType" title="Select a type of device"></select> <br><br>');
+        //Add an input dropdown for the primary interface
+        $('#devConfigContainer').append('<select id="primary_dropdown" name="priInter" title="Select the primary interface"></select> <br><br>');
 
-        //Add a device type input with the type of operation required
-        $('#devConfigContainer').append('<select id="type_dropdown" name="devType" title="Select a type of device"></select> <br><br>');
+        //Add an input dropdown for the secondary interface
+        $('#devConfigContainer').append('<select id="secondary_dropdown" name="secInter" title="Select the secondary interface"></select> <br><br>');
 
         //Add a hidden input with the type of operation required
         $('#devConfigContainer').append('<input type="hidden" name="opType" value="add">');
