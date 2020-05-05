@@ -381,6 +381,92 @@ function populateDeviceTable(tableID) {
 
 
 
+//Declare the populate types function - This will populate a specified dropdown based on the types.json file
+//Need to pass the dropdown element ID, as a string
+//Returns an array with a code and message which can be accessed in return .code and .msg
+//Code 0 on success, non-zero on failure
+//Code, msg
+//0 - Success
+//1 - The given ID does not exist
+//2 - There is more than one element with the given ID in the document
+//3 - The given ID does not correspond to a dropdown type 
+//4 - There is an issue loading the types file
+function populateTypes(ddID) {
+    //Check to ensure a valid ID has been given
+    //Check if ID exists
+    //Check for multiple elements with the same ID
+    //Check if type is dropdown
+
+    //Check if the element ID given exists
+    if ($("#" + ddID).length == 0) {
+        //No element with the given ID exists
+        return {
+            code: 1,
+            msg: "The given ID does not exist",
+        };
+    }
+
+    //Check if there are multiple elements with the same ID
+    if ($("#" + ddID).length > 1) {
+        //There are multiple elements with the same ID
+        return {
+            code: 2,
+            msg: "There is more than one element with the given ID in the document",
+        };
+    }
+
+    //Check if there the element ID references a dropdown
+    if (!($("#" + ddID).is("select"))) {
+        //There given ID does not reference a dropdown
+        return {
+            code: 3,
+            msg: "The given ID does not correspond to a dropdown type",
+        };
+    }
+
+    //Ensure that the dropdown is empty
+    $('#' + ddID).empty();
+
+    //Set default option as select device, and make it disabled
+    $('#' + ddID).append('<option selected="true" disabled>Select Type of Device</option>');
+    $('#' + ddID).prop('selectedIndex', 0);
+
+    //Define some temporary variables to hold the HTML
+    var opHTML = '';
+
+    //Get the device info 
+    let types = getTypes();
+
+    //Check if failed - code non-zero
+    if (types.code) {
+
+        //An error has occurred loading the types file
+        return {
+            code: 4,
+            msg: "There was an issue loading the types file",
+        };
+    }
+
+    //Parse the JSON
+    var response = $.parseJSON(types.json);
+
+    //Loop through the response and fill in the dropdown
+    $.each(response, function (i, item) {
+        //Generate the dropdown html
+        opHTML += '<option class=' + item.devType + '>' + item.friendlyName + '</option>';
+    });
+
+
+    //Append the html to the dropdown
+    $('#' + ddID).append(opHTML);
+
+    //Return success
+    return {
+        code: 0,
+        msg: "Success!",
+    };
+}
+
 
 
 //Declare the get device name function - This will return the device name as a string given the device id.
