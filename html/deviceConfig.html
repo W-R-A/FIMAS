@@ -33,20 +33,35 @@
     <!-- Table showing a summary of the devices configured for use with the system -->
     <table id="devices_table"></table>
 
-    <p>Select Device: </p>
-
-    <!-- Dropdown to edit the configuration of a device -->
-    <select id="devices_dropdown">
-    </select>
-
     <!-- Linebreaks to move button onto new line -->
     <br>
     <br>
 
+    <!-- Create a button to bring up the device management options -->
+    <button>Device Management</button>
+
+    <!-- Create a form to hold the device management options -->
+
+    <!-- Create a div to hold the form -->
+    <div id="devConfig" class="background">
+
+      <!-- Create the form to trigger the javascript update device function -->
+      <form class="modal-content animate" action="#" onsubmit=""> 
+      
+      </form>
+    </div>
+
+    <!-- <p>Select Device: </p> -->
+
+    <!-- Dropdown to edit the configuration of a device -->
+    <!-- <select id="devices_dropdown"></select> -->
+
+
+
     <!-- Device options -->
-    <button>Add a device</button>
+    <!-- <button>Add a device</button>
     <button>Update a device</button>
-    <button>Delete a device</button>
+    <button>Delete a device</button> -->
 
     <script src="functions.js"></script>
     <script src="jquery.js"></script>
@@ -117,7 +132,6 @@
             }
           });
         });
-
       });
     </script>
   </div>
