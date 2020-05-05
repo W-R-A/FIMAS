@@ -1,3 +1,5 @@
+/* Main CSS */
+
 body {
   background-color: rgb(247, 252, 184);
   margin: 0;
@@ -103,6 +105,52 @@ input {
   text-decoration: none;
   border-radius: 10px
 }
+
+/* Device Config Popup CSS */
+
+/* Container for the popup form */
+
+.container {
+  padding: 16px;
+}
+
+/* Content of the form */
+
+.bg-content {
+  background-color: rgb(247, 252, 184);
+  margin: 5% auto 15% auto;
+  /* 5% from the top, 15% from the bottom and centred */
+  border: 2px solid rgb(145, 229, 255);
+  ;
+  width: 80%;
+}
+
+/* Background of the web page */
+
+.background {
+  /* Hidden by default */
+  display: none;
+  /* Stay in place */
+  position: fixed;
+  /* Sit on top */
+  z-index: 1;
+  left: 0;
+  top: 0;
+  /* Full width */
+  width: 100%;
+  /* Full height */
+  height: 100%;
+  /* Enable scroll if needed */
+  overflow: auto;
+  /* Fallback color */
+  background-color: rgb(0, 0, 0);
+  /* Black w/ opacity */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Top padding */
+  padding-top: 50px;
+}
+
+/* Visualisation CSS */
 
 h3, h6 {
   margin: 0;
