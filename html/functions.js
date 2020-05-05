@@ -72,6 +72,36 @@ function getRoutines() {
 
 
 
+//Declare the getTypes function - This will get the types.json file when running in production, or some static text when running in development
+//No parameters need to be passed
+//Returns an array with a jsonString code and message which can be accessed in return .code and .msg .json
+//Code 0 on success, non-zero on failure
+//Code, msg
+//0 - Success
+//1 - The types.json file could not be loaded
+function getTypes() {
+
+    //Get the devices.json file, then return the contents as a string
+
+    //Testing, return a static string
+    return {
+        code: 0,
+        msg: "The given ID does not exist",
+        json: tstTypes,
+    };
+
+    //Production, get the devices.json file from the server
+    // $.getJSON("/types.json", function (response) {
+    //     return {
+    //         code: 1,
+    //         msg: "The given ID does not exist",
+    //         json: response,
+    //     };
+    // });
+
+}
+
+
 
 //Declare the populate routines function - This will populate a specified dropdown based on the routines.json file
 //Need to pass the dropdown element ID, as a string
