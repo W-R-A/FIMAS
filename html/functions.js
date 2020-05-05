@@ -8,6 +8,7 @@ var tstRoutines = '[{"routineID":"1004","name":"AlCl","timings":[{"devID":"1000"
 
 var tstDevPins = '[{"pin":"1","type":"output"},{"pin":"2","type":"output"},{"pin":"3","type":"output"},{"pin":"4","type":"output"},{"pin":"5","type":"output"},{"pin":"6","type":"output"},{"pin":"7","type":"output"},{"pin":"8","type":"output"},{"pin":"1","type":"input"},{"pin":"2","type":"input"},{"pin":"3","type":"input"},{"pin":"4","type":"input"}]';
 
+var tstTypes = '[{"devType":"perPump","friendlyName":"Peristaltic Pump"},{"devType":"solValve","friendlyName":"Solenoid Valve"},{"devType":"sixValve","friendlyName":"6-Port Valve"},{"devType":"switchValve","friendlyName":"Switching Valve"}]';
 
 //Declare the getDevices function - This will get the devices.json file when running in production, or some static text when running in development
 //No parameters need to be passed
