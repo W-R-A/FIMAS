@@ -573,13 +573,24 @@ function populatePins(ddID) {
     //Loop through the response and fill in the dropdown
     $.each(response, function (i, item) {
         //Generate the dropdown html
-        if (item.type == "output") {
-            opHTML += '<option id=' + item.pin + ' class =' + item.type + '> Output ' + item.pin + '</option>';
+        if (ddID == "primary_dropdown") {
+            if ((item.type == "output")) {
+                opHTML += '<option id=' + item.pin + ' class =' + item.type + '> Output ' + item.pin + '</option>';
+            }
         }
         else {
-            opHTML += '<option id=' + item.pin + ' class =' + item.type + '> Input ' + item.pin + '</option>';
+            if ((item.type == "output")) {
+                opHTML += '<option id=' + item.pin + ' class =' + item.type + '> Output ' + item.pin + '</option>';
+            } else {
+                opHTML += '<option id=' + item.pin + ' class =' + item.type + '> Input ' + item.pin + '</option>';
+            }
         }
     });
+
+    //Add a unused option to the secondary interface dropdown
+    if (ddID == "secondary_dropdown") {
+        opHTML += '<option id="-1" >Not Used</option>';
+    }
 
     //Append the html to the dropdown
     $('#' + ddID).append(opHTML);
