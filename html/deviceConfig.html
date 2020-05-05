@@ -106,6 +106,20 @@
         //Add a device type input with the type of operation required
         $('#devConfigContainer').append('<select id="type_dropdown" name="devType" title="Select a type of device"></select> <br><br>');
 
+
+        //Populate the device dropdown with the devices on the system
+        let attTyp = populateTypes("type_dropdown");
+
+        //Check if failed - code non-zero
+        if (attTyp.code) {
+          //Alert that an error occurred
+          alert("Error populating types");
+
+          //Log specific error
+          console.log(attTyp.msg);
+        }
+        
+
         //Add an input dropdown for the primary interface
         $('#devConfigContainer').append('<select id="primary_dropdown" name="priInter" title="Select the primary interface"></select> <br><br>');
 
