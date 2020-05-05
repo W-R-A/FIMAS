@@ -121,7 +121,7 @@
         displayForm()
 
         //Add a dropdown to select the device to delete
-        $('#devConfigContainer').append('<select id="devices_dropdown" title="Select a device"></select> ');
+        $('#devConfigContainer').append('<select id="devices_dropdown" name="device" title="Select a device"></select> ');
 
         //Populate the device dropdown with the devices on the system
         let attDev = populateDevices("devices_dropdown");
