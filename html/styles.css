@@ -89,6 +89,12 @@ button {
   border-radius: 10px
 }
 
+/* Button hover transition */
+
+button:hover {
+  opacity: 0.8;
+}
+
 input {
   padding: 16px;
   font-family: Arial;
