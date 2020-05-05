@@ -83,16 +83,8 @@
         //Declare the populate devices function - This will populate the device table based on the JSON received from the board
         function populateDeviceTable() {
 
-          //Ensure that the dropdown is empty
-          $('#devices_dropdown').empty();
-
-          //Set default option as select device, and make it disabled
-          $('#devices_dropdown').append('<option selected="true" disabled>Select Device</option>');
-          $('#devices_dropdown').prop('selectedIndex', 0);
-
-          //Define some temporary variables to hold the HTML
-          var trHTML = '';
-          var opHTML = '';
+          //Define a variable to hold the table html
+          let trHTML = '';
 
           //Testing - use static json
           response = $.parseJSON(tstDevices)
@@ -101,7 +93,7 @@
           //$.getJSON("/devices.json", function (response) {
           //Loop through the response and fill in the table and dropdown
           $.each(response, function (i, item) {
-            //Generate the table HTML from the recieved JSON file
+            //Generate the table HTML from the received JSON file
             trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devPin1 + '</td><td>' + item.devPin2 + '</td><td><button class="btnTest" id ="' + item.devID + '">Test Device</button></td></tr>';
 
             //Replace -1 pins to not used
@@ -113,8 +105,6 @@
             trHTML = trHTML.replace("sixValve", "6-Port Valve");
             trHTML = trHTML.replace("switchValve", "Switching Valve");
 
-            //Generate the dropdown html
-            opHTML += '<option>' + item.devName + '</option>';
           });
 
           //Append the html to the devices table
