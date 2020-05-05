@@ -150,6 +150,33 @@ input {
   padding-top: 50px;
 }
 
+/* Animation for the popup */
+
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+
+/* Webkit transition */
+@-webkit-keyframes animatezoom {
+  from {
+    -webkit-transform: scale(0)
+  }
+  to {
+    -webkit-transform: scale(1)
+  }
+}
+
+/* Standard transition */
+@keyframes animatezoom {
+  from {
+    transform: scale(0)
+  }
+  to {
+    transform: scale(1)
+  }
+}
+
 /* Visualisation CSS */
 
 h3, h6 {
