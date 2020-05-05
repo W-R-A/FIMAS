@@ -72,6 +72,20 @@
 
     <script src="functions.js"></script>
     <script src="jquery.js"></script>
+    <!-- Script to close the popup form when anywhere outside it is clicked -->
+    <script>
+      // Get the id of the background div
+      var modal = document.getElementById('devConfig');
+
+      // When the user clicks anywhere outside of the popup
+      window.onclick = function (event) {
+        if (event.target == modal) {
+
+          //Hide the form popup
+          hideForm()
+        }
+      }
+    </script>
     <script>
 
       //Add device button clicked
