@@ -303,8 +303,8 @@ function populateDeviceTable(tableID) {
     $('#' + tableID).empty();
 
 
-    //Define a variable to hold the table html
-    let trHTML = '';
+    //Define a variable to hold the table html and initialise it with the table headings
+    let trHTML = '<tr><th>Device Name</th><th>Device Type</th><th>Primary Interface</th><th>Secondary Interface</th><th>Test Device</th></tr>';
 
     //Get the device info 
     let devices = getDevices();
