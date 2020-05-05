@@ -134,11 +134,35 @@
         //Add an input dropdown for the primary interface
         $('#devConfigContainer').append('<select id="primary_dropdown" name="priInter" title="Select the primary interface"></select> <br><br>');
 
+        //Populate the device dropdown with the devices on the system
+        let attInt = populatePins("primary_dropdown");
+
+        //Check if failed - code non-zero
+        if (attInt.code) {
+          //Alert that an error occurred
+          alert("Error populating types");
+
+          //Log specific error
+          console.log(attInt.msg);
+        }
+
         //Add a label for the Secondary Interface field
         $('#devConfigContainer').append('<label for="secInter"><p>Secondary Interface</label></p>');
 
         //Add an input dropdown for the secondary interface
         $('#devConfigContainer').append('<select id="secondary_dropdown" name="secInter" title="Select the secondary interface"></select> <br><br>');
+
+        //Populate the device dropdown with the devices on the system
+        let attInt = populatePins("secondary_dropdown");
+
+        //Check if failed - code non-zero
+        if (attInt.code) {
+          //Alert that an error occurred
+          alert("Error populating types");
+
+          //Log specific error
+          console.log(attInt.msg);
+        }
 
         //Add a hidden input with the type of operation required
         $('#devConfigContainer').append('<input type="hidden" name="opType" value="add">');
