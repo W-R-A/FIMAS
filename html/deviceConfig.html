@@ -37,18 +37,24 @@
     <br>
     <br>
 
-    <!-- Create a button to bring up the device management options -->
-    <button>Device Management</button>
-
     <!-- Create a form to hold the device management options -->
 
     <!-- Create a div to hold the form -->
     <div id="devConfig" class="background">
 
       <!-- Create the form to trigger the javascript update device function -->
-      <form class="bg-content animate" action="#" onsubmit="devicesConfigChange(this)">
+      <!-- <form class="bg-content animate" action="#" onsubmit="devicesConfigChange(this)">
 
-      </form>
+        <div class="container">
+
+          <input type="text" placeholder="Enter Username" name="uname" required>
+
+
+          <input type="password" placeholder="Enter Password" name="psw" required>
+
+          <button type="submit">Login</button>
+        </div>
+      </form> -->
     </div>
 
     <!-- <p>Select Device: </p> -->
@@ -59,29 +65,47 @@
 
 
     <!-- Device options -->
-    <!-- <button>Add a device</button>
-    <button>Update a device</button>
-    <button>Delete a device</button> -->
+    <button onclick="addDevice()">Add a device</button>
+    <button onclick="updateDevice()">Update a device</button>
+    <button onclick="deleteDevice()">Delete a device</button>
 
     <script src="functions.js"></script>
     <script src="jquery.js"></script>
     <script>
+
+      //Add device button clicked
+      function addDevice() { displayForm() }
+
+      //Update device button clicked
+      function updateDevice() { displayForm() }
+
+      //Delete device button clicked
+      function deleteDevice() { displayForm() }
+
+
+      //Display the form 
+      function displayForm() {
+        alert("Hello World");
+        document.getElementById('devConfig').style.display = 'block'
+      }
+
+      //Form object submitted
       function devicesConfigChange(formObject) { }
 
       //When the web page has loaded and the the document is ready to be worked on
       $(document).ready(function () {
 
-        //Populate the device dropdown with the devices on the system
-        let attDev = populateDevices("devices_dropdown");
+        // //Populate the device dropdown with the devices on the system
+        // let attDev = populateDevices("devices_dropdown");
 
-        //Check if failed - code non-zero
-        if (attDev.code) {
-          //Alert that an error occurred
-          alert("Error populating devices");
+        // //Check if failed - code non-zero
+        // if (attDev.code) {
+        //   //Alert that an error occurred
+        //   alert("Error populating devices");
 
-          //Log specific error
-          console.log(attDev.msg);
-        }
+        //   //Log specific error
+        //   console.log(attDev.msg);
+        // }
 
 
         //Populate the device table with the devices on the system
