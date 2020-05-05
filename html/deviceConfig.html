@@ -78,7 +78,7 @@
         displayForm()
 
         //Add a hidden input with the type of operation required
-        $('#devConfigContainer').append('<button type="submit">Add Device</button>');
+        $('#devConfigContainer').append('<input type="hidden" name="opType" value="add">');
 
         //Add the submit button with the appropriate text
         $('#devConfigContainer').append('<button type="submit">Add Device</button>');
@@ -90,6 +90,9 @@
         //Display the form
         displayForm()
 
+        //Add a hidden input with the type of operation required
+        $('#devConfigContainer').append('<input type="hidden" name="opType" value="update">');
+
         //Add the submit button with the appropriate text
         $('#devConfigContainer').append('<button type="submit">Update Device</button>');
       }
@@ -100,6 +103,9 @@
         //Display the form
         displayForm()
 
+        //Add a hidden input with the type of operation required
+        $('#devConfigContainer').append('<input type="hidden" name="opType" value="delete">');
+
         //Add the submit button with the appropriate text
         $('#devConfigContainer').append('<button type="submit">Delete Device</button>');
       }
@@ -108,8 +114,8 @@
       //Display the form 
       function displayForm() {
 
-        //Testing function
-        alert("Hello World");
+        //Clear the form contents as it will be (re)populated by the calling function
+        $('#devConfigContainer').empty();
 
         //Show the form
         document.getElementById('devConfig').style.display = 'block'
@@ -120,7 +126,6 @@
 
         //Display form element
         alert("Form Submitted");
-
 
         //Display Data from form - use hidden input to get 
         alert(formObject.opType.value);
