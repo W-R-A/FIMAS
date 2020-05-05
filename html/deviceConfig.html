@@ -91,8 +91,26 @@
       //Add device button clicked
       function addDevice() {
 
+        //Fields needed
+        //Name
+        //Type
+        //Pin 1
+        //Pin 2
+
         //Display the form
         displayForm()
+
+        //Add a device name input with the type of operation required
+        $('#devConfigContainer').append('<input type="text" name="devName" placeholder="Enter a name for the device"> ');
+
+        //Add a device type input with the type of operation required
+        $('#devConfigContainer').append('<select id="type_dropdown" name="devType" title="Select a type of device"></select> <br><br>');
+
+        //Add a device type input with the type of operation required
+        $('#devConfigContainer').append('<select id="type_dropdown" name="devType" title="Select a type of device"></select> <br><br>');
+
+        //Add a device type input with the type of operation required
+        $('#devConfigContainer').append('<select id="type_dropdown" name="devType" title="Select a type of device"></select> <br><br>');
 
         //Add a hidden input with the type of operation required
         $('#devConfigContainer').append('<input type="hidden" name="opType" value="add">');
