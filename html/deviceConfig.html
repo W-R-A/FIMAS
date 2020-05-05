@@ -52,6 +52,9 @@
 
           <input type="password" placeholder="Enter Password" name="psw" required>
         </div>
+        <div class="container">
+          <button type="button" onclick="hideForm()">Cancel</button>
+        </div>
       </form>
     </div>
 
@@ -120,6 +123,14 @@
         //Show the form
         document.getElementById('devConfig').style.display = 'block'
       }
+
+      //Hide the form 
+      function hideForm() {
+
+        //Show the form
+        document.getElementById('devConfig').style.display = 'none'
+      }
+
 
       //Form object submitted
       function devicesConfigChange(formObject) {
