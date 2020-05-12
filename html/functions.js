@@ -1065,7 +1065,7 @@ function genVisHTML(timings) {
         var blockWidth = stepDur * (100 / duration.dur);
 
         //Create visualisation HTML span
-        var rowHTML = '<span style="width:' + blockWidth + '%;"class="block state' + pName.pState + '" title="' + times[ik].timeStart + '-' + times[ik].timeStop + '"><span class="dspState">' + pName.pState + '</span></span>';
+        var rowHTML = '<span style="width:' + blockWidth + '%;"class="block state' + pName.pState + '" title="' + times[ik].timeStart + '-' + times[ik].timeStop + ' seconds"><span class="dspState">' + pName.pState + '</span></span>';
 
         //If the deviceID can be found in the timings array, append the next span block to it
         if (uniqueDevices.devices.indexOf(parseInt(times[ik].devID)) != -1) {
