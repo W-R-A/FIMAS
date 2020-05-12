@@ -23,6 +23,7 @@
       <li><a href="deviceConfig.html">Device Configuration</a></li>
       <li><a class="active" href="routines.html">Routines Configuration</a></li>
       <li><a href="help.html">Help</a></li>
+      <li style="float:right; background-color:red"><a href="estop">Emergency Stop</a></li>
     </ul>
   </header>
 
@@ -37,6 +38,15 @@
     <!-- Create a button to add a routine -->
     <button class="addRoutine">Add Routine</button>
 
+      <!-- Linebreaks to move the figure down -->
+    <br>
+    <br>
+    <!-- Create a figure to hold the timing visualisation -->
+    <figure>
+      <!-- Create a div for the graphic bars to visualise timing -->
+      <div id="visualisation" class="graphic">
+      </div>
+    </figure>
     <p>Select Device: </p>
 
     <!-- Dropdown to edit the configuration of a device -->
@@ -54,18 +64,11 @@
     <!-- Create a button to generate the timing data -->
     <button class="genTiming">Generate Timings</button>
 
-    <!-- Linebreaks to move the figure down -->
-    <br>
-    <br>
+  
 
     <p id="visMsg"></p>
 
-    <!-- Create a figure to hold the timing visualisation -->
-    <figure>
-      <!-- Create a div for the graphic bars to visualise timing -->
-      <div id="visualisation" class="graphic">
-      </div>
-    </figure>
+
 
     <script src="functions.js"></script>
     <script src="jquery.js"></script>
