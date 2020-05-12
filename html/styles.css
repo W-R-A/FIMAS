@@ -224,7 +224,7 @@ figure {
       width: 0%;
     }
     to {
-      width: calc(100% - 100px);
+      width: calc(100% - 120px);
     }
   }
 }
@@ -321,7 +321,7 @@ figure {
 @media screen and (min-width: 768px) {
   h6 {
     padding: 0;
-    width: 100px;
+    width: 120px;
     float: left;
     line-height: 100px;
   }

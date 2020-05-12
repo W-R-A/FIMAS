@@ -44,7 +44,7 @@
     <div id="devConfig" class="background">
 
       <!-- Create the form to trigger the javascript update device function -->
-      <form class="bg-content animate" action="javascript:;" onsubmit="devicesConfigChange(this)">
+      <form class="bg-content animate" action="#" onsubmit="devicesConfigChange(this)">
 
         <div id="devConfigContainer" class="container">
 
@@ -53,9 +53,9 @@
 
           <input type="password" placeholder="Enter Password" name="psw" required>
         </div>
-        <div class="container">
+        <!-- <div class="container">
           <button type="button" onclick="hideForm()">Cancel</button>
-        </div>
+        </div> -->
       </form>
     </div>
 
@@ -169,7 +169,12 @@
         $('#devConfigContainer').append('<input type="hidden" name="opType" value="add">');
 
         //Add the submit button with the appropriate text
+        $('#devConfigContainer').append('<button type="button" onclick="hideForm()">Cancel</button> ');
+
+        //Add the submit button with the appropriate text
         $('#devConfigContainer').append('<button type="submit">Add Device</button>');
+
+
       }
 
       //Update device button clicked
@@ -207,7 +212,7 @@
         displayForm()
 
         //Add a dropdown to select the device to delete
-        $('#devConfigContainer').append('<select id="devices_dropdown" name="device" title="Select a device"></select> ');
+        $('#devConfigContainer').append('<select id="devices_dropdown" name="device" title="Select a device"></select><br><br> ');
 
         //Populate the device dropdown with the devices on the system
         let attDev = populateDevices("devices_dropdown");
@@ -223,6 +228,9 @@
 
         //Add a hidden input with the type of operation required
         $('#devConfigContainer').append('<input type="hidden" name="opType" value="delete">');
+
+        //Add the submit button with the appropriate text
+        $('#devConfigContainer').append('<button type="button" onclick="hideForm()">Cancel</button> ');
 
         //Add the submit button with the appropriate text
         $('#devConfigContainer').append('<button type="submit">Delete Device</button>');
