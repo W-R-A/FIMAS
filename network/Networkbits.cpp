@@ -70,7 +70,7 @@ void network(void) {
         //Debuging, print this out over serial
         serialQueue.call(printf, "Found HTTP designator at position: %u\n\n", httpLoc);
 
-        //Address parser logic, decide what repsonse is required dependant on the incoming address
+        //Address parser logic, decide what response is required dependant on the incoming address
 
         //Create a string based on the http get request data from the client
         string address = clientData.substr(0, httpLoc);
@@ -124,6 +124,28 @@ void network(void) {
 
             //Add the body
             response += JQUERY;
+        } else if (address.find("functions.js") != string::npos) {
+
+            //Add a 200 header code to the response
+            response += HTTP_STATUS_LINE_200;
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+
+            //Add the header fields
+            response += "Content-Type: text/javascript";
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+
+            //Add the header fields
+            response += "Cache-Control: public, max-age=31536000";
+
+            //Add 2 line feeds and carriage returns to the response to signal the end of the headers
+            response += "\r\n\r\n";
+
+            //Add the body
+            response += JSFUNCTIONS;
         } else if (address.find("devicetest") != string::npos) {
 
             int pos = address.find("id=");
