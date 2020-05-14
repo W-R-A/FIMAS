@@ -2,7 +2,7 @@
 //Used within FIMAS to hold functions such as the population of drop-down boxes, and fetching JSON data
 
 //Test JSON data for devices and routines
-var tstDevices = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Acid Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"},{\"devID\":\"1003\",\"devName\":\"Waste Pump\",\"devType\":\"perPump\",\"devPin1\":\"5\",\"devPin2\":\"-1\"}]";
+var tstDevices = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Acid Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
 
 var tstRoutines = '[{"routineID":"1004","name":"AlCl","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"0"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"1"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"0"},{"devID":"1000","timeStart":"15","timeStop":"24","state":"1"},{"devID":"1000","timeStart":"24","timeStop":"56","state":"0"},{"devID":"1000","timeStart":"56","timeStop":"60","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1001","timeStart":"4","timeStop":"8","state":"0"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"15","timeStop":"29","state":"0"},{"devID":"1001","timeStart":"29","timeStop":"47","state":"1"},{"devID":"1001","timeStart":"47","timeStop":"60","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"},{"devID":"1002","timeStart":"15","timeStop":"28","state":"0"},{"devID":"1002","timeStart":"28","timeStop":"40","state":"1"},{"devID":"1002","timeStart":"40","timeStop":"60","state":"0"}]},{"routineID":"1003","name":"CuSO4","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"}]}]';
 
@@ -21,21 +21,21 @@ function getDevices() {
 
     //Get the devices.json file, then return the contents as a string
 
-    //Testing, return a static string
-    return {
-        code: 0,
-        msg: "The given ID does not exist",
-        json: tstDevices,
-    };
+    // //Testing, return a static string
+    // return {
+    //     code: 0,
+    //     msg: "Success",
+    //     json: tstDevices,
+    // };
 
     //Production, get the devices.json file from the server
-    // $.getJSON("/devices.json", function (response) {
-    //     return {
-    //         code: 1,
-    //         msg: "The given ID does not exist",
-    //         json: response,
-    //     };
-    // });
+    $.getJSON("/devices.json", function (response) {
+        return {
+            code: 0,
+            msg: "Success",
+            json: response,
+        };
+    });
 
 }
 
@@ -50,23 +50,23 @@ function getDevices() {
 //1 - The routines.json file could not be loaded
 function getRoutines() {
 
-    //Get the devices.json file, then return the contents as a string
+    //Get the routines.json file, then return the contents as a string
 
-    //Testing, return a static string
-    return {
-        code: 0,
-        msg: "The given ID does not exist",
-        json: tstRoutines,
-    };
+    // //Testing, return a static string
+    // return {
+    //     code: 0,
+    //     msg: "Success",
+    //     json: tstRoutines,
+    // };
 
     //Production, get the devices.json file from the server
-    // $.getJSON("/routines.json", function (response) {
-    //     return {
-    //         code: 1,
-    //         msg: "The given ID does not exist",
-    //         json: response,
-    //     };
-    // });
+    $.getJSON("/routines.json", function (response) {
+        return {
+            code: 1,
+            msg: "Success",
+            json: response,
+        };
+    });
 
 }
 
