@@ -92,7 +92,7 @@ function getRoutines() {
         return {
             code: 0,
             msg: "Success",
-            json: res,
+            json: JSON.stringify(res),
         };
     }
     return {
