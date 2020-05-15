@@ -28,14 +28,36 @@ function getDevices() {
     //     json: tstDevices,
     // };
 
+    // Set the global configs to synchronous 
+    $.ajaxSetup({
+        async: false
+    });
+
+    let res = "undefined";
+
     //Production, get the devices.json file from the server
     $.getJSON("/devices.json", function (response) {
+        res = response;
+    });
+
+    // Set the global configs back to asynchronous 
+    $.ajaxSetup({
+        async: true
+    });
+
+    if (res != "undefined") {
         return {
             code: 0,
             msg: "Success",
-            json: response,
+            json: JSON.stringify(res),
         };
-    });
+    }
+    return {
+        code: 1,
+        msg: "The devices.json file could not be loaded",
+        json: "undefined",
+    };
+
 
 }
 
@@ -59,14 +81,25 @@ function getRoutines() {
     //     json: tstRoutines,
     // };
 
+    let res = "undefined";
+
     //Production, get the devices.json file from the server
     $.getJSON("/routines.json", function (response) {
-        return {
-            code: 1,
-            msg: "Success",
-            json: response,
-        };
+        res = response;
     });
+
+    if (res != "undefined") {
+        return {
+            code: 0,
+            msg: "Success",
+            json: res,
+        };
+    }
+    return {
+        code: 1,
+        msg: "The devices.json file could not be loaded",
+        json: "undefined",
+    };
 
 }
 
