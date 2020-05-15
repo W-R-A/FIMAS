@@ -71,7 +71,8 @@
     <button onclick="updateDevice()">Update a device</button>
     <button onclick="deleteDevice()">Delete a device</button>
 
-    <script>//Functions.js
+    <script>
+      //Functions.js
       //Used within FIMAS to hold functions such as the population of drop-down boxes, and fetching JSON data
 
       //Test JSON data for devices and routines
@@ -122,7 +123,7 @@
           return {
             code: 0,
             msg: "Success",
-            json: res,
+            json: JSON.stringify(res),
           };
         }
         return {
@@ -165,7 +166,7 @@
           return {
             code: 0,
             msg: "Success",
-            json: res,
+            json: JSON.stringify(res),
           };
         }
         return {
@@ -1201,7 +1202,9 @@
           html: visHtml,
         };
 
-      }</script>
+      }
+
+    </script>
     <script src="jquery.js"></script>
     <!-- Script to close the popup form when anywhere outside it is clicked -->
     <script>
