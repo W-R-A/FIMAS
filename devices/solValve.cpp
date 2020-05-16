@@ -33,3 +33,12 @@ unsigned short solValve::changeState(unsigned short newState)
         }
     }
 }
+
+//Tests the operation of the valve
+//Returns 0 if the valve is operating normally, non-zero otherwise
+unsigned short solValve::testDevice() {
+    changeState(1);
+    thread_sleep_for(500);
+    changeState(0);
+    return 0;
+}

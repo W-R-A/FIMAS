@@ -23,6 +23,10 @@ public:
     //Only two states are valid for the valve, position A and position B
     //Hence newstate is 0 for position A and any non-zero valve for position B
     unsigned short changeState(unsigned short newState);
+
+    //Tests the operation of the valve
+    //Returns 0 if the valve is operating normally, non-zero otherwise
+    unsigned short testDevice();
 };
 
 #endif
