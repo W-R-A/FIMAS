@@ -201,6 +201,39 @@ void network(void) {
                 response += "\r\n";
             }
 
+        } else if (address.find("runroutine") != string::npos) {
+
+            //load routine with requested ID
+            //search for device ID used
+            //test device
+            //return codes dependant on the outcome of the device tests
+
+            int pos = address.find("routineid=");
+
+            serialQueue.call(printf, "HTTP request, found routine ID at position: %d \n", pos);
+
+            string IDstr = address.substr(pos + 10, 4);
+
+            serialQueue.call(printf, "Routine ID:%s \n", IDstr.c_str());
+
+            int id = stoi(IDstr);
+
+            //Configure the routine with id for use with the system
+            if (configRoutine(ROUTINES, id)) {
+                serialQueue.call(printf, "Error loading routine\n");
+            } else {
+                printRoutine();
+            }
+
+            //Block and wait for routine to finish
+            runBlockingRoutine();
+
+            //Success, add a 200 header code to the response
+            response += HTTP_STATUS_LINE_200;
+
+            //Add a line feed and carriage return to the response
+            response += "\r\n";
+
         } else if (address.find("devices.json") != string::npos) {
 
             //Add a 200 header code to the response
