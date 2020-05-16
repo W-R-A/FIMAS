@@ -4,7 +4,7 @@
 //Test JSON data for devices and routines
 var tstDevices = "[{\"devID\":\"1000\",\"devName\":\"Sample Pump\",\"devType\":\"perPump\",\"devPin1\":\"1\",\"devPin2\":\"-1\"},{\"devID\":\"1001\",\"devName\":\"Control Valve\",\"devType\":\"solValve\",\"devPin1\":\"2\",\"devPin2\":\"-1\"},{\"devID\":\"1002\",\"devName\":\"6-Port Acid Valve\",\"devType\":\"sixValve\",\"devPin1\":\"3\",\"devPin2\":\"4\"}]";
 
-var tstRoutines = '[{"routineID":"1004","name":"AlCl","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"0"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"1"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"0"},{"devID":"1000","timeStart":"15","timeStop":"24","state":"1"},{"devID":"1000","timeStart":"24","timeStop":"56","state":"0"},{"devID":"1000","timeStart":"56","timeStop":"60","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1001","timeStart":"4","timeStop":"8","state":"0"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"15","timeStop":"29","state":"0"},{"devID":"1001","timeStart":"29","timeStop":"47","state":"1"},{"devID":"1001","timeStart":"47","timeStop":"60","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"},{"devID":"1002","timeStart":"15","timeStop":"28","state":"0"},{"devID":"1002","timeStart":"28","timeStop":"40","state":"1"},{"devID":"1002","timeStart":"40","timeStop":"60","state":"0"}]},{"routineID":"1003","name":"CuSO4","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"}]}]';
+var tstRoutines = '[{"routineID":"1004","name":"AlCl","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"0"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"1"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"0"},{"devID":"1000","timeStart":"15","timeStop":"24","state":"1"},{"devID":"1000","timeStart":"24","timeStop":"56","state":"0"},{"devID":"1000","timeStart":"56","timeStop":"60","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1001","timeStart":"4","timeStop":"8","state":"0"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"15","timeStop":"29","state":"0"},{"devID":"1001","timeStart":"29","timeStop":"47","state":"1"},{"devID":"1001","timeStart":"47","timeStop":"60","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"},{"devID":"1002","timeStart":"15","timeStop":"28","state":"0"},{"devID":"1002","timeStart":"28","timeStop":"40","state":"1"},{"devID":"1002","timeStart":"40","timeStop":"60","state":"0"}]},{"routineID":"1003","name":"CuSO4","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"}]}]';
 
 var tstDevPins = '[{"pin":"1","type":"output"},{"pin":"2","type":"output"},{"pin":"3","type":"output"},{"pin":"4","type":"output"},{"pin":"5","type":"output"},{"pin":"6","type":"output"},{"pin":"7","type":"output"},{"pin":"8","type":"output"},{"pin":"1","type":"input"},{"pin":"2","type":"input"},{"pin":"3","type":"input"},{"pin":"4","type":"input"}]';
 
@@ -21,12 +21,12 @@ function getDevices() {
 
     //Get the devices.json file, then return the contents as a string
 
-    // //Testing, return a static string
-    // return {
-    //     code: 0,
-    //     msg: "Success",
-    //     json: tstDevices,
-    // };
+    //Testing, return a static string
+    return {
+        code: 0,
+        msg: "Success",
+        json: tstDevices,
+    };
 
 
     let res = "undefined";
@@ -75,41 +75,41 @@ function getRoutines() {
 
     //Get the routines.json file, then return the contents as a string
 
-    // //Testing, return a static string
-    // return {
-    //     code: 0,
-    //     msg: "Success",
-    //     json: tstRoutines,
-    // };
-
-    let res = "undefined";
-
-    // Set the global configs to synchronous 
-    $.ajaxSetup({
-        async: false
-    });
-
-    //Production, get the devices.json file from the server
-    $.getJSON("/routines.json", function (response) {
-        res = response;
-    });
-
-    // Set the global configs back to asynchronous 
-    $.ajaxSetup({
-        async: true
-    });
-    if (res != "undefined") {
-        return {
-            code: 0,
-            msg: "Success",
-            json: JSON.stringify(res),
-        };
-    }
+    //Testing, return a static string
     return {
-        code: 1,
-        msg: "The devices.json file could not be loaded",
-        json: "undefined",
+        code: 0,
+        msg: "Success",
+        json: tstRoutines,
     };
+
+    // let res = "undefined";
+
+    // // Set the global configs to synchronous 
+    // $.ajaxSetup({
+    //     async: false
+    // });
+
+    // //Production, get the devices.json file from the server
+    // $.getJSON("/routines.json", function (response) {
+    //     res = response;
+    // });
+
+    // // Set the global configs back to asynchronous 
+    // $.ajaxSetup({
+    //     async: true
+    // });
+    // if (res != "undefined") {
+    //     return {
+    //         code: 0,
+    //         msg: "Success",
+    //         json: JSON.stringify(res),
+    //     };
+    // }
+    // return {
+    //     code: 1,
+    //     msg: "The devices.json file could not be loaded",
+    //     json: "undefined",
+    // };
 
 }
 
