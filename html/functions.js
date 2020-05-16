@@ -28,12 +28,13 @@ function getDevices() {
     //     json: tstDevices,
     // };
 
+
+    let res = "undefined";
+
     // Set the global configs to synchronous 
     $.ajaxSetup({
         async: false
     });
-
-    let res = "undefined";
 
     //Production, get the devices.json file from the server
     $.getJSON("/devices.json", function (response) {
@@ -83,11 +84,20 @@ function getRoutines() {
 
     let res = "undefined";
 
+    // Set the global configs to synchronous 
+    $.ajaxSetup({
+        async: false
+    });
+
     //Production, get the devices.json file from the server
     $.getJSON("/routines.json", function (response) {
         res = response;
     });
 
+    // Set the global configs back to asynchronous 
+    $.ajaxSetup({
+        async: true
+    });
     if (res != "undefined") {
         return {
             code: 0,
