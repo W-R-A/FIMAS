@@ -50,4 +50,14 @@ uint8_t testRoutineDevices(void);
 //Nothing is returned and no parameters need to be passed
 void printRoutine(void);
 
+//Get the duration of a routine
+//Returns the duration of the loaded routine in seconds
+//The desired routine should be configured before calling using configRoutine
+uint16_t routineDuration(void);
+
+//Run the routine in a blocking fashion on the current thread
+//Nothing is returned and no parameters need to be passed
+//The desired routine should be configured before calling using configRoutine
+void runBlockingRoutine(void);
+
 #endif

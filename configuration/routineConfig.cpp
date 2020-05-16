@@ -170,3 +170,60 @@ uint8_t testRoutineDevices(void) {
     //Return the number of device failures, which should be zero
     return devFails;
 }
+
+//Get the duration of a routine
+//Returns the duration of the loaded routine in seconds
+//The desired routine should be configured before calling using configRoutine
+uint16_t routineDuration(void) {
+
+    uint16_t duration = 0;
+
+    //Loop through the timings array and look for the largest value of timeStop
+    for (deviceTimes n : routine) {
+        //If the stop time for the current step is greater than any previous stop time
+        if (n.stopTime >= duration) {
+
+            //Update the last time value with the new greatest value
+            duration = n.stopTime;
+        }
+    }
+    return duration;
+}
+
+//Run the routine in a blocking fashion on the current thread
+//Nothing is returned and no parameters need to be passed
+//The desired routine should be configured before calling using configRoutine
+void runBlockingRoutine(void) {
+
+    //Seconds since starting routine
+    uint16_t elapsed = 0;
+
+    //Get routine duration
+    uint16_t duration = routineDuration();
+
+    while (elapsed < duration) {
+        //Loop through routine and change state if needed
+        // Iterate and print values of vector
+        for (deviceTimes n : routine) {
+            if (elapsed == n.startTime) {
+                for (int i = 0; i < devices.size(); i++) {
+                    if (n.devID == devices[i]->getID()) {
+                        devices[i]->changeState(n.devState);
+                    }
+                }
+            }
+        }
+
+        //Increment elapsed
+        elapsed++;
+
+        //Delay for a second before starting again
+        thread_sleep_for(1000);
+    }
+
+    //Reset devies to idle state
+    for (int i = 0; i < devices.size(); i++) {
+        devices[i]->changeState(0);
+    }
+}
+
