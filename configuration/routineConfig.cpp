@@ -221,9 +221,43 @@ void runBlockingRoutine(void) {
         thread_sleep_for(1000);
     }
 
-    //Reset devies to idle state
-    for (int i = 0; i < devices.size(); i++) {
-        devices[i]->changeState(0);
-    }
+    //Reset devies to default state
+    resetRoutineDevices();
 }
 
+//reset the devices used in a routine
+//The routine must have been loaded using configRoutine
+//Takes no inputs
+//Returns 0 on success, non-zero on failure to pass a device reset, with the value being the number of devices to fail reseting
+void resetRoutineDevices(void) {
+
+    //Create a set to hold the extracted deviceID's
+    std::set<uint16_t> ids;
+
+    //Loop through the routine vector and extract the deviceID's
+    for (uint8_t i = 0; i < routine.size(); i++) {
+        //Get the timing information at i
+        deviceTimes device = routine.at(i);
+
+        //Insert it into the set, this will remove duplicates of the device ID
+        ids.insert(device.devID);
+    }
+
+    //Get the set iterator
+    set<uint16_t>::iterator it;
+
+    //Loop through the deviceID's, reseting each
+    for (it = ids.begin(); it != ids.end(); ++it) {
+
+        //Loop through all of the devices, reseting the one which matches the given id
+        for (int i = 0; i < devices.size(); i++) {
+
+            //If the current devies matches the requested device ID, reset it
+            if (*it == devices[i]->getID()) {
+
+                //reset the device
+                devices[i]->resetDevice();
+            }
+        }
+    }
+}
