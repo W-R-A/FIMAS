@@ -70,9 +70,16 @@ unsigned short baseDevice::changeState(unsigned short newState) {
 //Virtual function, to be overriden by child classes
 //Tests the operation of the device
 //Returns 0 if the device is operating normally, non-zero otherwise
-unsigned short baseDevice::testDevice() {
+unsigned short baseDevice::testDevice(void) {
     //This function should be overridden, therefore return 1 indicating that the device is not operating normally by default
     return 1;
+}
+
+//Virtual function, to be overriden by child classes if their default state is not zero
+//Resets the device to its default state
+void baseDevice::resetDevice(void) {
+    //This should be overridden if the default state is not zero
+    changeState(0);
 }
 
 //Print an error message from a device

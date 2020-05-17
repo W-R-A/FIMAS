@@ -46,7 +46,11 @@ public:
     //Virtual function, to be overriden by child classes
     //Tests the operation of the device
     //Returns 0 if the device is operating normally, non-zero otherwise
-    virtual unsigned short testDevice();
+    virtual unsigned short testDevice(void);
+
+    //Virtual function, to be overriden by child classes if their default state is not zero
+    //Resets the device to its default state
+    virtual void resetDevice(void);
 
     //Protected methods
 protected:
