@@ -21,12 +21,12 @@ function getDevices() {
 
     //Get the devices.json file, then return the contents as a string
 
-    // //Testing, return a static string
-    // return {
-    //     code: 0,
-    //     msg: "Success",
-    //     json: tstDevices,
-    // };
+    //Testing, return a static string
+    return {
+        code: 0,
+        msg: "Success",
+        json: tstDevices,
+    };
 
 
     let res = "undefined";
@@ -75,12 +75,12 @@ function getRoutines() {
 
     //Get the routines.json file, then return the contents as a string
 
-    // //Testing, return a static string
-    // return {
-    //     code: 0,
-    //     msg: "Success",
-    //     json: tstRoutines,
-    // };
+    //Testing, return a static string
+    return {
+        code: 0,
+        msg: "Success",
+        json: tstRoutines,
+    };
 
     let res = "undefined";
 
