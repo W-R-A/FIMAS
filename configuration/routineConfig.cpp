@@ -5,7 +5,7 @@ std::vector<deviceTimes> routine;
 
 //Configure a routine to be run
 //Takes the JSON string of routines and the ID of the desired routine to load
-//Returns 0 on sucess, non-zero on failure
+//Returns 0 on success, non-zero on failure
 uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
     //Clear the routine vector of any previous timing information
     routine.clear();
@@ -66,28 +66,28 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
                                         //Debugging, send the client information over serial
                                         serialQueue.call(printf, "Error reading the device state, device ID: %d, start time: %d, stop time: %d\n", time.devID, time.startTime, time.stopTime);
 
-                                        //An error has occured, signal failure to load the routine
+                                        //An error has occurred, signal failure to load the routine
                                         return 1;
                                     }
                                 } else {
                                     //Debugging, send the client information over serial
                                     serialQueue.call(printf, "Error reading the stop time, device ID: %d, start time: %d\n", time.devID, time.startTime);
 
-                                    //An error has occured, signal failure to load the routine
+                                    //An error has occurred, signal failure to load the routine
                                     return 1;
                                 }
                             } else {
                                 //Debugging, send the client information over serial
                                 serialQueue.call(printf, "Error reading the start time, device ID: %d\n", time.devID);
 
-                                //An error has occured, signal failure to load the routine
+                                //An error has occurred, signal failure to load the routine
                                 return 1;
                             }
                         } else {
                             //Debugging, send the client information over serial
                             serialQueue.call(printf, "Error reading device ID\n");
 
-                            //An error has occured, signal failure to load the routine
+                            //An error has occurred, signal failure to load the routine
                             return 1;
                         }
                     }
@@ -97,7 +97,7 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
                     //Debugging, send the client information over serial
                     serialQueue.call(printf, "Error reading the timings array, Routine ID: %d\n", currentRoutineID);
 
-                    //An error has occured, signal failure to load the routine
+                    //An error has occurred, signal failure to load the routine
                     return 1;
                 }
             }
