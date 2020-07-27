@@ -44,8 +44,8 @@ extern array<baseDevice *, maxDevices> devices;
 //Declare input userbutton as trigger
 extern DigitalIn userButton;
 
-//Serial Communications
-extern Serial pc;
+// //Serial Communications
+// extern Serial pc;
 
 
 
