@@ -201,13 +201,17 @@ void runBlockingRoutine(void) {
     //Get routine duration
     uint16_t duration = routineDuration();
 
+    //While the routine has not finished
     while (elapsed < duration) {
-        //Loop through routine and change state if needed
-        // Iterate and print values of vector
+        //Loop through routine and change state if required
         for (deviceTimes n : routine) {
+            //If a device needs to change state
             if (elapsed == n.startTime) {
+                //Loop through the devices array
                 for (int i = 0; i < devices.size(); i++) {
+                    //If the device ID matches the specified ID
                     if (n.devID == devices[i]->getID()) {
+                        //Change the state of the device
                         devices[i]->changeState(n.devState);
                     }
                 }
