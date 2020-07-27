@@ -124,6 +124,31 @@ void network(void) {
 
             //Add the body
             response += JQUERY;
+        } else if (address.find("updatedevices/") != string::npos) {
+
+            //Find the start of the config JSON
+            int configStart = address.find("updatedevices/");
+
+            //Get the config string
+            string newDevConfig = address.substr(configStart + 14);
+
+            //Attempt to update the device configuration
+            if (configDevices((char *)newDevConfig.c_str())) {
+                //An error occuraed with updating the configuration, add a 404 header code to the response
+                response += HTTP_STATUS_LINE_404;
+
+                //Add a line feed and carriage return to the response
+                response += "\r\n";
+            }
+
+            else {
+                //Success, add a 200 header code to the response
+                response += HTTP_STATUS_LINE_200;
+
+                //Add a line feed and carriage return to the response
+                response += "\r\n";
+            }
+
         } else if (address.find("devicetest") != string::npos) {
 
             int pos = address.find("id=");
@@ -177,7 +202,7 @@ void network(void) {
 
             int id = stoi(IDstr);
 
-            //Confgure the routine with id id for use with the system
+            //Configure the routine with id for use with the system
             if (configRoutine(ROUTINES, id)) {
                 serialQueue.call(printf, "Error loading routine\n");
             } else {

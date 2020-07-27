@@ -229,7 +229,7 @@ function populateRoutines(ddID) {
     //Define some temporary variables to hold the HTML
     var opHTML = '';
 
-    //Get the device info 
+    //Get the routine info 
     let routines = getRoutines();
 
     //Check if failed - code non-zero

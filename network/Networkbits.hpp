@@ -4,6 +4,7 @@
 #include "mbed.h"
 #include "EthernetInterface.h"
 #include "TCPSocket.h"
+#include "deviceConfig.hpp"
 #include "routineConfig.hpp"
 
 #include <string> 

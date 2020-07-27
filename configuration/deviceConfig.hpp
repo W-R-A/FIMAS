@@ -19,4 +19,6 @@
 //Function Prototypes
 uint8_t configDevices(const char * configJSON);
 
+void clearDevices(void);
+
 #endif
