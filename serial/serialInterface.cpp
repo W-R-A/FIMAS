@@ -5,15 +5,8 @@
 #include "serialInterface.hpp"
 #include "hardware.hpp"
 
-#include "serialInterface.hpp"
-#include "sdInterface.hpp"
-#include "sampling.hpp"
-
-//Logging control variable
-volatile bool logging = ON;
-
 //Create a serial interface object to PC
-RawSerial pc(USBTX, USBRX, 115200);
+UnbufferedSerial pc(USBTX, USBRX, 115200);
 
 //Timeout used with serial
 Timer serialTimeout;
@@ -37,23 +30,7 @@ string cmdLogging ("LOGGING ");
 string cmdSetT    ("SETT ");
 
 
-//Read all data from the internal buffer to serial
-//No paramters need to be passed and nothing is returned
-void readAll(void)
-{
-	//Create a temporary variable to hold the data from the FIFO buffer
-	enviroParams data;
-	
-	//While the buffer still has data in it, pop the data out and write it to the SD card
-	while (!enviroBuffer.empty())
-	{
-		//Pop the data off the buffer
-		enviroBuffer.pop(data);
-		
-		//Write it to serial
-		pc.printf("Light Level: %f, Temperature: %f degrees celsius, Pressure %f mBar, Timestamp %s", data.ldr, data.temperature, data.pressure, ctime(&data.seconds));
-	}
-}
+
 
 //Decode the command sent over serial and take the appropiate action
 //Pass the string comtaing the command
@@ -63,39 +40,28 @@ void cmdDecode(string cmd)
     //Read Now
     if (cmd.find(cmdReadNow) != string::npos) {
         //Read current record
-        pc.printf("Read current record\n");
+        sendString("Read current record\n");
 		
-		//Read the environmental sensors
-		//Returns a enviroParams structure containg the enviornmental data along with a timestamp
-		enviroParams data = readNow();
-		
-		//Sent the data over serial
-		pc.printf("Light Level: %f, Temperature: %f degrees celsius, Pressure %f mBar, Timestamp %s\n", data.ldr, data.temperature, data.pressure, ctime(&data.seconds));
-    } 
+	} 
     
     //Read All from buffer
     if (cmd.find(cmdReadAll) != string::npos) {
         //Echo confirmation
-        pc.printf("Read all records");
-		
-		//Read all records to serial
-		readAll();
+        sendString("Read all records");
+
     } 
     
     //Flush Buffer
     if (cmd.find(cmdFlush) != string::npos) {
         //Flush FIFO buffer
-        pc.printf("Flush buffer");
-        //SDQueue.call(flushBuffer);
+        sendString("Flush buffer");
+
     } 
     
     //Eject SD card after flushing buffer
     if (cmd.find(cmdEject) != string::npos) {
         //Flush all records to sd then eject SD card
-        pc.printf("eject sd card");
-        //SDQueue.call(flushBuffer);
-        //SDQueue.call(SDclose);
-        
+        sendString("eject sd card");        
     } 
     
     //Enable/disable sampling
@@ -103,22 +69,21 @@ void cmdDecode(string cmd)
         //Check if sampling is to be turned on or off
         if (cmd.find("ON") != string::npos) {
             //Enable sampling
-			samplingQueue.call(startSampling);
+
 			
 			//Echo confirmation to serial
-            pc.printf("Sampling is enabled\n");
+            sendString("Sampling is enabled\n");
         } 
         else if (cmd.find("OFF") != string::npos) {
-            //Disable sampling
-			samplingQueue.call(stopSampling);
+
 			
 			//Echo confirmation to serial
-            pc.printf("Sampling is disabled\n");
+            sendString("Sampling is disabled\n");
         } 
         else 
         {
 			//Invalid option
-            pc.printf("Invalid Option\n");
+            sendString("Invalid Option\n");
         }
     } 
     
@@ -126,23 +91,21 @@ void cmdDecode(string cmd)
     if (cmd.find(cmdLogging) != string::npos) {
         //Check if logging is to be turned on or off
         if (cmd.find("ON") != string::npos) {
-            //Enable logging
-			logging = ON;
+
 			
 			//Echo confirmation to serial
-            pc.printf("Logging is enabled");
+            sendString("Logging is enabled");
         } 
         else if (cmd.find("OFF") != string::npos) {
-            //Disable logging
-			logging = OFF;
+
 			
 			//Echo confirmation to serial
-            pc.printf("Logging is disabled");
+            sendString("Logging is disabled");
         } 
         else 
         {
 			//Invalid option
-            pc.printf ("Invalid Option\n");
+            sendString("Invalid Option\n");
         }
     } 
     if (cmd.find(cmdSetT) != string::npos) {
@@ -155,19 +118,14 @@ void cmdDecode(string cmd)
 		//Check within bounds, 0.1<=T<=30
 		if ((fTime>=0.1f) && (fTime <= 30.0f))
 		{
-			//Check if the buffer needs to be flushed before the sample rate is updated
-			SDQueue.call(checkBufferSpace);
-			
-			//Update the sampling period
-			samplingQueue.call(updateSamplingPeriod, fTime);
 		
 			//Echo confirmation to serial
-			pc.printf("Sampling period set to %f seconds\n", fTime); 
+			//sendString("Sampling period set to %f seconds\n", fTime); 
 		}
 		else
 		{
 			//Print error to serial
-			pc.printf("Invalid time period, T should be between 0.1 and 30 seconds\n"); 
+			sendString("Invalid time period, T should be between 0.1 and 30 seconds\n"); 
 		}
     }
 }
@@ -178,7 +136,7 @@ void cmdDecode(string cmd)
 void serialInterface(void)
 {
     //Attach an interrupt to detect when a character has been recieived over serial
-    pc.attach(serialInputInterrupt, Serial::RxIrq);
+    pc.attach(serialInputInterrupt, SerialBase::RxIrq);
 
     //Start event queue on thread
     serialQueue.dispatch();
@@ -189,7 +147,7 @@ void serialInterface(void)
 void serialInputInterrupt(void)
 {
     //Disable interupt
-    pc.attach(NULL, Serial::RxIrq);
+    pc.attach(NULL, SerialBase::RxIrq);
 	
 	//Restart timeout
 	serialTimeout.stop();
@@ -209,7 +167,7 @@ void serialInputHandler(void)
     string cmd("");
     
     //Send instructions
-    pc.printf("Enter Command: ");
+    sendString("Enter Command: ");
     
     //Command length counter
     char i = 0;
@@ -221,17 +179,20 @@ void serialInputHandler(void)
 		//Check if there is a character to be read
 		if (pc.readable())
 		{
+			//Declare char to recieve user input
+			char j;
+
 			//Get user input
-			char j = pc.getc();
-			
+            pc.read(&j, 1);
+
 			//Echo user input
-			pc.putc(j);
+			pc.write(&j, 1);
 					
 			//If string is over 15 in length, invalid, return
 			if (i > 15)
 			{
-				pc.printf("Unrecognised command entered, please try again\n");
-				pc.printf(SERIAL_COMMAND_GUIDE);
+				sendString("Unrecognised command entered, please try again\n");
+				sendString(SERIAL_COMMAND_GUIDE);
 				break;
 			}
 			//Check for commands if the enter key is pressed
@@ -265,11 +226,41 @@ void serialInputHandler(void)
 		//If 5s has passed and no new char has been received, timeout and return to serial output
 		else if (serialTimeout.read() > 5)
 		{
-			pc.printf("Serial command timeout, please try again ensuring each key presss is within 5 seconds of the last\n");
+			sendString("Serial command timeout, please try again ensuring each key presss is within 5 seconds of the last\n");
 			break;
 		}
     }
 
     //Reenable interrupt
-    pc.attach(serialInputInterrupt, Serial::RxIrq);
+    pc.attach(serialInputInterrupt, SerialBase::RxIrq);
 }	
+
+//Send a byte of data over USART
+//Paul Davey - Lecture 6 Slide 3rd from the end
+void send_usart(unsigned char d)
+{
+	//Wait for the serial port to be writeable
+	while(!pc.writeable()) {};	
+
+	//Write byte to the serial port
+    pc.write(&d, 1);	
+}
+
+
+//Send a string over USART
+//Paul Davey - Lecture 6 Slide 3rd from the end
+void sendString(const char *string)
+{
+	//Declare temporary variable
+	unsigned short i = 0;
+
+	//While there is data still to be sent
+	while(string[i])
+	{
+		//Send char
+		send_usart(string[i]);
+
+		//Increment i
+		i++;
+	}
+}
