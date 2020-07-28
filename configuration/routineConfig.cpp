@@ -174,7 +174,7 @@ uint8_t testRoutineDevices(void) {
 //Get the duration of a routine
 //Returns the duration of the loaded routine in seconds
 //The desired routine should be configured before calling using configRoutine
-uint16_t routineDuration(void) {
+uint16_t getRoutineDuration(void) {
 
     uint16_t duration = 0;
 
@@ -199,7 +199,7 @@ void runBlockingRoutine(void) {
     uint16_t elapsed = 0;
 
     //Get routine duration
-    uint16_t duration = routineDuration();
+    uint16_t duration = getRoutineDuration();
 
     //While the routine has not finished
     while (elapsed < duration) {

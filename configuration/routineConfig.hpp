@@ -53,7 +53,7 @@ void printRoutine(void);
 //Get the duration of a routine
 //Returns the duration of the loaded routine in seconds
 //The desired routine should be configured before calling using configRoutine
-uint16_t routineDuration(void);
+uint16_t getRoutineDuration(void);
 
 //Run the routine in a blocking fashion on the current thread
 //Nothing is returned and no parameters need to be passed
