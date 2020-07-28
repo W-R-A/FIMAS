@@ -191,30 +191,43 @@ LWIP::call_in_callback_cb_t LWIP::get_call_in_callback()
     return cb;
 }
 
-const char *LWIP::get_ip_address()
+nsapi_error_t LWIP::get_ip_address(SocketAddress *address)
 {
     if (!default_interface) {
-        return NULL;
+        return NSAPI_ERROR_NO_ADDRESS;
     }
 
-    const ip_addr_t *addr = get_ip_addr(true, &default_interface->netif);
+    return get_ip_address_if(address, nullptr);
+}
 
-    if (!addr) {
-        return NULL;
+nsapi_error_t LWIP::get_ip_address_if(SocketAddress *address, const char *interface_name)
+{
+    if (!address) {
+        return NSAPI_ERROR_PARAMETER;
+    }
+
+    const ip_addr_t *addr;
+
+    if (interface_name == NULL) {
+        addr = get_ip_addr(true, &default_interface->netif);
+    } else {
+        addr = get_ip_addr(true, netif_find(interface_name));
     }
 #if LWIP_IPV6
     if (IP_IS_V6(addr)) {
-        return ip6addr_ntoa_r(ip_2_ip6(addr), ip_address, sizeof(ip_address));
+        char buf[NSAPI_IPv6_SIZE];
+        address->set_ip_address(ip6addr_ntoa_r(ip_2_ip6(addr), buf, NSAPI_IPv6_SIZE));
+        return NSAPI_ERROR_OK;
     }
 #endif
 #if LWIP_IPV4
     if (IP_IS_V4(addr)) {
-        return ip4addr_ntoa_r(ip_2_ip4(addr), ip_address, sizeof(ip_address));
+        char buf[NSAPI_IPv4_SIZE];
+        address->set_ip_address(ip4addr_ntoa_r(ip_2_ip4(addr), buf, NSAPI_IPv4_SIZE));
+        return NSAPI_ERROR_OK;
     }
 #endif
-#if LWIP_IPV6 && LWIP_IPV4
-    return NULL;
-#endif
+    return NSAPI_ERROR_UNSUPPORTED;
 }
 
 nsapi_error_t LWIP::socket_open(nsapi_socket_t *handle, nsapi_protocol_t proto)
@@ -258,7 +271,7 @@ nsapi_error_t LWIP::socket_open(nsapi_socket_t *handle, nsapi_protocol_t proto)
         return NSAPI_ERROR_NO_SOCKET;
     }
 
-    netconn_set_recvtimeout(s->conn, 1);
+    netconn_set_nonblocking(s->conn, true);
     *(struct mbed_lwip_socket **)handle = s;
     return 0;
 }
@@ -277,7 +290,9 @@ nsapi_error_t LWIP::socket_close(nsapi_socket_t handle)
         _event_flag.wait_any(TCP_CLOSED_FLAG, TCP_CLOSE_TIMEOUT);
     }
 #endif
-    pbuf_free(s->buf);
+    if (s->buf) {
+        pbuf_free(s->buf);
+    }
     err_t err = netconn_delete(s->conn);
     arena_dealloc(s);
     return err_remap(err);
@@ -361,7 +376,7 @@ nsapi_error_t LWIP::socket_accept(nsapi_socket_t server, nsapi_socket_t *handle,
         return err_remap(err);
     }
 
-    netconn_set_recvtimeout(ns->conn, 1);
+    netconn_set_nonblocking(ns->conn, true);
     *(struct mbed_lwip_socket **)handle = ns;
 
     ip_addr_t peer_addr;
@@ -374,8 +389,6 @@ nsapi_error_t LWIP::socket_accept(nsapi_socket_t server, nsapi_socket_t *handle,
         address->set_addr(addr);
         address->set_port(port);
     }
-
-    netconn_set_nonblocking(ns->conn, true);
 
     return 0;
 #else

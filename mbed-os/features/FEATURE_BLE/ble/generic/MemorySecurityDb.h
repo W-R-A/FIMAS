@@ -1,6 +1,8 @@
 /* mbed Microcontroller Library
  * Copyright (c) 2018 ARM Limited
  *
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -33,8 +35,6 @@ private:
         SecurityEntryIdentity_t peer_identity;
         SecurityEntrySigning_t peer_signing;
     };
-
-    static const size_t MAX_ENTRIES = 5;
 
     static entry_t* as_entry(entry_handle_t db_handle)
     {
@@ -150,11 +150,11 @@ public:
 
 private:
     virtual uint8_t get_entry_count() {
-        return MAX_ENTRIES;
+        return BLE_SECURITY_DATABASE_MAX_ENTRIES;
     }
 
     virtual SecurityDistributionFlags_t* get_entry_handle_by_index(uint8_t index) {
-        if (index < MAX_ENTRIES) {
+        if (index < BLE_SECURITY_DATABASE_MAX_ENTRIES) {
             return &_entries[index].flags;
         } else {
             return NULL;
@@ -187,7 +187,7 @@ private:
     };
 
 private:
-    entry_t _entries[MAX_ENTRIES];
+    entry_t _entries[BLE_SECURITY_DATABASE_MAX_ENTRIES];
 };
 
 } /* namespace pal */

@@ -1,6 +1,8 @@
 /* mbed Microcontroller Library
  * Copyright (c) 2018 ARM Limited
  *
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,6 +18,8 @@
 
 #ifndef GENERIC_FILE_SECURITY_DB_H_
 #define GENERIC_FILE_SECURITY_DB_H_
+
+#if BLE_SECURITY_DATABASE_FILESYSTEM
 
 #include "SecurityDb.h"
 
@@ -33,8 +37,6 @@ private:
         sign_count_t peer_sign_counter;
         size_t file_offset;
     };
-
-    static const size_t MAX_ENTRIES = 5;
 
     static entry_t* as_entry(entry_handle_t db_handle) {
         return reinterpret_cast<entry_t*>(db_handle);
@@ -118,6 +120,21 @@ public:
         sign_count_t sign_counter
     );
 
+    /* local csrk and identity */
+
+    virtual void set_local_csrk(
+            const csrk_t &csrk
+    );
+
+    virtual void set_local_identity(
+            const irk_t &irk,
+            const address_t &identity_address,
+            bool public_address
+    );
+
+    /* I am not overriding set_local_sign_counter to avoid constant filesystem writes,
+     * instead this is synced by sync (which is called on disconnection) */
+
     /* saving and loading from nvm */
 
     virtual void restore();
@@ -146,12 +163,14 @@ private:
     static FILE* erase_db_file(FILE* db_file);
 
 private:
-    entry_t _entries[MAX_ENTRIES];
+    entry_t _entries[BLE_SECURITY_DATABASE_MAX_ENTRIES];
     FILE *_db_file;
     uint8_t _buffer[sizeof(SecurityEntryKeys_t)];
 };
 
 } /* namespace pal */
 } /* namespace ble */
+
+#endif // BLE_SECURITY_DATABASE_FILESYSTEM
 
 #endif /*GENERIC_FILE_SECURITY_DB_H_*/

@@ -1,6 +1,8 @@
 /* mbed Microcontroller Library
  * Copyright (c) 2017-2018 ARM Limited
  *
+ * SPDX-License-Identifier: Apache-2.0
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,6 +23,7 @@
 #include "ble/generic/GenericSecurityManager.h"
 #include "ble/generic/MemorySecurityDb.h"
 #include "ble/generic/FileSecurityDb.h"
+#include "ble/generic/KVStoreSecurityDb.h"
 
 using ble::pal::advertising_peer_address_type_t;
 using ble::pal::AuthenticationMask;
@@ -102,12 +105,19 @@ ble_error_t GenericSecurityManager<TPalSecurityManager, SigningMonitor>::init_(
     result = init_resolving_list();
 #endif
 
+#if BLE_FEATURE_PRIVACY
+    // set the local identity address and irk
+    if (result != BLE_ERROR_NONE) {
+    	result = init_identity();
+    }
+#endif // BLE_FEATURE_PRIVACY
+
     if (result != BLE_ERROR_NONE) {
         delete _db;
-        return result;
+        _db = NULL;
     }
 
-    return BLE_ERROR_NONE;
+    return result;
 }
 
 template<template<class> class TPalSecurityManager, template<class> class SigningMonitor>
@@ -138,6 +148,7 @@ ble_error_t GenericSecurityManager<TPalSecurityManager, SigningMonitor>::setData
 template<template<class> class TPalSecurityManager, template<class> class SigningMonitor>
 ble_error_t GenericSecurityManager<TPalSecurityManager, SigningMonitor>::reset_(void) {
     delete _db;
+    _db = NULL;
     _pal.reset();
     SecurityManager::reset_();
 
@@ -159,11 +170,25 @@ template<template<class> class TPalSecurityManager, template<class> class Signin
 ble_error_t GenericSecurityManager<TPalSecurityManager, SigningMonitor>::purgeAllBondingState_(void) {
     if (!_db) return BLE_ERROR_INITIALIZATION_INCOMPLETE;
     _db->clear_entries();
-    return BLE_ERROR_NONE;
+
+    ble_error_t ret = BLE_ERROR_NONE;
+
+#if BLE_FEATURE_SIGNING
+    // generate new csrk and irk
+    ret = init_signing();
+    if (ret) {
+        return ret;
+    }
+#endif // BLE_FEATURE_SIGNING
+#if BLE_FEATURE_PRIVACY
+    ret = init_identity();
+#endif // BLE_FEATURE_PRIVACY
+
+    return ret;
 }
 
 template<template<class> class TPalSecurityManager, template<class> class SigningMonitor>
-ble_error_t GenericSecurityManager<TPalSecurityManager, SigningMonitor>::generateWhitelistFromBondTable_(::Gap::Whitelist_t *whitelist) const {
+ble_error_t GenericSecurityManager<TPalSecurityManager, SigningMonitor>::generateWhitelistFromBondTable_(::ble::whitelist_t *whitelist) const {
     if (!_db) return BLE_ERROR_INITIALIZATION_INCOMPLETE;
     if (eventHandler) {
         if (!whitelist) {
@@ -305,6 +330,33 @@ ble_error_t GenericSecurityManager<TPalSecurityManager, SigningMonitor>::setPair
     if (!_db) return BLE_ERROR_INITIALIZATION_INCOMPLETE;
     _pairing_authorisation_required = required;
     return BLE_ERROR_NONE;
+}
+
+template<template<class> class TPalSecurityManager, template<class> class SigningMonitor>
+ble_error_t GenericSecurityManager<TPalSecurityManager, SigningMonitor>::getPeerIdentity_(connection_handle_t connection) {
+    if (!_db) return BLE_ERROR_INITIALIZATION_INCOMPLETE;
+    if (eventHandler) {
+        ControlBlock_t *cb = get_control_block(connection);
+        if (!cb) {
+            return BLE_ERROR_INVALID_PARAM;
+        }
+
+        _db->get_entry_identity(
+            [connection,this](SecurityDb::entry_handle_t handle, const SecurityEntryIdentity_t* identity) {
+                if (eventHandler) {
+                    eventHandler->peerIdentity(
+                        connection,
+                        identity ? &identity->identity_address : nullptr,
+                        identity ? identity->identity_address_is_public : false
+                    );
+                }
+            },
+            cb->db_entry
+        );
+        return BLE_ERROR_NONE;
+    } else {
+        return BLE_ERROR_INVALID_STATE;
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -835,11 +887,19 @@ ble_error_t GenericSecurityManager<TPalSecurityManager, SigningMonitor>::init_da
 ) {
     delete _db;
 
+#if BLE_SECURITY_DATABASE_FILESYSTEM
     FILE* db_file = FileSecurityDb::open_db_file(db_path);
 
     if (db_file) {
         _db = new (std::nothrow) FileSecurityDb(db_file);
-    } else {
+    } else
+#endif
+#if BLE_SECURITY_DATABASE_KVSTORE
+    if (KVStoreSecurityDb::open_db()) {
+        _db = new (std::nothrow) KVStoreSecurityDb();
+    } else
+#endif
+    {
         _db = new (std::nothrow) MemorySecurityDb();
     }
 
@@ -897,6 +957,33 @@ ble_error_t GenericSecurityManager<TPalSecurityManager, SigningMonitor>::init_si
     }
 
     return _pal.set_csrk(*pcsrk, local_sign_counter);
+}
+
+template<template<class> class TPalSecurityManager, template<class> class SigningMonitor>
+ble_error_t GenericSecurityManager<TPalSecurityManager, SigningMonitor>::init_identity() {
+    if (!_db) return BLE_ERROR_INITIALIZATION_INCOMPLETE;
+    const irk_t *pirk = nullptr;
+
+    irk_t irk = _db->get_local_irk();
+    if (irk != irk_t()) {
+        pirk = &irk;
+    } else {
+        ble_error_t ret = get_random_data(irk.data(), irk.size());
+        if (ret != BLE_ERROR_NONE) {
+            return ret;
+        }
+
+        pirk = &irk;
+        address_t identity_address;
+        bool public_address;
+        ret = _pal.get_identity_address(identity_address, public_address);
+        if (ret != BLE_ERROR_NONE) {
+            return ret;
+        }
+        _db->set_local_identity(irk, identity_address, public_address);
+    }
+
+    return _pal.set_irk(*pirk);
 }
 
 template<template<class> class TPalSecurityManager, template<class> class SigningMonitor>
@@ -1102,12 +1189,11 @@ void GenericSecurityManager<TPalSecurityManager, SigningMonitor>::set_mitm_perfo
 template<template<class> class TPalSecurityManager, template<class> class SigningMonitor>
 void GenericSecurityManager<TPalSecurityManager, SigningMonitor>::on_connected_(
     connection_handle_t connection,
-    ::Gap::Role_t role,
+    connection_role_t role,
     peer_address_type_t peer_address_type,
-    const BLEProtocol::AddressBytes_t peer_address,
-    BLEProtocol::AddressType_t local_address_type,
-    const BLEProtocol::AddressBytes_t local_address,
-    const ::Gap::ConnectionParams_t *connection_params
+    address_t peer_address,
+    own_address_type_t local_address_type,
+    address_t local_address
 ) {
 #if BLE_FEATURE_SECURITY
     MBED_ASSERT(_db);
@@ -1118,7 +1204,7 @@ void GenericSecurityManager<TPalSecurityManager, SigningMonitor>::on_connected_(
 
     // setup the control block
     cb->local_address = local_address;
-    cb->is_master = (role == ::Gap::CENTRAL);
+    cb->is_master = (role == connection_role_t::CENTRAL);
 
     // get the associated db handle and the distribution flags if any
     cb->db_entry = _db->open_entry(peer_address_type, peer_address);
@@ -1148,7 +1234,7 @@ void GenericSecurityManager<TPalSecurityManager, SigningMonitor>::on_connected_(
 template<template<class> class TPalSecurityManager, template<class> class SigningMonitor>
 void GenericSecurityManager<TPalSecurityManager, SigningMonitor>::on_disconnected_(
     connection_handle_t connection,
-    ::Gap::DisconnectionReason_t reason
+    disconnection_reason_t reason
 ) {
 #if BLE_FEATURE_SECURITY
     MBED_ASSERT(_db);
