@@ -23,7 +23,7 @@ extern EventQueue serialQueue;
 extern void serialInterface(void);
 
 //Serial interface command guide
-#define SERIAL_COMMAND_GUIDE "Serial command guide\n\nREAD NOW\nReads back all records (date, time, temperature, pressure, light)\n\nREAD BUFFER\nReads back all records (date, time, temperature, pressure, light) currently held in the internal memory buffer\n\nSETT T\nFor valid entries, 0.1=<T=<30.0, set the sampling period to <T> seconds and will return a string T UPDATED TO <T> otherwise return an OUT OF RANGE error.\n\nSTATE X\nWhere X is ON or OFF. When X is ON, start sampling; when X is OFF, stop sampling. Echo back a confirmation string or an error (where X is neither ON or OFF)\n\nLOGGING X \nWhere X is ON or OFF, turns on/off diagnostic logging to the serial interface. Echo back a confirmation string or an error (where X is neither ON or OFF)\n\nFLUSH\nForce all data in the FIFO buffer to be written to the SD card\n\nEJECT\nPerform a flush, then unmount the SD card so it can be ejected.\n\n"
+#define SERIAL_COMMAND_GUIDE "Serial command guide\n\nCLEARDEVICES - Clear configuration data \nCLEARROUTINE - Clear configuration data \nCONFIGDEVICES - Configures devices for use with the system \nCONFIGROUTINE - Configures a routine for use with the system \nRUN - Run loaded routine \nSTATUS - Get device status \nESTOP - Emergency Stop \n\n"
 
 
 
@@ -45,5 +45,10 @@ extern void cmdDecode(string cmd);
 void send_usart(unsigned char d);
 
 void sendString(const char *string);
+
+//Tail of string
+//inspired by https://stackoverflow.com/questions/7597260/how-to-get-the-tail-of-a-stdstring
+//Usage std::string t = tail(source, 6); to get all of the string from char 6 to the end of the string
+std::string endString(std::string const& source, size_t const length);
 
 #endif

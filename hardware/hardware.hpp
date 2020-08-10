@@ -7,6 +7,9 @@
 //Include array header
 #include <array>
 
+//Include vector header
+#include <vector>
+
 //Include the base device class
 #include "baseDevice.hpp"
 
@@ -27,7 +30,7 @@ const short maxDevices = digitalOutputs.size() + digitalInputs.size();
 
 //Declare an array to hold the devices given that each device requires an minimum of one pin, this means that the number of devices is limited by the number of digital output and input pins defined
 //Contents will be populated at run-time
-extern array<baseDevice *, maxDevices> devices;
+extern vector<baseDevice *> devices;
 
 // //Define enumerated types for the devices used
 // enum DEVICE {WASHPUMP, SAMPLEPUMP, SWITCHVALVE, SOLENOIDVALVE};

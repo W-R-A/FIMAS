@@ -4,6 +4,8 @@
 
 #include "serialInterface.hpp"
 #include "hardware.hpp"
+#include "deviceConfig.hpp"
+#include "routineConfig.hpp"
 
 //Create a serial interface object to PC
 UnbufferedSerial pc(USBTX, USBRX, 115200);
@@ -20,16 +22,18 @@ EventQueue serialQueue;
 //Use standard namespace to keep things cleaner
 using namespace std;
 
-//Serial commands, as defined by table 2 in the coursework requirements
-string cmdReadNow ("READ NOW");
-string cmdReadAll ("READ BUFFER");
-string cmdFlush   ("FLUSH");
-string cmdEject   ("EJECT");
-string cmdState   ("STATE ");
-string cmdLogging ("LOGGING ");
 string cmdSetT    ("SETT ");
 
 
+
+
+//Tail of string
+//inspired by https://stackoverflow.com/questions/7597260/how-to-get-the-tail-of-a-stdstring
+//Usage std::string t = tail(source, 6); to get all of the string from char 6 to the end of the string
+std::string endString(std::string const& source, size_t const length) {
+    if (length >= source.size()) { return source; }
+    return source.substr(length);
+}
 
 
 //Decode the command sent over serial and take the appropiate action
@@ -37,77 +41,58 @@ string cmdSetT    ("SETT ");
 //Nothing is returned
 void cmdDecode(string cmd)
 {
-    //Read Now
-    if (cmd.find(cmdReadNow) != string::npos) {
-        //Read current record
-        sendString("Read current record\n");
+    //Clear devices
+    if (cmd.find("CLEARDEVICES") != string::npos) {
+
+        clearDevices();
+
+        sendString("Device configuration cleared\n");
+		
+	} 
+    //Clear routines
+    if (cmd.find("CLEARROUTINE") != string::npos) {
+
+        clearRoutine();
+
+        sendString("Routine configuration cleared\n");
+		
+	}     
+    //Config devices
+    if (cmd.find("CONGIGDEVICES") != string::npos) {
+
+        sendString("Device configuration updated\n");
 		
 	} 
     
-    //Read All from buffer
-    if (cmd.find(cmdReadAll) != string::npos) {
-        //Echo confirmation
-        sendString("Read all records");
+    //Config routine
+    if (cmd.find("CONGIGROUTINE") != string::npos) {
+
+        sendString("Routine configuration updated\n");
+		
+	} 
+    
+    //Run routine
+    if (cmd.find("RUN") != string::npos) {
+
+        sendString("Routine Running\n");
+		
+	} 
+    
+    //Status
+    if (cmd.find("STATUS") != string::npos) {
+
+        sendString("Device Status: IDLE");
 
     } 
     
-    //Flush Buffer
-    if (cmd.find(cmdFlush) != string::npos) {
-        //Flush FIFO buffer
-        sendString("Flush buffer");
-
-    } 
+    //Estop
+    if (cmd.find("ESTOP") != string::npos) {
+        //Read current record
+        sendString("ESTOP: OK\n");
+		
+	} 
     
-    //Eject SD card after flushing buffer
-    if (cmd.find(cmdEject) != string::npos) {
-        //Flush all records to sd then eject SD card
-        sendString("eject sd card");        
-    } 
-    
-    //Enable/disable sampling
-    if (cmd.find(cmdState) != string::npos) {
-        //Check if sampling is to be turned on or off
-        if (cmd.find("ON") != string::npos) {
-            //Enable sampling
 
-			
-			//Echo confirmation to serial
-            sendString("Sampling is enabled\n");
-        } 
-        else if (cmd.find("OFF") != string::npos) {
-
-			
-			//Echo confirmation to serial
-            sendString("Sampling is disabled\n");
-        } 
-        else 
-        {
-			//Invalid option
-            sendString("Invalid Option\n");
-        }
-    } 
-    
-    //Enable/disable logging
-    if (cmd.find(cmdLogging) != string::npos) {
-        //Check if logging is to be turned on or off
-        if (cmd.find("ON") != string::npos) {
-
-			
-			//Echo confirmation to serial
-            sendString("Logging is enabled");
-        } 
-        else if (cmd.find("OFF") != string::npos) {
-
-			
-			//Echo confirmation to serial
-            sendString("Logging is disabled");
-        } 
-        else 
-        {
-			//Invalid option
-            sendString("Invalid Option\n");
-        }
-    } 
     if (cmd.find(cmdSetT) != string::npos) {
         //Determine if a valid time has been specified, all charcters after the space which is at position 4 onwards to the end of the string
         string time = cmd.substr(5, string::npos);

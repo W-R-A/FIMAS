@@ -46,6 +46,10 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID);
 //Returns 0 on sucess, non-zero on failure to pass a device test, with the value being the number of devices to fail testing
 uint8_t testRoutineDevices(void);
 
+//Clear all routine data
+//Nothing is returned and no parameters need to be passed
+void clearRoutine(void);
+
 //Print out the current routine
 //Nothing is returned and no parameters need to be passed
 void printRoutine(void);

@@ -127,6 +127,13 @@ void printRoutine(void) {
     }
 }
 
+//Clear all routine data
+//Nothing is returned and no parameters need to be passed
+void clearRoutine(void) {
+    //Clear all routine data
+    routine.clear();
+}
+
 //Test the devices used in a routine
 //The routine must have been loaded using configRoutine
 //Takes no inputs

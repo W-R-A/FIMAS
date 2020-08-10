@@ -16,8 +16,14 @@
 //Include the string header to assist with working with JSON
 #include <string>
 
+//Include headers to parse strings
+#include<vector>
+#include<sstream>
+
 //Function Prototypes
 uint8_t configDevices(const char * configJSON);
+
+uint8_t configDevicesSerial(std::string const& sourcedevConfig);
 
 void clearDevices(void);
 
