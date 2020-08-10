@@ -112,6 +112,8 @@ uint8_t configDevicesSerial(std::string const& devConfig) {
     signed short devPin2;
     std::string devType;
 
+    sendString((char *)devConfig.c_str());
+
     using namespace std;
 
     vector<string> result;
@@ -125,16 +127,17 @@ uint8_t configDevicesSerial(std::string const& devConfig) {
     }
 
     for(int i = 0; i<result.size(); i++) {    //print all splitted strings
-        sendString((result.at(i).c_str()));
+        sendString(result.at(i).c_str());
         sendString("\n\n");
     }
    
     devID = std::stoi(result.at(1));
 
-
     devPin1 = std::stoi(result.at(2));
 
-    if (result.size()>2) {
+    sendString((char*)to_string(result.size()).c_str());
+
+    if (result.size()>3) {
         devPin2 = std::stoi(result.at(3));
     } else {
         devPin2 = -1;
@@ -144,14 +147,17 @@ uint8_t configDevicesSerial(std::string const& devConfig) {
     if (devConfig.find("PERPUMP") != string::npos) {
         //Create perPump object
         devices.push_back(new perPump(digitalOutputs[devPin1 - 1], devID)); 
+        sendString("Created peraseltic pump with the following configuration:");
 
     } else if (devConfig.find("SOLVALVE") != string::npos) {
         //Create solValve object
         devices.push_back(new solValve(digitalOutputs[devPin1 - 1], devID));
+        sendString("Created soleniod valve with the following configuration:");
 
     } else if (devConfig.find("SIXVALVE") != string::npos) {
         //Create sixValve object
         devices.push_back(new sixValve(digitalOutputs[devPin1 - 1], digitalOutputs[devPin2 - 1], devID));
+        sendString("Created six-port valve with the following configuration:");
 
     } else if (devConfig.find("SWITCHVALVE") != string::npos) {
         //Check if the switchvalve is working in one or two pin mode
@@ -162,14 +168,25 @@ uint8_t configDevicesSerial(std::string const& devConfig) {
             //Create switchValve object with two pins
             devices.push_back(new switchValve(digitalOutputs[devPin1 - 1], digitalOutputs[devPin2 - 1], devID));
         }
+        sendString("Created switch valve with the following configuration:");
     } else {
-        //Debugging, send the client information over serial
-        serialQueue.call(printf, "Error creating object, could not determine device type, device ID: %d, device pin 1: %d, device pin 2: %d\n", devID, devPin1, devPin2);
 
         //An error has occurred, signal failure to configure
         return 1;
     }
 
+    sendString("\nDevice ID: ");
+    sendString((char*)result.at(1).c_str());
+    sendString("\nDevice Pin 1: ");
+    sendString((char*)result.at(2).c_str());
+
+
+    if (result.size()>3) {
+        sendString("\nDevice Pin 2: ");
+        sendString((char*)result.at(3).c_str());
+    } 
+
+    sendString("\n\n");
                 
     //No errors, signal success
     return 0;

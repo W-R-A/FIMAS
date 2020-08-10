@@ -19,16 +19,6 @@ int main() {
     //Start serial thread
     serialThread.start(serialInterface);
 
-    //Start Network Thread
-    networkThread.start(network);
-
     //Send Welcome message over serial
-    serialQueue.call(printf, "Welcome, Serial Port Opened\n");
-
-    //Configure devices in the system
-    configDevices(CONFIGURATION);
-
-    //Wait for button before starting routine
-    while (!userButton) {
-    };
+    serialQueue.call(sendString, "Welcome, Serial Port Opened\n");
 }

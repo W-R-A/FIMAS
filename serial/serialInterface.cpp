@@ -58,14 +58,20 @@ void cmdDecode(string cmd)
 		
 	}     
     //Config devices
-    if (cmd.find("CONGIGDEVICES") != string::npos) {
+    if (cmd.find("CONFIGDEVICE") != string::npos) {
+
+        std::string x = cmd.substr(cmd.find("CONGIGDEVICE")+13);
+
+        sendString((x.c_str()));
+
+        configDevicesSerial(x);
 
         sendString("Device configuration updated\n");
 		
 	} 
     
     //Config routine
-    if (cmd.find("CONGIGROUTINE") != string::npos) {
+    if (cmd.find("CONFIGROUTINE") != string::npos) {
 
         sendString("Routine configuration updated\n");
 		
@@ -81,7 +87,7 @@ void cmdDecode(string cmd)
     //Status
     if (cmd.find("STATUS") != string::npos) {
 
-        sendString("Device Status: IDLE");
+        sendString("Device Status: IDLE\n");
 
     } 
     
@@ -173,8 +179,8 @@ void serialInputHandler(void)
 			//Echo user input
 			pc.write(&j, 1);
 					
-			//If string is over 15 in length, invalid, return
-			if (i > 15)
+			//If string is over 40 in length, invalid, return
+			if (i > 40)
 			{
 				sendString("Unrecognised command entered, please try again\n");
 				sendString(SERIAL_COMMAND_GUIDE);
