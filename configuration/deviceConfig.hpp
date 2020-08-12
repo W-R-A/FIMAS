@@ -4,20 +4,16 @@
 //Include the mbed header file
 #include "mbed.h"
 
-//Include theJSON Parser header file
-#include "MbedJSONValue.h"
-
-//Include the hardware header file
-#include "hardware.hpp"
-
 //Include the serial interface header file
 #include "serialInterface.hpp"
 
-//Include the string header to assist with working with JSON
+//Include the string header
 #include <string>
 
 //Include headers to parse strings
 #include<vector>
+
+//Include sstream to work with parsing serial data
 #include<sstream>
 
 //Function Prototypes
