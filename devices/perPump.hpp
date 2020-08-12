@@ -17,7 +17,7 @@ class perPump : public baseDevice {
 public:
     //pin specifies the pin that the Peristaltic Pump is connected to
     //deviceID uniquely identifies the device
-    perPump(PinName pin, unsigned short deviceID);
+    perPump(PinName pin, uint8_t pinindex, unsigned short deviceID);
 
     //Change the state of the Peristaltic Pump
     //Only two states are valid for the pump, on and off

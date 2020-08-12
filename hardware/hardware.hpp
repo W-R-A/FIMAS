@@ -19,6 +19,13 @@
 #include "solValve.hpp"
 #include "switchValve.hpp"
 
+typedef enum {
+    PERPUMP = 1, 
+    SIXVALVE = 2, 
+    SOLVALVE = 3, 
+    SWITCHVALVE = 4
+} devices_t;
+
 //Define an array to hold the pins used for the digital outputs
 extern const array<PinName, 8> digitalOutputs;
 
@@ -30,7 +37,7 @@ const short maxDevices = digitalOutputs.size() + digitalInputs.size();
 
 //Declare an array to hold the devices given that each device requires an minimum of one pin, this means that the number of devices is limited by the number of digital output and input pins defined
 //Contents will be populated at run-time
-extern vector<baseDevice *> devices;
+//extern vector<baseDevice *> devices;
 
 // //Define enumerated types for the devices used
 // enum DEVICE {WASHPUMP, SAMPLEPUMP, SWITCHVALVE, SOLENOIDVALVE};
@@ -45,7 +52,7 @@ extern vector<baseDevice *> devices;
 // extern DigitalOut solenoidValve;
 
 //Declare input userbutton as trigger
-extern DigitalIn userButton;
+//extern DigitalIn userButton;
 
 // //Serial Communications
 // extern Serial pc;

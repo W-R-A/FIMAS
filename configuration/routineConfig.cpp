@@ -3,135 +3,253 @@
 //Create a vector to store device times for the routine
 std::vector<deviceTimes> routine;
 
+//Create a variable to hold the routineID
+uint32_t routineID;
+
 //Configure a routine to be run
 //Takes the JSON string of routines and the ID of the desired routine to load
 //Returns 0 on success, non-zero on failure
 uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
-    //Clear the routine vector of any previous timing information
-    routine.clear();
+    // //Clear the routine vector of any previous timing information
+    // routine.clear();
 
-    //Setup routines according to JSON description
-    //Create a JSON parser object
-    MbedJSONValue jsonParser;
+    // //Setup routines according to JSON description
+    // //Create a JSON parser object
+    // MbedJSONValue jsonParser;
 
-    //Parse the JSON string and store the result in jsonParser
-    parse(jsonParser, configJSON);
+    // //Parse the JSON string and store the result in jsonParser
+    // parse(jsonParser, configJSON);
 
-    //check for name/ID of routine
-    //check for timings array
-    //loop through array, extracting timing data
+    // //check for name/ID of routine
+    // //check for timings array
+    // //loop through array, extracting timing data
 
-    //Loop through all of the routines that have an valid ID
-    for (uint8_t i = 0; jsonParser[i].hasMember((char *)"routineID"); i++) {
+    // //Loop through all of the routines that have an valid ID
+    // for (uint8_t i = 0; jsonParser[i].hasMember((char *)"routineID"); i++) {
 
-        //Caution - always check if the object contains the requested value before attempting to access it, otherwise a hardfault occurs from trying to access invalid memory
-        //Get the current routine ID
-        if (jsonParser[i].hasMember((char *)"routineID")) {
-            uint16_t currentRoutineID = std::stoi(jsonParser[i]["routineID"].get<std::string>());
+    //     //Caution - always check if the object contains the requested value before attempting to access it, otherwise a hardfault occurs from trying to access invalid memory
+    //     //Get the current routine ID
+    //     if (jsonParser[i].hasMember((char *)"routineID")) {
+    //         uint16_t currentRoutineID = std::stoi(jsonParser[i]["routineID"].get<std::string>());
 
-            //If the current iteration is the requested routine ID, load the data into the vector
-            if (routineID == currentRoutineID) {
+    //         //If the current iteration is the requested routine ID, load the data into the vector
+    //         if (routineID == currentRoutineID) {
 
-                //Check if the timings array is present
-                if (jsonParser[i].hasMember((char *)"timings")) {
+    //             //Check if the timings array is present
+    //             if (jsonParser[i].hasMember((char *)"timings")) {
 
-                    //Loop through the timings array, extracting timing info
-                    for (uint16_t j = 0; jsonParser[i]["timings"][j].hasMember((char *)"devID"); j++) {
-                        //Create a variable to hold the extracted values
-                        deviceTimes time;
+    //                 //Loop through the timings array, extracting timing info
+    //                 for (uint16_t j = 0; jsonParser[i]["timings"][j].hasMember((char *)"devID"); j++) {
+    //                     //Create a variable to hold the extracted values
+    //                     deviceTimes time;
 
-                        //Check for the deviceID
-                        if (jsonParser[i]["timings"][j].hasMember((char *)"devID")) {
-                            //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
-                            time.devID = std::stoi(jsonParser[i]["timings"][j]["devID"].get<std::string>());
+    //                     //Check for the deviceID
+    //                     if (jsonParser[i]["timings"][j].hasMember((char *)"devID")) {
+    //                         //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+    //                         time.devID = std::stoi(jsonParser[i]["timings"][j]["devID"].get<std::string>());
 
-                            //Check for the start time
-                            if (jsonParser[i]["timings"][j].hasMember((char *)"timeStart")) {
-                                //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
-                                time.startTime = std::stoi(jsonParser[i]["timings"][j]["timeStart"].get<std::string>());
+    //                         //Check for the start time
+    //                         if (jsonParser[i]["timings"][j].hasMember((char *)"timeStart")) {
+    //                             //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+    //                             time.startTime = std::stoi(jsonParser[i]["timings"][j]["timeStart"].get<std::string>());
 
-                                //Check for the stop time
-                                if (jsonParser[i]["timings"][j].hasMember((char *)"timeStop")) {
-                                    //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
-                                    time.stopTime = std::stoi(jsonParser[i]["timings"][j]["timeStop"].get<std::string>());
+    //                             //Check for the stop time
+    //                             if (jsonParser[i]["timings"][j].hasMember((char *)"timeStop")) {
+    //                                 //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+    //                                 time.stopTime = std::stoi(jsonParser[i]["timings"][j]["timeStop"].get<std::string>());
 
-                                    //Check for the device state
-                                    if (jsonParser[i]["timings"][j].hasMember((char *)"state")) {
-                                        //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
-                                        time.devState = std::stoi(jsonParser[i]["timings"][j]["state"].get<std::string>());
+    //                                 //Check for the device state
+    //                                 if (jsonParser[i]["timings"][j].hasMember((char *)"state")) {
+    //                                     //Have to get the value as a string and then convert it to an integer due to limitations with the JSON parser library
+    //                                     time.devState = std::stoi(jsonParser[i]["timings"][j]["state"].get<std::string>());
 
-                                        //Add the timing information to the routines vector
-                                        routine.emplace_back(time);
-                                    } else {
-                                        //Debugging, send the client information over serial
-                                        serialQueue.call(printf, "Error reading the device state, device ID: %d, start time: %d, stop time: %d\n", time.devID, time.startTime, time.stopTime);
+    //                                     //Add the timing information to the routines vector
+    //                                     routine.emplace_back(time);
+    //                                 } else {
+    //                                     //Debugging, send the client information over serial
+    //                                     serialQueue.call(printf, "Error reading the device state, device ID: %d, start time: %d, stop time: %d\n", time.devID, time.startTime, time.stopTime);
 
-                                        //An error has occurred, signal failure to load the routine
-                                        return 1;
-                                    }
-                                } else {
-                                    //Debugging, send the client information over serial
-                                    serialQueue.call(printf, "Error reading the stop time, device ID: %d, start time: %d\n", time.devID, time.startTime);
+    //                                     //An error has occurred, signal failure to load the routine
+    //                                     return 1;
+    //                                 }
+    //                             } else {
+    //                                 //Debugging, send the client information over serial
+    //                                 serialQueue.call(printf, "Error reading the stop time, device ID: %d, start time: %d\n", time.devID, time.startTime);
 
-                                    //An error has occurred, signal failure to load the routine
-                                    return 1;
-                                }
-                            } else {
-                                //Debugging, send the client information over serial
-                                serialQueue.call(printf, "Error reading the start time, device ID: %d\n", time.devID);
+    //                                 //An error has occurred, signal failure to load the routine
+    //                                 return 1;
+    //                             }
+    //                         } else {
+    //                             //Debugging, send the client information over serial
+    //                             serialQueue.call(printf, "Error reading the start time, device ID: %d\n", time.devID);
 
-                                //An error has occurred, signal failure to load the routine
-                                return 1;
-                            }
-                        } else {
-                            //Debugging, send the client information over serial
-                            serialQueue.call(printf, "Error reading device ID\n");
+    //                             //An error has occurred, signal failure to load the routine
+    //                             return 1;
+    //                         }
+    //                     } else {
+    //                         //Debugging, send the client information over serial
+    //                         serialQueue.call(printf, "Error reading device ID\n");
 
-                            //An error has occurred, signal failure to load the routine
-                            return 1;
-                        }
-                    }
-                    //Routine loaded, signal success
-                    return 0;
-                } else {
-                    //Debugging, send the client information over serial
-                    serialQueue.call(printf, "Error reading the timings array, Routine ID: %d\n", currentRoutineID);
+    //                         //An error has occurred, signal failure to load the routine
+    //                         return 1;
+    //                     }
+    //                 }
+    //                 //Routine loaded, signal success
+    //                 return 0;
+    //             } else {
+    //                 //Debugging, send the client information over serial
+    //                 serialQueue.call(printf, "Error reading the timings array, Routine ID: %d\n", currentRoutineID);
 
-                    //An error has occurred, signal failure to load the routine
-                    return 1;
-                }
-            }
-        } else {
-            //Debugging, send the client information over serial
-            serialQueue.call(printf, "Error reading routine ID\n");
+    //                 //An error has occurred, signal failure to load the routine
+    //                 return 1;
+    //             }
+    //         }
+    //     } else {
+    //         //Debugging, send the client information over serial
+    //         serialQueue.call(printf, "Error reading routine ID\n");
 
-            //Cannot read routine ID, signal failure
-            return 1;
-        }
-    }
-    //Debugging, send the client information over serial
-    serialQueue.call(printf, "No routine found matching the requested ID, %d\n", routineID);
+    //         //Cannot read routine ID, signal failure
+    //         return 1;
+    //     }
+    // }
+    // //Debugging, send the client information over serial
+    // serialQueue.call(printf, "No routine found matching the requested ID, %d\n", routineID);
 
     //No routine found with given ID, signal failure
     return 1;
 }
 
+
+
+//Configure a routine over the serial port
+//Pass in the key parameters as a c++ string to create the routine step
+uint8_t configRoutineSerial(std::string const& routineConfig) {
+    
+    //sendString(routineConfig);  
+
+    //Create a variable to hold the extracted values
+    deviceTimes time;
+
+    vector<string> result;
+
+    stringstream s_stream(routineConfig); //create string stream from the string
+
+    while(s_stream.good()) {
+        using namespace std;
+        string substr;
+        getline(s_stream, substr, ','); //get first string delimited by comma
+        result.push_back(substr);
+    }
+
+    //Check that the correct number of arguments have been supplied
+    if (result.size() != 5) {
+        //Error, return
+        return 1;
+    }
+
+    // for(int i = 0; i<result.size(); i++) {    //print all splitted strings
+    //     sendString(result.at(i));
+    //     sendString("\n");
+    // }
+    //
+    //sendString("\n\n");
+
+    uint32_t serialRoutineID = std::stoi(result.at(0));
+
+
+    //If there is no currenly loaded routine, ie it just been cleared or at startup
+    if (routineID == 0) {
+        //Set the new routine id based on the transmission
+        routineID = serialRoutineID;
+        //else, there is a curently loaded routine, check the new step matches it
+    } else {
+        if (serialRoutineID != routineID) {
+            //Error, no match, failure
+            return 1;
+        }
+    }        
+
+    //Parse the data
+
+    //DeviceID
+    time.devID = std::stoi(result.at(1));
+
+    //Start time
+    time.startTime = std::stoi(result.at(2));
+
+    //Stop time
+    time.stopTime = std::stoi(result.at(3));
+
+    //Device state
+    time.devState = std::stoi(result.at(4));
+
+    //Add the timing information to the routines vector
+    routine.push_back(time);     
+
+    sendString("\nRoutine ID: ");
+    sendString(result.at(0));
+    sendString("\nDevice ID: ");
+    sendString(result.at(1));
+    sendString("\nStart Time: ");
+    sendString(result.at(2));
+    sendString("\nStop Time: ");
+    sendString(result.at(3));
+    sendString("\nState: ");
+    sendString(result.at(4));
+
+    sendString("\n\n");
+                
+    //No errors, signal success
+    return 0;
+}
+
+
+
 //Print out the current routine
 //Nothing is returned and no parameters need to be passed
 void printRoutine(void) {
+    sendString("Routine ID: ");
+
+    sendString(to_string(routineID));
+    sendString("\n");
+
+    sendString(to_string(routine.size()));
+
+    sendString(" timing block(s) are configured on the system\n");
+
     //Loop through the routine vector and print out the timing data
-    for (uint8_t i = 0; i < routine.size(); i++) {
+    for (int i = 0; i < routine.size(); i++) {
+        //Get the timing block
         deviceTimes device = routine.at(i);
-        serialQueue.call(printf, "Timing block: %u,", i);
-        serialQueue.call(printf, "deviceID: %u, timeStart: %u, timeStop: %u, state: %u\n", device.devID, device.startTime, device.stopTime, device.devState);
+
+        sendString("Timing block ");
+        sendString(to_string(i));
+
+        sendString("\nDevice ID: ");
+        sendString(to_string(device.devID));
+
+        sendString("\nStart Time: ");
+        sendString(to_string(device.startTime));
+
+        sendString("\nStop Time: ");
+        sendString(to_string(device.stopTime));
+
+        sendString("\nState: ");
+        sendString(to_string(device.devState));
+
+        sendString("\n\n");
     }
+    sendString("\n");
 }
+
 
 //Clear all routine data
 //Nothing is returned and no parameters need to be passed
 void clearRoutine(void) {
     //Clear all routine data
     routine.clear();
+
+    routineID = 0;
 }
 
 //Test the devices used in a routine

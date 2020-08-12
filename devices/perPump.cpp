@@ -3,7 +3,11 @@
 //pin specifies the pin that the Peristaltic Pump is connected to
 //deviceID uniquely identifies the device
 //Constructor is inherited from baseDevice
-perPump::perPump(PinName pin, unsigned short deviceID) : baseDevice(pin, deviceID) {}
+perPump::perPump(PinName pin, uint8_t pinindex, unsigned short deviceID) : baseDevice(pin, pinindex, deviceID) {
+
+    //The name of the device 
+    this->devType = "Peristaltic Pump";
+}
 
 //Change the state of the Peristaltic Pump
 //Only two states are valid for the pump, on and off

@@ -24,6 +24,15 @@
 
 #include "routineConfig.hpp"
 
+//Routine Thread
+extern Thread routineThread;
+
+//Create eventqueues
+extern EventQueue routineQueue;
+
+//Reponsible for running the routine eventqueue
+void routineThreadFunction(void);
+
 //Run routine
 void runRoutine(void);
 

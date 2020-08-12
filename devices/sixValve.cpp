@@ -3,10 +3,13 @@
 //pin specifies the pin that the solenoid valve is connected to
 //deviceID uniquely identifies the device
 //Constructor is inhertited from baseDevice
-sixValve::sixValve(PinName pin1, PinName pin2, unsigned short deviceID) : baseDevice(pin1, pin2, deviceID)
+sixValve::sixValve(PinName pin1, PinName pin2, uint8_t pin1index, uint8_t pin2index, unsigned short deviceID) : baseDevice(pin1, pin2, pin1index, pin2index, deviceID)
 {
     this->controlPin2->write(0);
     this->controlPin1->write(1);
+
+    //The name of the device 
+    this->devType = "Six-Port Valve";
 }
 
 //Change the state of the six-port valve

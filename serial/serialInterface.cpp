@@ -44,62 +44,105 @@ void cmdDecode(string cmd)
     //Clear devices
     if (cmd.find("CLEARDEVICES") != string::npos) {
 
-        clearDevices();
+        _dataManager.setClearDevices();
+            
+        sendString("CLEARDEVICES: SUCCESS\n");
 
-        sendString("Device configuration cleared\n");
-		
+        return;	
 	} 
     //Clear routines
-    if (cmd.find("CLEARROUTINE") != string::npos) {
+    else if (cmd.find("CLEARROUTINE") != string::npos) {
 
         clearRoutine();
 
         sendString("Routine configuration cleared\n");
+
+        sendString("Success\n");
 		
 	}     
     //Config devices
-    if (cmd.find("CONFIGDEVICE") != string::npos) {
+    else if (cmd.find("CONFIGDEVICE") != string::npos) {
 
-        std::string x = cmd.substr(cmd.find("CONGIGDEVICE")+13);
+        //Calculate the position of the command and use it to get the start of the arguments provided
+        uint32_t configPos = cmd.find("CONFIGDEVICE")+13;
 
-        sendString((x.c_str()));
+        //Get the argument string for the new device to be created after the configdevice command
+        string devConfig = cmd.substr(configPos, string::npos);
 
-        configDevicesSerial(x);
+        //Pass the config info to the parser to create the device
+        configDevicesSerial(devConfig);
 
+        //Inform the user that the config update was sucessful
         sendString("Device configuration updated\n");
-		
-	} 
-    
-    //Config routine
-    if (cmd.find("CONFIGROUTINE") != string::npos) {
 
-        sendString("Routine configuration updated\n");
+        sendString("Success\n");
 		
 	} 
-    
+    //Config routine
+    else if (cmd.find("CONFIGROUTINESTEP") != string::npos) {
+
+        //Calculate the position of the command and use it to get the start of the arguments provided, length of command + 1 for space delimiter
+        uint32_t configPos = cmd.find("CONFIGROUTINESTEP")+18;
+
+        //Get the argument string for the new device to be created after the configdevice command
+        string routineConfig = cmd.substr(configPos, string::npos);
+
+        if (configRoutineSerial(routineConfig)) {
+            //Error
+            
+            sendString("FAILURE");
+        }
+        else {
+
+            sendString("Routine configuration updated\n");
+            sendString("Success\n");
+        }    
+		
+	}
+    //view devices
+    else if (cmd.find("VIEWDEVICES") != string::npos) {
+
+        sendString(_dataManager.getDevicesString());
+            
+        sendString("VIEWDEVICES: SUCCESS\n");
+
+        return;	
+		
+	}
+    //view routine
+    else if (cmd.find("VIEWROUTINE") != string::npos) {
+
+        printRoutine();
+
+        sendString("Success\n");
+		
+	}
     //Run routine
-    if (cmd.find("RUN") != string::npos) {
+    else if (cmd.find("RUN") != string::npos) {
 
         sendString("Routine Running\n");
+
+        sendString("Success\n");
 		
 	} 
     
     //Status
-    if (cmd.find("STATUS") != string::npos) {
+    else if (cmd.find("STATUS") != string::npos) {
 
         sendString("Device Status: IDLE\n");
 
+        sendString("Success\n");
+
     } 
-    
     //Estop
-    if (cmd.find("ESTOP") != string::npos) {
+    else if (cmd.find("ESTOP") != string::npos) {
         //Read current record
         sendString("ESTOP: OK\n");
+
+        sendString("Success\n");
 		
 	} 
-    
-
-    if (cmd.find(cmdSetT) != string::npos) {
+    else if (cmd.find(cmdSetT) != string::npos) {
         //Determine if a valid time has been specified, all charcters after the space which is at position 4 onwards to the end of the string
         string time = cmd.substr(5, string::npos);
         
@@ -119,6 +162,13 @@ void cmdDecode(string cmd)
 			sendString("Invalid time period, T should be between 0.1 and 30 seconds\n"); 
 		}
     }
+    else {
+        sendString("Unrecognised command entered, please try again\n");
+		sendString(SERIAL_COMMAND_GUIDE);  
+    }
+
+      
+
 }
 
 
@@ -240,7 +290,7 @@ void send_usart(unsigned char d)
 
 //Send a string over USART
 //Paul Davey - Lecture 6 Slide 3rd from the end
-void sendString(const char *string)
+void sendCString(const char *string)
 {
 	//Declare temporary variable
 	unsigned short i = 0;
@@ -254,4 +304,12 @@ void sendString(const char *string)
 		//Increment i
 		i++;
 	}
+}
+
+//Send a string over USART
+//Paul Davey - Lecture 6 Slide 3rd from the end
+void sendString(std::string strPrint)
+{
+    //Convert to a c string from c++ before sending as before
+    sendCString(strPrint.c_str());
 }

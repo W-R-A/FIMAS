@@ -6,8 +6,8 @@ Thread routineThread(osPriorityRealtime);
 //Create eventqueues
 EventQueue routineQueue;
 
-//startRoutine - Responsible for running the routine EventQueue
-void startRoutine(void) {
+//Routine - Responsible for running the routine EventQueue
+void routineThreadFunction(void) {
     //Start event queue on thread
     routineQueue.dispatch();
 }

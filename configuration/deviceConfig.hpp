@@ -21,10 +21,6 @@
 #include<sstream>
 
 //Function Prototypes
-uint8_t configDevices(const char * configJSON);
-
 uint8_t configDevicesSerial(std::string const& devConfig);
-
-void clearDevices(void);
 
 #endif

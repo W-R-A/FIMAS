@@ -17,7 +17,7 @@ class solValve : public baseDevice {
 public:
     //pin specifies the pin that the solenoid valve is connected to
     //deviceID uniquely identifies the device
-    solValve(PinName pin, unsigned short deviceID);
+    solValve(PinName pin, uint8_t pinindex, unsigned short deviceID);
 
     //Change the state of the solenoid valve
     //Only two states are valid for the valve, on and off

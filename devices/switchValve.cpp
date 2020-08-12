@@ -3,13 +3,21 @@
 ////pin specifies the pin that the switching valve step input is connected to
 //deviceID uniquely identifies the device
 //Constructor is inhertited from baseDevice
-switchValve::switchValve(PinName pin, unsigned short deviceID) : baseDevice(pin, deviceID) {}
+switchValve::switchValve(PinName pin, uint8_t pinindex, unsigned short deviceID) : baseDevice(pin, pinindex, deviceID) {
+    
+    //The name of the device 
+    this->devType = "Switching Valve";
+}
 
 //pin1 specifies the pin that the switching valve step input is connected to
 //pin2 specifies the pin that the switching valve home input is connected to
 //deviceID uniquely identifies the device
 //Constructor is inhertited from baseDevice
-switchValve::switchValve(PinName pin1, PinName pin2, unsigned short deviceID) : baseDevice(pin1, pin2, deviceID) {}
+switchValve::switchValve(PinName pin1, PinName pin2, uint8_t pin1index, uint8_t pin2index, unsigned short deviceID) : baseDevice(pin1, pin2, pin1index, pin2index, deviceID) {
+    
+    //The name of the device 
+    this->devType = "Switching Valve";
+}
 
 //create the signal pulses needed to change the state of the switching valve
 //pin determines the pin to generate the pulses on

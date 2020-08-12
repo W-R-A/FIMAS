@@ -9,6 +9,9 @@
 #include <string> 
 #include <cctype>
 
+//Include the data manager
+#include "dataManager.hpp"
+
 //Create a serial interface object to PC, this needs to be raw serial to avoid issues with the serial interupt
 extern UnbufferedSerial pc;
 
@@ -44,7 +47,10 @@ extern void cmdDecode(string cmd);
 
 void send_usart(unsigned char d);
 
-void sendString(const char *string);
+//overloaed function, send data over usart, converting from c++ to c strings as required
+void sendCString(const char *string);
+
+void sendString(std::string strPrint);
 
 //Tail of string
 //inspired by https://stackoverflow.com/questions/7597260/how-to-get-the-tail-of-a-stdstring

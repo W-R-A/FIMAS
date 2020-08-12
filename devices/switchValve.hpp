@@ -17,12 +17,12 @@ class switchValve : public baseDevice {
 public:
     //pin specifies the pin that the switching valve step input is connected to
     //deviceID uniquely identifies the device
-    switchValve(PinName pin, unsigned short deviceID);
+    switchValve(PinName pin, uint8_t pinindex, unsigned short deviceID);
 
     //pin1 specifies the pin that the switching valve step input is connected to
     //pin2 specifies the pin that the switching valve home input is connected to
     //deviceID uniquely identifies the device
-    switchValve(PinName pin1, PinName pin2, unsigned short deviceID);
+    switchValve(PinName pin1, PinName pin2, uint8_t pin1index, uint8_t pin2index, unsigned short deviceID);
 
     //Change the state of the switching valve
     //The valve can be in one of ten states and can operated in two modes

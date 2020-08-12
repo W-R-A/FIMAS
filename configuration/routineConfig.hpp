@@ -4,8 +4,6 @@
 //Include the mbed header file
 #include "mbed.h"
 
-//Include theJSON Parser header file
-#include "MbedJSONValue.h"
 
 //Include the serial interface header file
 #include "serialInterface.hpp"
@@ -21,6 +19,10 @@
 
 //Include the set header to allow the creation of sets
 #include <set>
+
+//Include the sstream header to assist with parsing serial data
+#include<sstream>
+
 
 //Define a structure to hold the timing parameters for each device for each step
 typedef struct {
@@ -39,6 +41,8 @@ extern std::vector<deviceTimes> routine;
 //Takes the JSON string of routines and the ID of the desired routine to load
 //Returns 0 on sucess, non-zero on failure
 uint8_t configRoutine(const char *configJSON, uint16_t routineID);
+
+uint8_t configRoutineSerial(std::string const& routineConfig);
 
 //Test the devices used in a routine
 //The routine must have been loaded using configRoutine

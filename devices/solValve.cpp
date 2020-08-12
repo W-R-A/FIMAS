@@ -3,7 +3,11 @@
 //pin specifies the pin that the solenoid valve is connected to
 //deviceID uniquely identifies the device
 //Constructor is inhertited from baseDevice
-solValve::solValve(PinName pin, unsigned short deviceID) : baseDevice(pin, deviceID) {}
+solValve::solValve(PinName pin, uint8_t pinindex, unsigned short deviceID) : baseDevice(pin, pinindex, deviceID) {
+
+    //The name of the device 
+    this->devType = "Soleniod Valve";
+}
 
 //Change the state of the solenoid valve
 //Only two states are valid for the valve, on and off
