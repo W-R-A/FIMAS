@@ -10,10 +10,9 @@
 
 //#include "Networkbits.hpp"
 #include "deviceConfig.hpp"
-#include "hardware.hpp"
-#include "routineConfig.hpp"
+// #include "hardware.hpp"
 #include "serialInterface.hpp"
-#include "routineRun.hpp"
+#include "runRoutine.hpp"
 
 
 
