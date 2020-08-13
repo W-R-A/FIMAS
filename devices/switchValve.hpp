@@ -33,7 +33,9 @@ protected:
     //create the signal pulses needed to change the state of the switching valve
     //pin determines the pin to generate the pulses on
     //noPulses determines the number of pulses generated
-    void pulse(unsigned short pin, unsigned short noPulses);
+    static void pulse(void const *argument, unsigned short pin, unsigned short noPulses);
+
+    Thread* pulseThread;
 };
 
 #endif

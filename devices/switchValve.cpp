@@ -23,18 +23,22 @@ switchValve::switchValve(PinName pin1, PinName pin2, uint8_t pin1index, uint8_t 
 //pin determines the pin to generate the pulses on
 //noPulses determines the number of pulses generated
 //According to the data sheet, each pulse must be at least 30ms in duration, so a delay of 50ms is used
-void switchValve::pulse(unsigned short pin, unsigned short noPulses)
+//https://os.mbed.com/users/AVELARDEV/code/LibThreadProcess//file/3b34689ec230/BlinkLed.h/
+static void switchValve::pulse(void const *argument, unsigned short pin, unsigned short noPulses)
 {
+    //Convert pointer to class type
+    switchValve* self = (switchValve*)argument;
+
     for (int i = 0; i < noPulses; i++) {
         if (pin == 1) {
-            this->controlPin1->write(1);
-            thread_sleep_for(500);
-            this->controlPin1->write(0);
+            self->controlPin1->write(1);
+            ThisThread::sleep_for(500);
+            self->controlPin1->write(0);
         }
         else {
-            this->controlPin2->write(1);
-            thread_sleep_for(500);
-            this->controlPin2->write(0);
+            self->controlPin2->write(1);
+            ThisThread::sleep_for(500);
+            self->controlPin2->write(0);
         }
     }
 }
@@ -64,7 +68,8 @@ unsigned short switchValve::changeState(unsigned short newState)
             }
 
             //Change to desired state
-            pulse(1, pulses);
+            pulse(this, 1, pulses);
+            pulseThread = new Thread(pulse, this, 1, pulses);
 
             updateState(newState);
         }
@@ -77,10 +82,10 @@ unsigned short switchValve::changeState(unsigned short newState)
         }
         else {
             //Reset position
-            pulse(2, newState);
+            pulse(this, 2, newState);
 
             //Change to desired state
-            pulse(1, newState);
+            pulse(this, 1, newState);
 
             updateState(newState);
         }

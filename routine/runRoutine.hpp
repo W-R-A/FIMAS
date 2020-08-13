@@ -12,6 +12,9 @@
 #include "dataManager.hpp"
 
 
+//Create routine management thread
+extern Thread routineManagerThread;
+
 //Routine Thread
 extern Thread routineThread;
 

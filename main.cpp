@@ -18,6 +18,9 @@
 
 int main() {
 
+    //Start routine management thread
+    routineManagerThread.start(routineManager);
+
     //Start routine thread
     routineThread.start(routineThreadFunction);
 
