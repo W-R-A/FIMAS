@@ -10,6 +10,16 @@
 //Include the hardware header file to gain awareness of the hardware connected
 #include "hardware.hpp"
 
+
+//Declare an emmurated type to repreesnt the state of the system
+typedef enum {
+    STATE_IDLE = 1, 
+    STATE_RUNNING = 2, 
+    STATE_ERROR = 3, 
+    STATE_ESTOP = 4
+} sysState;
+
+
 //Class to manage data and configuration between threads
 class dataManager {
 
@@ -40,8 +50,23 @@ public:
 
     //Get the currently configured devices on the system as a formatted string
     //No parameters need to be passed
-    //A string containig the currently configured devices is returned
+    //A string containing the currently configured devices is returned
     std::string getDevicesString(void);
+
+    //Get the current stste of the system
+    //No paramters need to be passed
+    //The state of the system is returned in enummerated format
+    sysState getSystemState(void);
+
+    //Get the current stste of the system in a string format
+    //No paramters need to be passed
+    //The state of the system is returned in enummerated format
+    std::string getSystemStateString(void);
+
+    //Set the state of the system
+    //No paramters need to be passed
+    //The state of the system is returned in enummerated format
+    void setSystemState(sysState newState);
 
 //Private Properties    
 private:
@@ -50,6 +75,9 @@ private:
   
     //Create a vector to hold the devices
     vector<baseDevice*> devices = {};
+
+    //Create a status register
+    sysState systemState;
 
 };
 

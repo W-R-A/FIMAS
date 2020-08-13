@@ -44,9 +44,11 @@ void cmdDecode(string cmd)
     //Clear devices
     if (cmd.find("CLEARDEVICES") != string::npos) {
 
+        //Clear the devices on the system
         _dataManager.setClearDevices();
-            
-        sendString("CLEARDEVICES: SUCCESS\n");
+        
+        //Send acknowledgement
+        sendString("CLEARDEVICES: OK\n");
 
         return;	
 	} 
@@ -69,14 +71,15 @@ void cmdDecode(string cmd)
         //Get the argument string for the new device to be created after the configdevice command
         string devConfig = cmd.substr(configPos, string::npos);
 
-        //Pass the config info to the parser to create the device
-        configDevicesSerial(devConfig);
+        //Pass the config info to the parser to create the device, informing the user if the command succeeded
+        if (configDevicesSerial(devConfig)) {
 
-        //Inform the user that the config update was sucessful
-        sendString("Device configuration updated\n");
+            //Send acknowledgement
+            sendString("CONFIGDEVICE: FAIL\n");
+        }
 
-        sendString("Success\n");
-		
+        //Send acknowledgement
+        sendString("CONFIGDEVICE: OK\n");
 	} 
     //Config routine
     else if (cmd.find("CONFIGROUTINESTEP") != string::npos) {
@@ -102,12 +105,13 @@ void cmdDecode(string cmd)
     //view devices
     else if (cmd.find("VIEWDEVICES") != string::npos) {
 
+        //Send the devices string over USART
         sendString(_dataManager.getDevicesString());
             
-        sendString("VIEWDEVICES: SUCCESS\n");
+        //Send acknowledgement
+        sendString("VIEWDEVICES: OK\n");
 
-        return;	
-		
+        return;		
 	}
     //view routine
     else if (cmd.find("VIEWROUTINE") != string::npos) {
@@ -126,21 +130,26 @@ void cmdDecode(string cmd)
 		
 	} 
     
-    //Status
+    //System status
     else if (cmd.find("STATUS") != string::npos) {
 
-        sendString("Device Status: IDLE\n");
+        sendString(_dataManager.getSystemStateString());
 
-        sendString("Success\n");
+        //Send acknowledgement
+        sendString("STATUS: OK\n");
 
+        return;
     } 
-    //Estop
+    //ESTOP
     else if (cmd.find("ESTOP") != string::npos) {
-        //Read current record
-        sendString("ESTOP: OK\n");
+        
+        //Change the state to ESTOP
+        _dataManager.setSystemState(STATE_ESTOP);
 
-        sendString("Success\n");
-		
+        //Send acknowledgement
+        sendString("ESTOP: OK\n");		
+
+        return;
 	} 
     else if (cmd.find(cmdSetT) != string::npos) {
         //Determine if a valid time has been specified, all charcters after the space which is at position 4 onwards to the end of the string

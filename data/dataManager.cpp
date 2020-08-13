@@ -13,6 +13,9 @@ dataManager::dataManager() {
     //Lock access while modifing data
     this->accessMutex.lock();
 
+    //Set the initial system state to idle
+    this-> systemState = STATE_IDLE;
+
     //Resevere capactity in vector for devices, to minimise dynamic memory allocation later
     this->devices.reserve(maxDevices);
 
@@ -131,4 +134,71 @@ std::string dataManager::getDevicesString(void) {
 
     //Return the complete string
     return devicesString;
+}
+
+
+//Get the current state of the system
+//No paramters need to be passed
+//The state of the system is returned in enummerated format
+sysState dataManager::getSystemState(void) {
+    return systemState;
+}
+
+
+//Get the current state of the system in a string format
+//No paramters need to be passed
+//The state of the system is returned in enummerated format
+std::string dataManager::getSystemStateString(void) {
+
+    //Lock access while reading data
+    this->accessMutex.lock();
+
+    switch(systemState) {
+        default:
+        case STATE_IDLE:
+            return "IDLE";
+            break;
+        case STATE_RUNNING:
+            return "RUNNING";
+            break;
+        case STATE_ERROR:
+            return "ERROR";
+            break;
+        case STATE_ESTOP:
+            return "ESTOP";
+            break;
+    }
+
+    //Once finshed, unlock data access
+    this->accessMutex.unlock();
+}
+
+
+//Set the state of the system
+//No paramters need to be passed
+//The state of the system is returned in enummerated format
+void dataManager::setSystemState(sysState newState) {
+    
+    //Lock access while modifing the state
+    this->accessMutex.lock();
+
+    //Switch besed on the state to be set
+    switch(newState) {
+        default:
+        case STATE_IDLE:
+            systemState = STATE_IDLE;
+            break;
+        case STATE_RUNNING:
+            systemState = STATE_RUNNING;
+            break;
+        case STATE_ERROR:
+            systemState = STATE_ERROR;
+            break;
+        case STATE_ESTOP:
+            systemState = STATE_ESTOP;
+            break;
+    }
+
+    //Once finshed, unlock access
+    this->accessMutex.unlock();
 }
