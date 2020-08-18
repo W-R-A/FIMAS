@@ -26,7 +26,7 @@ dataManager::dataManager() {
 
 //Clear all of the devices from the system. Clear the devices vector
 //No paramerters need to be passed
-//Returns 0 on success, non-zero on failure
+//Nothing is returned
 void dataManager::setClearDevices(void){
 
     //Lock access while modifing data
@@ -136,6 +136,24 @@ std::string dataManager::getDevicesString(void) {
     return devicesString;
 }
 
+
+//Clear all of the routine information from the system. Clear the routine vector
+//No paramerters need to be passed
+//Nothing is returned
+void dataManager::setClearRoutine(void){
+
+    //Lock access while modifing data
+    this->accessMutex.lock();
+    
+    //Clear the devices vector
+    routine.clear();
+
+    //Reset routine ID to zero
+    this->routineID = 0;
+
+    //Once finshed, unlock data access
+    this->accessMutex.unlock();
+}
 
 //Get the current state of the system
 //No paramters need to be passed

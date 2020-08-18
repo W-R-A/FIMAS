@@ -52,14 +52,14 @@ void cmdDecode(string cmd)
 
         return;	
 	} 
-    //Clear routines
+    //Clear routine
     else if (cmd.find("CLEARROUTINE") != string::npos) {
 
-        clearRoutine();
+        //Clear the routine on the system
+        _dataManager.setClearRoutine();
 
-        sendString("Routine configuration cleared\n");
-
-        sendString("Success\n");
+        //Send acknowledgement
+        sendString("CLEARROUTINE: OK\n");
 		
 	}     
     //Config devices

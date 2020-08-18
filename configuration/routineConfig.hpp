@@ -21,17 +21,6 @@
 #include "dataManager.hpp"
 
 
-//Define a structure to hold the timing parameters for each device for each step
-typedef struct {
-    uint16_t devID;
-    uint16_t startTime;
-    uint16_t stopTime;
-    uint16_t devState;
-} deviceTimes;
-
-//Create a vector to store device times for the routine
-extern std::vector<deviceTimes> routine;
-
 //Function Prototypes
 
 //Configure a routine to be run

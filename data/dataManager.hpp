@@ -20,6 +20,15 @@ typedef enum {
 } sysState;
 
 
+//Define a structure to hold the timing parameters for each device for each step
+typedef struct {
+    uint16_t devID;
+    uint16_t startTime;
+    uint16_t stopTime;
+    uint16_t devState;
+} deviceTimes;
+
+
 //Class to manage data and configuration between threads
 class dataManager {
 
@@ -33,7 +42,7 @@ public:
 
     //Clear all of the devices from the system. Clear the devices vector
     //No paramerters need to be passed
-    //Returns 0 on success, non-zero on failure
+    //Nothing is returned
     void setClearDevices(void);
 
     //Add a device to the system
@@ -52,6 +61,11 @@ public:
     //No parameters need to be passed
     //A string containing the currently configured devices is returned
     std::string getDevicesString(void);
+
+    //Clear all of the routine information from the system. Clear the routine vector
+    //No paramerters need to be passed
+    //Nothing is returned
+    void setClearRoutine(void);
 
     //Get the current stste of the system
     //No paramters need to be passed
@@ -75,6 +89,12 @@ private:
   
     //Create a vector to hold the devices
     vector<baseDevice*> devices = {};
+
+    //Create a vector to hold the routine
+    vector<deviceTimes> routine;
+
+    //Create a variable to hold the routineID
+    uint32_t routineID;
 
     //Create a status register
     sysState systemState;

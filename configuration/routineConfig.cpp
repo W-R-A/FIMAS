@@ -1,11 +1,5 @@
 #include "routineConfig.hpp"
 
-//Create a vector to store device times for the routine
-std::vector<deviceTimes> routine;
-
-//Create a variable to hold the routineID
-uint32_t routineID;
-
 //Configure a routine to be run
 //Takes the JSON string of routines and the ID of the desired routine to load
 //Returns 0 on success, non-zero on failure
@@ -124,82 +118,68 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
 //Configure a routine over the serial port
 //Pass in the key parameters as a c++ string to create the routine step
 uint8_t configRoutineSerial(std::string const& routineConfig) {
-    
-    // //sendString(routineConfig);  
 
-    // //Create a variable to hold the extracted values
-    // deviceTimes time;
+    //Create a variable to hold the extracted values
+    deviceTimes time;
 
-    // vector<string> result;
+    //Create a vector to hold the extracted data from the serial command
+    vector<string> result;
 
-    // stringstream s_stream(routineConfig); //create string stream from the string
+    //Create a string stream from the string
+    stringstream s_stream(routineConfig); 
 
-    // while(s_stream.good()) {
-    //     using namespace std;
-    //     string substr;
-    //     getline(s_stream, substr, ','); //get first string delimited by comma
-    //     result.push_back(substr);
-    // }
+    //While there is data to parse, read it
+    while(s_stream.good()) {
 
-    // //Check that the correct number of arguments have been supplied
-    // if (result.size() != 5) {
-    //     //Error, return
-    //     return 1;
-    // }
+        //Create a string to hold a data argument
+        std::string substr;
 
-    // // for(int i = 0; i<result.size(); i++) {    //print all splitted strings
-    // //     sendString(result.at(i));
-    // //     sendString("\n");
-    // // }
-    // //
-    // //sendString("\n\n");
+        //Get a single argument, delimited by a comma, and store it in the temporary string
+        getline(s_stream, substr, ','); 
 
-    // uint32_t serialRoutineID = std::stoi(result.at(0));
+        //Add the string to the vector
+        result.push_back(substr);
+    }
 
 
-    // //If there is no currenly loaded routine, ie it just been cleared or at startup
-    // if (routineID == 0) {
-    //     //Set the new routine id based on the transmission
-    //     routineID = serialRoutineID;
-    //     //else, there is a curently loaded routine, check the new step matches it
-    // } else {
-    //     if (serialRoutineID != routineID) {
-    //         //Error, no match, failure
-    //         return 1;
-    //     }
-    // }        
+    //Check that the correct number of arguments have been supplied
+    if (result.size() != 5) {
+        //Error, return
+        return 1;
+    }
 
-    // //Parse the data
+    //Extract the routineID
+    uint32_t serialRoutineID = std::stoi(result.at(0));
 
-    // //DeviceID
-    // time.devID = std::stoi(result.at(1));
+    //If there is no currenly loaded routine, ie it just been cleared or at startup
+    if (routineID == 0) {
+        //Set the new routine id based on the transmission
+        routineID = serialRoutineID;
+        //else, there is a curently loaded routine, check the new step matches it
+    } else {
+        if (serialRoutineID != routineID) {
+            //Error, no match, failure
+            return 1;
+        }
+    }        
 
-    // //Start time
-    // time.startTime = std::stoi(result.at(2));
+    //Parse the data
+    //DeviceID
+    time.devID = std::stoi(result.at(1));
 
-    // //Stop time
-    // time.stopTime = std::stoi(result.at(3));
+    //Start time
+    time.startTime = std::stoi(result.at(2));
 
-    // //Device state
-    // time.devState = std::stoi(result.at(4));
+    //Stop time
+    time.stopTime = std::stoi(result.at(3));
 
-    // //Add the timing information to the routines vector
-    // routine.push_back(time);     
+    //Device state
+    time.devState = std::stoi(result.at(4));
 
-    // sendString("\nRoutine ID: ");
-    // sendString(result.at(0));
-    // sendString("\nDevice ID: ");
-    // sendString(result.at(1));
-    // sendString("\nStart Time: ");
-    // sendString(result.at(2));
-    // sendString("\nStop Time: ");
-    // sendString(result.at(3));
-    // sendString("\nState: ");
-    // sendString(result.at(4));
+    //Add the timing information to the routines vector
+    routine.push_back(time);     
 
-    // sendString("\n\n");
-                
-    // //No errors, signal success
+    //No errors, signal success
     return 0;
 }
 
@@ -242,15 +222,6 @@ void printRoutine(void) {
     // sendString("\n");
 }
 
-
-//Clear all routine data
-//Nothing is returned and no parameters need to be passed
-void clearRoutine(void) {
-    // //Clear all routine data
-    // routine.clear();
-
-    // routineID = 0;
-}
 
 //Test the devices used in a routine
 //The routine must have been loaded using configRoutine
