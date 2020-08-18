@@ -5,23 +5,20 @@
 #include "mbed.h"
 
 
-//Include the serial interface header file
-#include "serialInterface.hpp"
-
-//Include the hardware header file
-#include "hardware.hpp"
-
-//Include the string header to assist with working with JSON
+//Include the string header
 #include <string>
 
-//Include the vector header to allow to creation of vector arrays
+//Include headers to parse strings
 #include <vector>
 
-//Include the set header to allow the creation of sets
+//Include sstream to work with parsing serial data
+#include <sstream>
+
+//Include the set header file
 #include <set>
 
-//Include the sstream header to assist with parsing serial data
-#include<sstream>
+//Include the data manager header file
+#include "dataManager.hpp"
 
 
 //Define a structure to hold the timing parameters for each device for each step

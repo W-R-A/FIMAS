@@ -156,16 +156,16 @@ std::string dataManager::getSystemStateString(void) {
     switch(systemState) {
         default:
         case STATE_IDLE:
-            return "IDLE";
+            return "IDLE\n";
             break;
         case STATE_RUNNING:
-            return "RUNNING";
+            return "RUNNING\n";
             break;
         case STATE_ERROR:
-            return "ERROR";
+            return "ERROR\n";
             break;
         case STATE_ESTOP:
-            return "ESTOP";
+            return "ESTOP\n";
             break;
     }
 

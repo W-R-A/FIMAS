@@ -125,81 +125,81 @@ uint8_t configRoutine(const char *configJSON, uint16_t routineID) {
 //Pass in the key parameters as a c++ string to create the routine step
 uint8_t configRoutineSerial(std::string const& routineConfig) {
     
-    //sendString(routineConfig);  
+    // //sendString(routineConfig);  
 
-    //Create a variable to hold the extracted values
-    deviceTimes time;
+    // //Create a variable to hold the extracted values
+    // deviceTimes time;
 
-    vector<string> result;
+    // vector<string> result;
 
-    stringstream s_stream(routineConfig); //create string stream from the string
+    // stringstream s_stream(routineConfig); //create string stream from the string
 
-    while(s_stream.good()) {
-        using namespace std;
-        string substr;
-        getline(s_stream, substr, ','); //get first string delimited by comma
-        result.push_back(substr);
-    }
-
-    //Check that the correct number of arguments have been supplied
-    if (result.size() != 5) {
-        //Error, return
-        return 1;
-    }
-
-    // for(int i = 0; i<result.size(); i++) {    //print all splitted strings
-    //     sendString(result.at(i));
-    //     sendString("\n");
+    // while(s_stream.good()) {
+    //     using namespace std;
+    //     string substr;
+    //     getline(s_stream, substr, ','); //get first string delimited by comma
+    //     result.push_back(substr);
     // }
-    //
-    //sendString("\n\n");
 
-    uint32_t serialRoutineID = std::stoi(result.at(0));
+    // //Check that the correct number of arguments have been supplied
+    // if (result.size() != 5) {
+    //     //Error, return
+    //     return 1;
+    // }
+
+    // // for(int i = 0; i<result.size(); i++) {    //print all splitted strings
+    // //     sendString(result.at(i));
+    // //     sendString("\n");
+    // // }
+    // //
+    // //sendString("\n\n");
+
+    // uint32_t serialRoutineID = std::stoi(result.at(0));
 
 
-    //If there is no currenly loaded routine, ie it just been cleared or at startup
-    if (routineID == 0) {
-        //Set the new routine id based on the transmission
-        routineID = serialRoutineID;
-        //else, there is a curently loaded routine, check the new step matches it
-    } else {
-        if (serialRoutineID != routineID) {
-            //Error, no match, failure
-            return 1;
-        }
-    }        
+    // //If there is no currenly loaded routine, ie it just been cleared or at startup
+    // if (routineID == 0) {
+    //     //Set the new routine id based on the transmission
+    //     routineID = serialRoutineID;
+    //     //else, there is a curently loaded routine, check the new step matches it
+    // } else {
+    //     if (serialRoutineID != routineID) {
+    //         //Error, no match, failure
+    //         return 1;
+    //     }
+    // }        
 
-    //Parse the data
+    // //Parse the data
 
-    //DeviceID
-    time.devID = std::stoi(result.at(1));
+    // //DeviceID
+    // time.devID = std::stoi(result.at(1));
 
-    //Start time
-    time.startTime = std::stoi(result.at(2));
+    // //Start time
+    // time.startTime = std::stoi(result.at(2));
 
-    //Stop time
-    time.stopTime = std::stoi(result.at(3));
+    // //Stop time
+    // time.stopTime = std::stoi(result.at(3));
 
-    //Device state
-    time.devState = std::stoi(result.at(4));
+    // //Device state
+    // time.devState = std::stoi(result.at(4));
 
-    //Add the timing information to the routines vector
-    routine.push_back(time);     
+    // //Add the timing information to the routines vector
+    // routine.push_back(time);     
 
-    sendString("\nRoutine ID: ");
-    sendString(result.at(0));
-    sendString("\nDevice ID: ");
-    sendString(result.at(1));
-    sendString("\nStart Time: ");
-    sendString(result.at(2));
-    sendString("\nStop Time: ");
-    sendString(result.at(3));
-    sendString("\nState: ");
-    sendString(result.at(4));
+    // sendString("\nRoutine ID: ");
+    // sendString(result.at(0));
+    // sendString("\nDevice ID: ");
+    // sendString(result.at(1));
+    // sendString("\nStart Time: ");
+    // sendString(result.at(2));
+    // sendString("\nStop Time: ");
+    // sendString(result.at(3));
+    // sendString("\nState: ");
+    // sendString(result.at(4));
 
-    sendString("\n\n");
+    // sendString("\n\n");
                 
-    //No errors, signal success
+    // //No errors, signal success
     return 0;
 }
 
@@ -208,48 +208,48 @@ uint8_t configRoutineSerial(std::string const& routineConfig) {
 //Print out the current routine
 //Nothing is returned and no parameters need to be passed
 void printRoutine(void) {
-    sendString("Routine ID: ");
+    // sendString("Routine ID: ");
 
-    sendString(to_string(routineID));
-    sendString("\n");
+    // sendString(to_string(routineID));
+    // sendString("\n");
 
-    sendString(to_string(routine.size()));
+    // sendString(to_string(routine.size()));
 
-    sendString(" timing block(s) are configured on the system\n");
+    // sendString(" timing block(s) are configured on the system\n");
 
-    //Loop through the routine vector and print out the timing data
-    for (int i = 0; i < routine.size(); i++) {
-        //Get the timing block
-        deviceTimes device = routine.at(i);
+    // //Loop through the routine vector and print out the timing data
+    // for (int i = 0; i < routine.size(); i++) {
+    //     //Get the timing block
+    //     deviceTimes device = routine.at(i);
 
-        sendString("Timing block ");
-        sendString(to_string(i));
+    //     sendString("Timing block ");
+    //     sendString(to_string(i));
 
-        sendString("\nDevice ID: ");
-        sendString(to_string(device.devID));
+    //     sendString("\nDevice ID: ");
+    //     sendString(to_string(device.devID));
 
-        sendString("\nStart Time: ");
-        sendString(to_string(device.startTime));
+    //     sendString("\nStart Time: ");
+    //     sendString(to_string(device.startTime));
 
-        sendString("\nStop Time: ");
-        sendString(to_string(device.stopTime));
+    //     sendString("\nStop Time: ");
+    //     sendString(to_string(device.stopTime));
 
-        sendString("\nState: ");
-        sendString(to_string(device.devState));
+    //     sendString("\nState: ");
+    //     sendString(to_string(device.devState));
 
-        sendString("\n\n");
-    }
-    sendString("\n");
+    //     sendString("\n\n");
+    // }
+    // sendString("\n");
 }
 
 
 //Clear all routine data
 //Nothing is returned and no parameters need to be passed
 void clearRoutine(void) {
-    //Clear all routine data
-    routine.clear();
+    // //Clear all routine data
+    // routine.clear();
 
-    routineID = 0;
+    // routineID = 0;
 }
 
 //Test the devices used in a routine
@@ -260,37 +260,37 @@ uint8_t testRoutineDevices(void) {
     //Create a variable to hold the numner of devices failing testing, and set its initial value to be zero
     uint8_t devFails = 0;
 
-    //Create a set to hold the extracted deviceID's
-    std::set<uint16_t> ids;
+    // //Create a set to hold the extracted deviceID's
+    // std::set<uint16_t> ids;
 
-    //Loop through the routine vector and extract the deviceID's
-    for (uint8_t i = 0; i < routine.size(); i++) {
-        //Get the timing information at i
-        deviceTimes device = routine.at(i);
+    // //Loop through the routine vector and extract the deviceID's
+    // for (uint8_t i = 0; i < routine.size(); i++) {
+    //     //Get the timing information at i
+    //     deviceTimes device = routine.at(i);
 
-        //Insert it into the set, this will remove duplicates of the device ID
-        ids.insert(device.devID);
-    }
+    //     //Insert it into the set, this will remove duplicates of the device ID
+    //     ids.insert(device.devID);
+    // }
 
-    //Get the set iterator
-    set<uint16_t>::iterator it;
+    // //Get the set iterator
+    // set<uint16_t>::iterator it;
 
-    //Loop through the deviceID's, testing each
-    for (it = ids.begin(); it != ids.end(); ++it) {
+    // //Loop through the deviceID's, testing each
+    // for (it = ids.begin(); it != ids.end(); ++it) {
 
-        //Loop through all of the devices, testing the one which matches the given id
-        for (int i = 0; i < devices.size(); i++) {
+    //     //Loop through all of the devices, testing the one which matches the given id
+    //     for (int i = 0; i < devices.size(); i++) {
 
-            //If the current devies matches the requested device ID, test it
-            if (*it == devices[i]->getID()) {
+    //         //If the current devies matches the requested device ID, test it
+    //         if (*it == devices[i]->getID()) {
 
-                //Test the device, if it fails, increment devFails
-                if (devices[i]->testDevice()) {
-                    devFails++;
-                }
-            }
-        }
-    }
+    //             //Test the device, if it fails, increment devFails
+    //             if (devices[i]->testDevice()) {
+    //                 devFails++;
+    //             }
+    //         }
+    //     }
+    // }
 
     //Return the number of device failures, which should be zero
     return devFails;
@@ -303,15 +303,15 @@ uint16_t getRoutineDuration(void) {
 
     uint16_t duration = 0;
 
-    //Loop through the timings array and look for the largest value of timeStop
-    for (deviceTimes n : routine) {
-        //If the stop time for the current step is greater than any previous stop time
-        if (n.stopTime >= duration) {
+    // //Loop through the timings array and look for the largest value of timeStop
+    // for (deviceTimes n : routine) {
+    //     //If the stop time for the current step is greater than any previous stop time
+    //     if (n.stopTime >= duration) {
 
-            //Update the last time value with the new greatest value
-            duration = n.stopTime;
-        }
-    }
+    //         //Update the last time value with the new greatest value
+    //         duration = n.stopTime;
+    //     }
+    // }
     return duration;
 }
 
@@ -320,35 +320,35 @@ uint16_t getRoutineDuration(void) {
 //The desired routine should be configured before calling using configRoutine
 void runBlockingRoutine(void) {
 
-    //Seconds since starting routine
-    uint16_t elapsed = 0;
+    // //Seconds since starting routine
+    // uint16_t elapsed = 0;
 
-    //Get routine duration
-    uint16_t duration = getRoutineDuration();
+    // //Get routine duration
+    // uint16_t duration = getRoutineDuration();
 
-    //While the routine has not finished
-    while (elapsed < duration) {
-        //Loop through routine and change state if required
-        for (deviceTimes n : routine) {
-            //If a device needs to change state
-            if (elapsed == n.startTime) {
-                //Loop through the devices array
-                for (int i = 0; i < devices.size(); i++) {
-                    //If the device ID matches the specified ID
-                    if (n.devID == devices[i]->getID()) {
-                        //Change the state of the device
-                        devices[i]->changeState(n.devState);
-                    }
-                }
-            }
-        }
+    // //While the routine has not finished
+    // while (elapsed < duration) {
+    //     //Loop through routine and change state if required
+    //     for (deviceTimes n : routine) {
+    //         //If a device needs to change state
+    //         if (elapsed == n.startTime) {
+    //             //Loop through the devices array
+    //             for (int i = 0; i < devices.size(); i++) {
+    //                 //If the device ID matches the specified ID
+    //                 if (n.devID == devices[i]->getID()) {
+    //                     //Change the state of the device
+    //                     devices[i]->changeState(n.devState);
+    //                 }
+    //             }
+    //         }
+    //     }
 
-        //Increment elapsed
-        elapsed++;
+    //     //Increment elapsed
+    //     elapsed++;
 
-        //Delay for a second before starting again
-        thread_sleep_for(1000);
-    }
+    //     //Delay for a second before starting again
+    //     thread_sleep_for(1000);
+    // }
 
     //Reset devies to default state
     resetRoutineDevices();
@@ -360,33 +360,33 @@ void runBlockingRoutine(void) {
 //Returns 0 on success, non-zero on failure to pass a device reset, with the value being the number of devices to fail reseting
 void resetRoutineDevices(void) {
 
-    //Create a set to hold the extracted deviceID's
-    std::set<uint16_t> ids;
+    // //Create a set to hold the extracted deviceID's
+    // std::set<uint16_t> ids;
 
-    //Loop through the routine vector and extract the deviceID's
-    for (uint8_t i = 0; i < routine.size(); i++) {
-        //Get the timing information at i
-        deviceTimes device = routine.at(i);
+    // //Loop through the routine vector and extract the deviceID's
+    // for (uint8_t i = 0; i < routine.size(); i++) {
+    //     //Get the timing information at i
+    //     deviceTimes device = routine.at(i);
 
-        //Insert it into the set, this will remove duplicates of the device ID
-        ids.insert(device.devID);
-    }
+    //     //Insert it into the set, this will remove duplicates of the device ID
+    //     ids.insert(device.devID);
+    // }
 
-    //Get the set iterator
-    set<uint16_t>::iterator it;
+    // //Get the set iterator
+    // set<uint16_t>::iterator it;
 
-    //Loop through the deviceID's, reseting each
-    for (it = ids.begin(); it != ids.end(); ++it) {
+    // //Loop through the deviceID's, reseting each
+    // for (it = ids.begin(); it != ids.end(); ++it) {
 
-        //Loop through all of the devices, reseting the one which matches the given id
-        for (int i = 0; i < devices.size(); i++) {
+    //     //Loop through all of the devices, reseting the one which matches the given id
+    //     for (int i = 0; i < devices.size(); i++) {
 
-            //If the current devies matches the requested device ID, reset it
-            if (*it == devices[i]->getID()) {
+    //         //If the current devies matches the requested device ID, reset it
+    //         if (*it == devices[i]->getID()) {
 
-                //reset the device
-                devices[i]->resetDevice();
-            }
-        }
-    }
+    //             //reset the device
+    //             devices[i]->resetDevice();
+    //         }
+    //     }
+    // }
 }
