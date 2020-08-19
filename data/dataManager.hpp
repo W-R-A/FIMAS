@@ -14,9 +14,10 @@
 //Declare an emmurated type to repreesnt the state of the system
 typedef enum {
     STATE_IDLE = 1, 
-    STATE_RUNNING = 2, 
-    STATE_ERROR = 3, 
-    STATE_ESTOP = 4
+    STATE_RUNNING_START = 2, 
+    STATE_RUNNING = 3,
+    STATE_ERROR = 4, 
+    STATE_ESTOP = 5
 } sysState;
 
 
@@ -62,10 +63,60 @@ public:
     //A string containing the currently configured devices is returned
     std::string getDevicesString(void);
 
+    //Test the devices configured on the system
+    //Takes no inputs
+    //Returns a string with the results of testing each device, ID and pass/fail testing
+    std::string getTestDevices(void);
+
+    //Reset the devices on the system
+    //Takes no inputs
+    //Nothing is returned
+    void setResetRoutineDevices(void);
+
+    //Set the state of a device 
+    //Takes the ID and desired state of the device
+    //Nothing is returned
+    void setDeviceState(unsigned short deviceID, uint8_t state);
+
     //Clear all of the routine information from the system. Clear the routine vector
     //No paramerters need to be passed
     //Nothing is returned
     void setClearRoutine(void);
+
+    //Set the routine ID
+    //Pass the new routineID
+    //Nothing is returned
+    void setRoutineID(uint16_t newRoutineID);
+
+    //Get the routine ID
+    //No paramerters need to be passed
+    //The routine ID is returned
+    uint16_t getRoutineID(void);
+
+    //Add timing information to the routine vector
+    //The timing parameters should be passed in the deviceTimes data structure
+    //Nothing is returned
+    void setAddRoutineTiming(deviceTimes newTime);
+
+    //Get the currently configured routine on the system as a formatted string
+    //No parameters need to be passed
+    //A string containing the currently configured routine is returned
+    std::string getRoutineString(void);
+
+    //Get the duration of a routine
+    //No parameters need to be passed
+    //Returns the duration of the loaded routine in seconds
+    uint16_t getRoutineDuration(void);
+
+    //Get the size of the routine in the number of timing blocks configured
+    //No parameters need to be passed
+    //Returns the number of timing blocks on the system
+    uint16_t getRoutineSize(void);
+
+    //Get a timing block of the routine 
+    //Specify the timing block desired
+    //Returns the timing block
+    deviceTimes getRoutineTimingBlock(uint16_t block);
 
     //Get the current stste of the system
     //No paramters need to be passed
@@ -82,8 +133,10 @@ public:
     //The state of the system is returned in enummerated format
     void setSystemState(sysState newState);
 
-//Private Properties    
+//Private Properties / methods  
 private:
+    //Properties
+
     //Restrict assess to one thread at a time
     Mutex accessMutex;
   
@@ -94,11 +147,21 @@ private:
     vector<deviceTimes> routine;
 
     //Create a variable to hold the routineID
-    uint32_t routineID;
+    uint16_t routineID;
+
+    //Create a variable to hold the duration of the routine in seconds
+    uint16_t routineDuration;
 
     //Create a status register
     sysState systemState;
 
+
+    //Methods
+
+    //Calculate the duration of a routine
+    //No parameters need to be passed
+    //Returns the duration of the loaded routine in seconds
+    uint16_t calcRoutineDuration(void);
 };
 
 //Create an instance so that all functions can access the manager

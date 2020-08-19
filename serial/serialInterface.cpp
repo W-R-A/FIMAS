@@ -22,20 +22,6 @@ EventQueue serialQueue;
 //Use standard namespace to keep things cleaner
 using namespace std;
 
-string cmdSetT    ("SETT ");
-
-
-
-
-//Tail of string
-//inspired by https://stackoverflow.com/questions/7597260/how-to-get-the-tail-of-a-stdstring
-//Usage std::string t = tail(source, 6); to get all of the string from char 6 to the end of the string
-std::string endString(std::string const& source, size_t const length) {
-    if (length >= source.size()) { return source; }
-    return source.substr(length);
-}
-
-
 //Decode the command sent over serial and take the appropiate action
 //Pass the string comtaing the command
 //Nothing is returned
@@ -76,10 +62,13 @@ void cmdDecode(string cmd)
 
             //Send acknowledgement
             sendString("CONFIGDEVICE: FAIL\n");
+        } else {
+
+            //Send acknowledgement
+            sendString("CONFIGDEVICE: OK\n");
         }
 
-        //Send acknowledgement
-        sendString("CONFIGDEVICE: OK\n");
+        
 	} 
     //Config routine
     else if (cmd.find("CONFIGROUTINESTEP") != string::npos) {
@@ -91,18 +80,17 @@ void cmdDecode(string cmd)
         string routineConfig = cmd.substr(configPos, string::npos);
 
         if (configRoutineSerial(routineConfig)) {
-            //Error
             
-            sendString("FAILURE");
-        }
-        else {
+            //Send acknowledgement
+            sendString("CONFIGROUTINESTEP: FAIL\n");
+        } else {
 
-            sendString("Routine configuration updated\n");
-            sendString("Success\n");
+            //Send acknowledgement
+            sendString("CONFIGROUTINESTEP: OK\n");
         }    
 		
 	}
-    //view devices
+    //View devices
     else if (cmd.find("VIEWDEVICES") != string::npos) {
 
         //Send the devices string over USART
@@ -113,20 +101,25 @@ void cmdDecode(string cmd)
 
         return;		
 	}
-    //view routine
+    //View routine
     else if (cmd.find("VIEWROUTINE") != string::npos) {
 
-        printRoutine();
+        //Send the routine string over USART
+        sendString(_dataManager.getRoutineString());
+            
+        //Send acknowledgement
+        sendString("VIEWROUTINE: OK\n");
 
-        sendString("Success\n");
+        return;
 		
 	}
     //Run routine
     else if (cmd.find("RUN") != string::npos) {
 
-        sendString("Routine Running\n");
+        _dataManager.setSystemState(STATE_RUNNING_START);
 
-        sendString("Success\n");
+        //Send acknowledgement
+        sendString("RUN: OK\n");
 		
 	} 
     
@@ -151,26 +144,18 @@ void cmdDecode(string cmd)
 
         return;
 	} 
-    else if (cmd.find(cmdSetT) != string::npos) {
-        //Determine if a valid time has been specified, all charcters after the space which is at position 4 onwards to the end of the string
-        string time = cmd.substr(5, string::npos);
+
+    //Test devices
+    else if (cmd.find("TESTDEVICES") != string::npos) {
         
-        //Attempt to convert to float format
-        float fTime = stof(time);
-		
-		//Check within bounds, 0.1<=T<=30
-		if ((fTime>=0.1f) && (fTime <= 30.0f))
-		{
-		
-			//Echo confirmation to serial
-			//sendString("Sampling period set to %f seconds\n", fTime); 
-		}
-		else
-		{
-			//Print error to serial
-			sendString("Invalid time period, T should be between 0.1 and 30 seconds\n"); 
-		}
-    }
+        //Test the devices
+        sendString(_dataManager.getTestDevices());
+
+        //Send acknowledgement
+        sendString("TESTDEVICES: OK\n");		
+
+        return;
+	} 
     else {
         sendString("Unrecognised command entered, please try again\n");
 		sendString(SERIAL_COMMAND_GUIDE);  

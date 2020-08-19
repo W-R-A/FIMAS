@@ -137,6 +137,105 @@ std::string dataManager::getDevicesString(void) {
 }
 
 
+//Test the devices configured on the system
+//Takes no inputs
+//Returns 0 on sucess, non-zero on failure to pass a device test, with the value being the number of devices to fail testing
+std::string dataManager::getTestDevices(void) {
+    
+    //Lock access while testing devices
+    this->accessMutex.lock();
+
+    //Create a string to hold the result of device testing
+    std::string devFails;
+    
+    //Get the number of devices configured to display as a summary of the devices
+    devFails.append(to_string(devices.size()));
+    devFails.append(" device(s) are configured on the system\n");
+
+    //Loop through the devices vector, testing each device in turn
+    for(int i = 0; i<devices.size(); i++) {    
+
+        //Get device ID
+        devFails.append("Device ID: ");
+
+        //Append the details of every device in the vector
+        devFails.append(to_string(devices.at(i)->getID()));
+
+        //Add a newline between devices
+        devFails.append("\n");
+
+        if (devices.at(i)->testDevice()) {
+
+            //Device has a problem, add to string
+            devFails.append("TEST: FAIL\n\n");
+
+        } else {
+            //Device has a problem, add to string
+            devFails.append("TEST: PASS\n\n");
+
+        }
+    }
+
+    //Once finshed, unlock
+    this->accessMutex.unlock();
+
+    //Return the string
+    return devFails;
+}
+
+
+//Reset the devices on the system
+//Takes no inputs
+//Nothing is returned
+void dataManager::setResetRoutineDevices(void) {
+
+    //Lock access while testing devices
+    this->accessMutex.lock();
+
+    //Loop through the devices vector, testing each device in turn
+    for(int i = 0; i<devices.size(); i++) {    
+
+        //Reset every device in the vector
+        devices.at(i)->resetDevice();
+    }
+
+    //Once finshed, unlock
+    this->accessMutex.unlock();
+}
+
+
+//Set the state of a device 
+//Takes the ID and desired state of the device
+//Nothing is returned
+void dataManager::setDeviceState(unsigned short deviceID, uint8_t state) {
+
+    //Lock access while changing state
+    this->accessMutex.lock();
+
+    //Loop through the devices array
+    for (int i = 0; i < devices.size(); i++) {
+
+        //If the device ID matches the specified ID
+        if (deviceID == devices[i]->getID()) {
+
+            //Change the state of the device
+            devices[i]->changeState(state);
+        }
+    }
+
+    //Once finshed, unlock
+    this->accessMutex.unlock();
+}
+
+
+//Get a timing block of the routine 
+//Specify the timing block desired
+//Returns the timing block
+deviceTimes dataManager::getRoutineTimingBlock(uint16_t block) {
+    return routine[block];
+}
+
+
 //Clear all of the routine information from the system. Clear the routine vector
 //No paramerters need to be passed
 //Nothing is returned
@@ -153,6 +252,124 @@ void dataManager::setClearRoutine(void){
 
     //Once finshed, unlock data access
     this->accessMutex.unlock();
+}
+
+
+//Set the routine ID
+//Pass the new routineID
+//Nothing is returned
+void dataManager::setRoutineID(uint16_t newRoutineID) {
+    
+    //Lock access while modifing data
+    this->accessMutex.lock();
+
+    //Reset routine ID to zero
+    this->routineID = newRoutineID;
+
+    //Once finshed, unlock data access
+    this->accessMutex.unlock();
+}
+
+
+//Get the routine ID
+//No paramerters need to be passed
+//The routine ID is returned
+uint16_t dataManager::getRoutineID(void) {
+    return this->routineID;
+}
+
+
+//Add timing information to the routine vector
+//The timing parameters should be passed in the deviceTimes data structure
+//Nothing is returned
+void dataManager::setAddRoutineTiming(deviceTimes newTime) {
+    
+    //Lock access while modifing data
+    this->accessMutex.lock();
+
+    //Add the timing information to the routines vector
+    routine.push_back(newTime);
+
+    //Update the routine duration
+    this->routineDuration = calcRoutineDuration();
+
+    //Once finshed, unlock data access
+    this->accessMutex.unlock();
+}
+
+
+//Get the currently configured routine on the system as a formatted string
+//No parameters need to be passed
+//A string containing the currently configured routine is returned
+std::string dataManager::getRoutineString(void) {
+    
+    //Lock access while reading data
+    this->accessMutex.lock();
+
+    //Create a string to hold the routine data
+    std::string routineString;
+
+    //Get the routine ID
+    routineString.append("Routine ID: ");
+    routineString.append(to_string(this->routineID));
+
+    //Print the number of routine timing blocks
+    routineString.append("\n");
+    routineString.append(to_string(routine.size()));
+    routineString.append(" timing block(s) are configured on the system\n");
+
+
+    //Loop through the routine vector and add the timing data to a string
+    for (int i = 0; i < routine.size(); i++) {
+        //Get the timing block
+        deviceTimes device = routine.at(i);
+
+        //Get the timing block
+        routineString.append("Timing block ");
+        routineString.append(to_string(i));
+
+        //Get the device ID
+        routineString.append("\nDevice ID: ");
+        routineString.append(to_string(device.devID));
+
+        //Get the start time
+        routineString.append("\nStart Time: ");
+        routineString.append(to_string(device.startTime));
+
+        //Get the stop time
+        routineString.append("\nStop Time: ");
+        routineString.append(to_string(device.stopTime));
+
+        //Get the state
+        routineString.append("\nState: ");
+        routineString.append(to_string(device.devState));
+
+        //Add newline for clarity
+        routineString.append("\n\n");
+    }
+
+    //Add newline at the end of the string
+    routineString.append("\n");  
+    
+    //Once finshed, unlock data access
+    this->accessMutex.unlock();
+
+    //Return the complete string
+    return routineString;
+}
+
+//Get the duration of a routine
+//No parameters need to be passed
+//Returns the duration of the loaded routine in seconds
+uint16_t dataManager::getRoutineDuration(void) {
+    return this->routineDuration;
+}
+
+//Get the size of the routine in the number of timing blocks configured
+//No parameters need to be passed
+//Returns the number of timing blocks on the system
+uint16_t dataManager::getRoutineSize(void) {
+    return this->routine.size();
 }
 
 //Get the current state of the system
@@ -178,6 +395,9 @@ std::string dataManager::getSystemStateString(void) {
             break;
         case STATE_RUNNING:
             return "RUNNING\n";
+            break;
+        case STATE_RUNNING_START:
+            return "RUNNING_START\n";
             break;
         case STATE_ERROR:
             return "ERROR\n";
@@ -206,6 +426,9 @@ void dataManager::setSystemState(sysState newState) {
         case STATE_IDLE:
             systemState = STATE_IDLE;
             break;
+        case STATE_RUNNING_START:
+            systemState = STATE_RUNNING_START;
+            break;
         case STATE_RUNNING:
             systemState = STATE_RUNNING;
             break;
@@ -219,4 +442,27 @@ void dataManager::setSystemState(sysState newState) {
 
     //Once finshed, unlock access
     this->accessMutex.unlock();
+}
+
+
+//Calculate the duration of a routine
+//No parameters need to be passed
+//Returns the duration of the loaded routine in seconds
+uint16_t dataManager::calcRoutineDuration(void) {
+
+    //No mutexes are used here as this is a private method and therefore only callable within the class
+    //The calling function is expected to have the appropiate protection features in place
+    
+    uint16_t duration = 0;
+
+    //Loop through the timings array and look for the largest value of timeStop
+    for (deviceTimes n : routine) {
+        //If the stop time for the current step is greater than any previous stop time
+        if (n.stopTime >= duration) {
+
+            //Update the last time value with the new greatest value
+            duration = n.stopTime;
+        }
+    }
+    return duration;
 }

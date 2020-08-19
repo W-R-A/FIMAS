@@ -42,7 +42,7 @@ void switchValve::pulse(void const *argument)
     switchValve* self = (switchValve*)argument;
 
     //Infinite loop 
-    while (true) {
+    while (1) {
         if (self->pulseActive) {
             for (int i = 0; i < self->noPulses; i++) {
                 if (self->pin == 1) {

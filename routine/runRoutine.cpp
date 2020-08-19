@@ -30,62 +30,76 @@ void routineThreadFunction(void) {
 //No parameters need to be passed and nothing is returned
 void routineManager(void) {
 
-    //Wait while the system is not in the running state
-    if (_dataManager.getSystemState() == STATE_RUNNING) {
+    //Enter an infinite loop managing the routine running
+    while (true) {
 
-        //Reset the time elapsed to zero
-        routineElapsed = 0;
+        //Wait while the system is not in the running state
+        if (_dataManager.getSystemState() == STATE_RUNNING_START) {
 
-        //Set the routine duration
-        //routineDuration = getRoutineDuration();
+            //Reset the time elapsed to zero
+            routineElapsed = 0;
 
-        //Run the routine
-        //routineEventQueueID = routineQueue.call_every(1s, runRoutine);
+            //Set the routine duration
+            routineDuration = _dataManager.getRoutineDuration();
+
+            //Run the routine
+            routineEventQueueID = routineQueue.call_every(1s, runRoutine);
+
+            //Update the system state
+            _dataManager.setSystemState(STATE_RUNNING);
+        }
+
+        //If the system status changes to ESTOP or ERROR state, stop the routine, and return to IDLE state
+        if ((_dataManager.getSystemState() == STATE_ERROR) || (_dataManager.getSystemState() == STATE_ESTOP)) {
+
+            //Stop the routine
+            routineQueue.cancel(routineEventQueueID);
+
+            //Reset devies to default state
+            _dataManager.setResetRoutineDevices();
+
+            //Update the system state
+            _dataManager.setSystemState(STATE_IDLE);
+        }
+
+        //Sleep for 200ms
+        ThisThread::sleep_for(200);
     }
-
-    //If the system status changes to ESTOP or ERROR state, stop the routine
-    if ((_dataManager.getSystemState() == STATE_ERROR) || (_dataManager.getSystemState() == STATE_ESTOP)) {
-
-        //Stop the routine
-        routineQueue.cancel(routineEventQueueID);
-
-        //Reset devies to default state
-        //resetRoutineDevices();
-    }
-
-    //Sleep for 200ms
-    ThisThread::sleep_for(200);
 }
 
 
 void runRoutine(void) {
 
-    // //If the routine has not finished
-    // if (routineElapsed < routineDuration) {
-    //     //Loop through routine and change state if required
-    //     for (deviceTimes n : routine) {
-    //         //If a device needs to change state
-    //         if (routineElapsed == n.startTime) {
-    //             //Loop through the devices array
-    //             for (int i = 0; i < devices.size(); i++) {
-    //                 //If the device ID matches the specified ID
-    //                 if (n.devID == devices[i]->getID()) {
-    //                     //Change the state of the device
-    //                     devices[i]->changeState(n.devState);
-    //                 }
-    //             }
-    //         }
-    //     }
+    //If the routine has not finished
+    if (routineElapsed < routineDuration) {
+        
+        //Loop through routine and change state if required
+        for (int i = 0; i < _dataManager.getRoutineSize(); i++) {
 
-    //     //Increment elapsed time
-    //     routineElapsed++;
+            //Get timing block
+            deviceTimes timing = _dataManager.getRoutineTimingBlock(i);
 
-    // }
-    // else {
-    //     //Stop the function from being called again as the routine has finished
-    //     routineQueue.cancel(routineEventQueueID);
+            //If a device needs to change state
+            if (routineElapsed == timing.startTime) {
 
-    //     //Reset devies to default state
-    //     resetRoutineDevices();
-    // }
+                //Change the state of the device
+                _dataManager.setDeviceState(timing.devID, timing.devState);
+            }
+        }
+
+        //Increment elapsed time
+        routineElapsed++;
+
+    }
+    else {
+        //Stop the function from being called again as the routine has finished
+        routineQueue.cancel(routineEventQueueID);
+
+        //Reset devies to default state
+        _dataManager.setResetRoutineDevices();
+
+        //Set the system back to IDLE state
+        _dataManager.setSystemState(STATE_IDLE);
+    }
 }
+
