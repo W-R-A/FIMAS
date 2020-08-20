@@ -11,8 +11,8 @@ switchValve::switchValve(PinName pin, uint8_t pinindex, unsigned short deviceID)
     //Deactivate pulsing
     this->pulseActive = 0;
 
-    //Start pulse thread
-    pulseThread.start(callback(pulse, this));
+     //Start pulse ticker
+    pulse_ticker.attach(callback(this, &switchValve::pulse), 0.5f);
 }
 
 //pin1 specifies the pin that the switching valve step input is connected to
@@ -27,53 +27,58 @@ switchValve::switchValve(PinName pin1, PinName pin2, uint8_t pin1index, uint8_t 
     //Deactivate pulsing
     this->pulseActive = 0;
 
-    //Start pulse thread
-    pulseThread.start(callback(pulse, this));
+    //Start pulse ticker
+    pulse_ticker.attach(callback(this, &switchValve::pulse), 0.5f);
 }
 
 //create the signal pulses needed to change the state of the switching valve
-//pin determines the pin to generate the pulses on
-//noPulses determines the number of pulses generated
 //According to the data sheet, each pulse must be at least 30ms in duration, so a delay of 50ms is used
-//https://os.mbed.com/users/AVELARDEV/code/LibThreadProcess//file/3b34689ec230/BlinkLed.h/
-void switchValve::pulse(void const *argument)
-{
-    //Convert pointer to class type
-    switchValve* self = (switchValve*)argument;
+void switchValve::pulse(void) {
 
-    //Infinite loop 
-    while (1) {
-        if (self->pulseActive) {
-            for (int i = 0; i < self->noPulses; i++) {
-                if (self->pin == 1) {
-                    self->controlPin1->write(1);
-                    ThisThread::sleep_for(500);
-                    self->controlPin1->write(0);
-                }
-                else {
-                    self->controlPin2->write(1);
-                    ThisThread::sleep_for(500);
-                    self->controlPin2->write(0);
+    if (this->pulseActive) {
+        if (this->noPulses) {
+            if (this->pin == 1) {
+                if (this->falling) {
+                    this->controlPin1->write(0);
+                    this->falling = 0;
+                    this->noPulses = this->noPulses - 1;
+                } else {
+                    this->controlPin1->write(1);
+                    this->falling = 1;
+                }                    
+            }
+            else {
+                if (this->falling) {
+                    this->controlPin2->write(0);
+                    this->falling = 0;
+                    this->noPulses = this->noPulses - 1;
+                } else {
+                    this->controlPin2->write(1);
+                    this->falling = 1;
                 }
             }
+        //Finished pulse
+        } else {
+            this->falling = 0;
+            this->pulseActive = 0;  
         }
-        self->pulseActive = 0;
-    }
-    
+    }     
 }
 
 //Signal the pulse thread to generate the required signals
 void switchValve::doPulse(unsigned short pin, unsigned short pulses) {
 
-    //Change to desired state
-    this->pin = 1;
+    //Change to desired pin
+    this->pin = pin;
 
     this->noPulses = pulses;
+
+    this->falling = 0;
 
     //Block until thread is free
     while (this->pulseActive == 1 ) {}
 
-    //Activate thread
+    //Activate ticker
     this->pulseActive = 1;
 }
 
@@ -114,7 +119,7 @@ unsigned short switchValve::changeState(unsigned short newState)
         }
         else {
             //Reset position
-            doPulse(2, newState);
+            doPulse(2, 1);
 
             //Change to desired state
             doPulse(1, newState);
@@ -123,4 +128,16 @@ unsigned short switchValve::changeState(unsigned short newState)
         }
     }
     return this->state;
+}
+
+
+//Tests the operation of the valve
+//Returns 0 if the valve is operating normally, non-zero otherwise
+unsigned short switchValve::testDevice(void) {
+    for (int i = 0; i < 10; i++) {
+        changeState(i);
+        thread_sleep_for(500);
+    }
+    
+    return 0;
 }

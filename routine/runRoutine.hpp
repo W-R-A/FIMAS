@@ -4,13 +4,11 @@
 //Include the mbed header file
 #include "mbed.h"
 
-//Include the set header to allow the creation of sets
-#include <set>
-
 
 //Include the data manager header file
 #include "dataManager.hpp"
 
+#include "serialInterface.hpp"
 
 //Create routine management thread
 extern Thread routineManagerThread;

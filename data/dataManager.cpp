@@ -209,14 +209,14 @@ void dataManager::setResetRoutineDevices(void) {
 //Nothing is returned
 void dataManager::setDeviceState(unsigned short deviceID, uint8_t state) {
 
-    //Lock access while changing state
-    this->accessMutex.lock();
-
     //Loop through the devices array
     for (int i = 0; i < devices.size(); i++) {
 
         //If the device ID matches the specified ID
         if (deviceID == devices[i]->getID()) {
+            
+            //Lock access while changing state
+            this->accessMutex.lock();
 
             //Change the state of the device
             devices[i]->changeState(state);

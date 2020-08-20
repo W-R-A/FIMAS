@@ -28,18 +28,20 @@ public:
     //The valve can be in one of ten states and can operated in two modes
     unsigned short changeState(unsigned short newState);
 
+    //Tests the operation of the valve
+    //Returns 0 if the valve is operating normally, non-zero otherwise
+    unsigned short testDevice(void);
+
     //Protected
 protected:
     //create the signal pulses needed to change the state of the switching valve
-    //pin determines the pin to generate the pulses on
-    //noPulses determines the number of pulses generated
-    static void pulse(void const *argument);
+    void pulse(void);
 
-    //signal the pulse thread to create the required pulse signals
+    //signal the pulse ticker to create the required pulse signals
     void doPulse(unsigned short pin, unsigned short pulses);
 
     //Thread to generate pulses
-    Thread pulseThread;
+    Ticker pulse_ticker;
 
     //Control pin for thread
     unsigned short pin;
@@ -47,7 +49,12 @@ protected:
     //Number of pulses
     unsigned short noPulses;
 
+    //Is the pulse active
     volatile bool pulseActive;
+
+    //Rising or falling edge
+    volatile bool falling;
+
 };
 
 #endif

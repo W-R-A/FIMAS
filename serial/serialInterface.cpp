@@ -156,6 +156,24 @@ void cmdDecode(string cmd)
 
         return;
 	} 
+
+    //Reset
+    else if (cmd.find("RESET") != string::npos) {
+        
+        //Change the state to IDLE
+        _dataManager.setSystemState(STATE_IDLE);
+
+        //Clear the routine on the system
+        _dataManager.setClearRoutine();
+
+        //Clear the devices on the system
+        _dataManager.setClearDevices();
+
+        //Send acknowledgement
+        sendString("RESET: OK\n");		
+
+        return;
+	} 
     else {
         sendString("Unrecognised command entered, please try again\n");
 		sendString(SERIAL_COMMAND_GUIDE);  

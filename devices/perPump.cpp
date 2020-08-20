@@ -37,7 +37,7 @@ unsigned short perPump::changeState(unsigned short newState) {
 
 //Tests the operation of the pump
 //Returns 0 if the pump is operating normally, non-zero otherwise
-unsigned short perPump::testDevice() {
+unsigned short perPump::testDevice(void) {
     changeState(1);
     thread_sleep_for(500);
     changeState(0);

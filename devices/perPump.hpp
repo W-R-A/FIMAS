@@ -26,7 +26,7 @@ public:
 
     //Tests the operation of the pump
     //Returns 0 if the pump is operating normally, non-zero otherwise
-    unsigned short testDevice();
+    unsigned short testDevice(void);
 };
 
 #endif
