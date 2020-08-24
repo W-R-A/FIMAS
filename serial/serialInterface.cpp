@@ -10,14 +10,15 @@
 //Create a serial interface object to PC
 UnbufferedSerial pc(USBTX, USBRX, 115200);
 
-//Timeout used with serial
-Timer serialTimeout;
-
-//Serial Communication Thread
-Thread serialThread;
+//Serial Communication Threads
+Thread serialThread(osPriorityNormal, OS_STACK_SIZE, nullptr, "Serial Communicator");
+Thread serialInputThread(osPriorityNormal, OS_STACK_SIZE, nullptr, "Input Serial Communicator");
 
 //Create eventqueues
 EventQueue serialQueue;
+
+//Mailbox to hold recieved chars - max command length 40 chars
+Mail<char, 40> serial_mail_box;
 
 //Use standard namespace to keep things cleaner
 using namespace std;
@@ -178,9 +179,6 @@ void cmdDecode(string cmd)
         sendString("Unrecognised command entered, please try again\n");
 		sendString(SERIAL_COMMAND_GUIDE);  
     }
-
-      
-
 }
 
 
@@ -191,27 +189,33 @@ void serialInterface(void)
     //Attach an interrupt to detect when a character has been recieived over serial
     pc.attach(serialInputInterrupt, SerialBase::RxIrq);
 
+    //Start serial input thread
+    serialInputThread.start(serialInputHandler);
+
     //Start event queue on thread
     serialQueue.dispatch();
 }
+
 
 //This interrpt fires when a character is recieived over the serial interface
 //No paramters need to be passed and nothing is returned
 void serialInputInterrupt(void)
 {
-    //Disable interupt
-    pc.attach(NULL, SerialBase::RxIrq);
-	
-	//Restart timeout
-	serialTimeout.stop();
-	serialTimeout.reset();
-	serialTimeout.start();
+    //Based on work by Sam Duffield - MDAS
+    
+    //Allocate space in the mailbox, blocking if needed - ISR SAFE as milisecond parameter is set to zero
+    //https://os.mbed.com/docs/mbed-os/v6.2/mbed-os-api-doxy/classrtos_1_1_mail.html#ac01d110ce7cb71b9c1f5a0ff59216c15
+    char *mail = serial_mail_box.try_alloc_for(0s);
 
-    //Call the serial input handler
-    serialQueue.call(serialInputHandler);
+    //Read the incoming char
+    *mail = USART3->DR;
+
+    //Update the mailbox
+    serial_mail_box.put(mail);
 }
 
-//Handle serial input - block and allow the user to enter a command.
+
+//Handle serial input 
 //Decode it and call cmdDecode to take the appropiate action
 //No paramters need to be passed and nothing is returned
 void serialInputHandler(void)
@@ -219,74 +223,65 @@ void serialInputHandler(void)
     //Empty string to hold the command sent over serial
     string cmd("");
     
-    //Send instructions
-    sendString("Enter Command: ");
-    
     //Command length counter
-    char i = 0;
-    
-	//Block the serial eventqueue while a command is being entered, 5s timeout
-	//This does use a spin lock, polling a timer but this allows for a better user interface while the user is actively communicating with the device. When the device is not being controlled over serial, thi will not be run, saving power.
+    char i = 0;        
+
+    //Declare a char to recieve user input
+	char j;
+
+	//Spin and wait for a char to be recieved
     while (true)
-    { 
-		//Check if there is a character to be read
-		if (pc.readable())
-		{
-			//Declare char to recieve user input
-			char j;
+    {
+        //Block and wait for mail
+		osEvent evt = serial_mail_box.get();
 
-			//Get user input
-            pc.read(&j, 1);
+        //Get address of next char
+        char *mail = (char *)evt.value.p;
 
-			//Echo user input
-			pc.write(&j, 1);
-					
-			//If string is over 40 in length, invalid, return
-			if (i > 40)
-			{
-				sendString("Unrecognised command entered, please try again\n");
-				sendString(SERIAL_COMMAND_GUIDE);
-				break;
-			}
-			//Check for commands if the enter key is pressed
-			if (j == '\r') 
-			{
-				cmdDecode(cmd);
-				break;
-			}
-			//If delete, ascii 127, do not add to string, remove last character added
-			if (j == 127)
-			{
-				//Delete last char of string
-				cmd.pop_back();
-				
-				//Decrement i
-				i--;
-			}
-			else
-			{
-				//Add char to command string, after ensuring that it is in uppercase
-				cmd.append(1,toupper(j));
-				
-				//Increment i 
-				i++;
-			}
-			//restart timeout
-			serialTimeout.stop();
-			serialTimeout.reset();
-			serialTimeout.start();
-		}
-		//If 5s has passed and no new char has been received, timeout and return to serial output
-		else if (serialTimeout.read() > 5)
-		{
-			sendString("Serial command timeout, please try again ensuring each key presss is within 5 seconds of the last\n");
-			break;
-		}
+        //Copy the value to j
+        j = *mail;
+
+        send_usart(*mail);
+
+        //Free memory
+        serial_mail_box.free(mail);
+        
+        //If string is over 40 in length, invalid, reset
+        if (i > 40)
+        {
+            serialQueue.call(sendCString, "Unrecognised command entered, please try again\n");
+            serialQueue.call(sendCString, SERIAL_COMMAND_GUIDE);
+
+            //Reset length counter
+            i = 0;
+
+            //Clear cmd
+            cmd.clear();
+        }
+        //Check for commands if the enter key is pressed
+        if (j == '\r') 
+        {
+            //Decode command
+            cmdDecode(cmd);
+
+            //Reset length counter
+            i = 0;
+
+            //Clear cmd
+            cmd.clear();
+        }
+        else
+        {
+            //Add char to command string, after ensuring that it is in uppercase
+            cmd.append(1,toupper(j));
+            
+            //Increment i 
+            i++;
+        }
+		
     }
-
-    //Reenable interrupt
-    pc.attach(serialInputInterrupt, SerialBase::RxIrq);
 }	
+
 
 //Send a byte of data over USART
 //Paul Davey - Lecture 6 Slide 3rd from the end
@@ -317,6 +312,7 @@ void sendCString(const char *string)
 		i++;
 	}
 }
+
 
 //Send a string over USART
 //Paul Davey - Lecture 6 Slide 3rd from the end

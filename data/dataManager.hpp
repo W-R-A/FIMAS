@@ -10,6 +10,8 @@
 //Include the hardware header file to gain awareness of the hardware connected
 #include "hardware.hpp"
 
+#include "serialInterface.hpp"
+
 
 //Declare an emmurated type to repreesnt the state of the system
 typedef enum {
@@ -50,8 +52,8 @@ public:
     //The key device information should be passed as arguments 
     //Device Type, pin indexes and the device ID
     //Nothing is returned
-    void setAddDevice(devices_t type, uint8_t pinIndex, unsigned short deviceID);
-    void setAddDevice(devices_t type, uint8_t pin1index, uint8_t pin2index, unsigned short deviceID);
+    void setAddDevice(devices_t type, uint8_t pinIndex, uint16_t deviceID);
+    void setAddDevice(devices_t type, uint8_t pin1index, uint8_t pin2index, uint16_t deviceID);
 
     //Get the number of devices in the device vector
     //No parameters need to be passed
@@ -68,6 +70,11 @@ public:
     //Returns a string with the results of testing each device, ID and pass/fail testing
     std::string getTestDevices(void);
 
+    //Test a device configured on the system
+    //Takes the ID of the device to test
+    //Returns a string with the results of the test
+    std::string getTestDevice(uint16_t deviceID);
+
     //Reset the devices on the system
     //Takes no inputs
     //Nothing is returned
@@ -76,7 +83,7 @@ public:
     //Set the state of a device 
     //Takes the ID and desired state of the device
     //Nothing is returned
-    void setDeviceState(unsigned short deviceID, uint8_t state);
+    void setDeviceState(uint16_t deviceID, uint8_t state);
 
     //Clear all of the routine information from the system. Clear the routine vector
     //No paramerters need to be passed
@@ -129,8 +136,8 @@ public:
     std::string getSystemStateString(void);
 
     //Set the state of the system
-    //No paramters need to be passed
-    //The state of the system is returned in enummerated format
+    //The new state of the system needs to be passed
+    //Nothing is returned
     void setSystemState(sysState newState);
 
 //Private Properties / methods  
@@ -162,6 +169,15 @@ private:
     //No parameters need to be passed
     //Returns the duration of the loaded routine in seconds
     uint16_t calcRoutineDuration(void);
+
+    //Get the internal data mutex, block until available
+    //Nothing is passed, nothing is returned
+    void getMutex(void);
+
+    //Release the internal data mutex, block until available
+    //Nothing is passed, nothing is returned
+    void releaseMutex(void);
+
 };
 
 //Create an instance so that all functions can access the manager

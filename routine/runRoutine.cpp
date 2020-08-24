@@ -1,10 +1,10 @@
 #include "runRoutine.hpp"
 
 //Create routine management thread
-Thread routineManagerThread;
+Thread routineManagerThread(osPriorityNormal, OS_STACK_SIZE, nullptr, "Routine Manger");
 
 //Create Routine Thread
-Thread routineThread(osPriorityRealtime);
+Thread routineThread(osPriorityRealtime, OS_STACK_SIZE, nullptr, "Routine Runner");
 
 //Create eventqueue to be run on routineThread
 EventQueue routineQueue;
@@ -36,36 +36,17 @@ void routineManager(void) {
         //Wait while the system is not in the running state
         if (_dataManager.getSystemState() == STATE_RUNNING_START) {
 
-            //Send message over serial
-            serialQueue.call(sendCString, "Routine run request recieved\n");
-
             //Reset the time elapsed to zero
             routineElapsed = 0;
-
-            //Send message over serial
-            serialQueue.call(sendCString, "Reset elapsed time\n");
 
             //Set the routine duration
             routineDuration = _dataManager.getRoutineDuration();
 
-            //Send message over serial
-            serialQueue.call(sendCString, "Set routine duration\n");
-
-            
             //Update the system state
             _dataManager.setSystemState(STATE_RUNNING);
-
-            //Send message over serial
-            serialQueue.call(sendCString, "Updated system state\n");
-            
+   
             //Run the routine
             routineEventQueueID = routineQueue.call_every(1s, runRoutine);
-
-            //Send message over serial
-            serialQueue.call(sendCString, "Eventqueue activated\n");
-
-            //Send message over serial
-            serialQueue.call(sendCString, "Routine Running\n");
         }
 
         //If the system status changes to ESTOP or ERROR state, stop the routine, and return to IDLE state
@@ -119,9 +100,6 @@ void runRoutine(void) {
 
         //Set the system back to IDLE state
         _dataManager.setSystemState(STATE_IDLE);
-
-        //Send message over serial
-        serialQueue.call(sendCString, "Routine finished\n");
     }
 }
 

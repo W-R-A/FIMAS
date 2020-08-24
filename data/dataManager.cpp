@@ -44,7 +44,7 @@ void dataManager::setClearDevices(void){
 //The key device information should be passed as arguments 
 //Device Type, Pin(s) used, pin indexes and the device ID
 //Nothing is returned
-void dataManager::setAddDevice(devices_t type, uint8_t pinIndex, unsigned short deviceID) {
+void dataManager::setAddDevice(devices_t type, uint8_t pinIndex, uint16_t deviceID) {
     
     //Lock access while modifing data
     this->accessMutex.lock();
@@ -72,7 +72,7 @@ void dataManager::setAddDevice(devices_t type, uint8_t pinIndex, unsigned short 
 //The key device information should be passed as arguments 
 //Device Type, Pin(s) used, pin indexes and the device ID
 //Nothing is returned
-void dataManager::setAddDevice(devices_t type, uint8_t pin1index, uint8_t pin2index, unsigned short deviceID) {
+void dataManager::setAddDevice(devices_t type, uint8_t pin1index, uint8_t pin2index, uint16_t deviceID) {
 
     //Lock access while modifing data
     this->accessMutex.lock();
@@ -170,9 +170,45 @@ std::string dataManager::getTestDevices(void) {
             devFails.append("TEST: FAIL\n\n");
 
         } else {
-            //Device has a problem, add to string
+            //Device has no problem, add to string
             devFails.append("TEST: PASS\n\n");
+        }
+    }
 
+    //Once finshed, unlock
+    this->accessMutex.unlock();
+
+    //Return the string
+    return devFails;
+}
+
+//Test a device configured on the system
+//Takes the ID of the device to test
+//Returns a string with the results of the test
+std::string dataManager::getTestDevice(uint16_t deviceID) {
+        
+    //Lock access while testing devices
+    this->accessMutex.lock();
+
+    //Create a string to hold the result of device testing
+    std::string devFails;
+
+    //Loop through the devices array
+    for (int i = 0; i < devices.size(); i++) {
+
+        //If the device ID matches the specified ID
+        if (deviceID == devices[i]->getID()) {
+
+            //Test the device
+            if (devices.at(i)->testDevice()) {
+
+                //Device has a problem, add to string
+                devFails.append("TEST: FAIL\n\n");
+
+            } else {
+                //Device has a problem, add to string
+                devFails.append("TEST: PASS\n\n");
+            }
         }
     }
 
@@ -189,10 +225,10 @@ std::string dataManager::getTestDevices(void) {
 //Nothing is returned
 void dataManager::setResetRoutineDevices(void) {
 
-    //Lock access while testing devices
+    //Lock access while resetting devices
     this->accessMutex.lock();
 
-    //Loop through the devices vector, testing each device in turn
+    //Loop through the devices vector, resetting each device in turn
     for(int i = 0; i<devices.size(); i++) {    
 
         //Reset every device in the vector
@@ -207,7 +243,7 @@ void dataManager::setResetRoutineDevices(void) {
 //Set the state of a device 
 //Takes the ID and desired state of the device
 //Nothing is returned
-void dataManager::setDeviceState(unsigned short deviceID, uint8_t state) {
+void dataManager::setDeviceState(uint16_t deviceID, uint8_t state) {
 
     //Loop through the devices array
     for (int i = 0; i < devices.size(); i++) {
@@ -219,12 +255,14 @@ void dataManager::setDeviceState(unsigned short deviceID, uint8_t state) {
             this->accessMutex.lock();
 
             //Change the state of the device
-            devices[i]->changeState(state);
+            devices[i]->changeState(state);    
+            
+            //Once finshed, unlock
+            this->accessMutex.unlock();
         }
     }
 
-    //Once finshed, unlock
-    this->accessMutex.unlock();
+
 }
 
 
@@ -385,9 +423,6 @@ sysState dataManager::getSystemState(void) {
 //The state of the system is returned in enummerated format
 std::string dataManager::getSystemStateString(void) {
 
-    //Lock access while reading data
-    this->accessMutex.lock();
-
     switch(systemState) {
         default:
         case STATE_IDLE:
@@ -406,17 +441,14 @@ std::string dataManager::getSystemStateString(void) {
             return "ESTOP\n";
             break;
     }
-
-    //Once finshed, unlock data access
-    this->accessMutex.unlock();
 }
 
 
 //Set the state of the system
-//No paramters need to be passed
-//The state of the system is returned in enummerated format
+//The new state of the system needs to be passed
+//Nothing is returned
 void dataManager::setSystemState(sysState newState) {
-    
+
     //Lock access while modifing the state
     this->accessMutex.lock();
 
@@ -442,6 +474,7 @@ void dataManager::setSystemState(sysState newState) {
 
     //Once finshed, unlock access
     this->accessMutex.unlock();
+
 }
 
 
@@ -465,4 +498,37 @@ uint16_t dataManager::calcRoutineDuration(void) {
         }
     }
     return duration;
+}
+
+
+//Get the internal data mutex, block until available
+//Nothing is passed, nothing is returned
+void dataManager::getMutex(void) {
+
+    //Lock access while modifing the state
+    this->accessMutex.lock();
+
+    //Send message over serial
+    serialQueue.call(sendCString, ThisThread::get_name());
+
+    //Send message over serial
+    serialQueue.call(sendCString, " requesting internal data mutex\n");
+
+}
+
+
+
+//Release the internal data mutex, block until available
+//Nothing is passed, nothing is returned
+void dataManager::releaseMutex(void) {
+
+    //Once finshed, unlock access
+    this->accessMutex.unlock();
+
+    //Send message over serial
+    serialQueue.call(sendCString, ThisThread::get_name());
+
+    //Send message over serial
+    serialQueue.call(sendCString, " unlocked internal data mutex\n");
+
 }
