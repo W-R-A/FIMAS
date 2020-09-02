@@ -177,7 +177,7 @@ void cmdDecode(string cmd)
         sendString(testDeviceSerial(testConfig));
 
         //Send acknowledgement
-        sendString("CONFIGROUTINESTEP: OK\n");
+        sendString("TESTDEVICE: OK\n");
 
         return;
 	} 
