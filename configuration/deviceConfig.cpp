@@ -116,7 +116,7 @@ std::string testDeviceSerial(std::string const& devTest) {
     }
 
     //If there are an invalid number of aruments supplied supplied, return an error
-    if (result.size() < 1) {
+    if (result.size() != 1) {
         return "An error occured testing the device\n";
     }
 
