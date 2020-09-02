@@ -73,23 +73,24 @@ def sendCommand(cmd):
         return "Invalid response received"
 
 
-# Currently working as a command passthrough
-try:
-    while True:
-        # Print out the response to entered commands
-        print(sendCommand(input("Enter Command: ")))
+# # Currently working as a command passthrough
+# try:
+#     while True:
+#         # Print out the response to entered commands
+#         print(sendCommand(input("Enter Command: ")))
 
-# Catch CTRL+C exits
-except KeyboardInterrupt:
-    print("Exiting Program")
+# # Catch CTRL+C exits
+# except KeyboardInterrupt:
+#     print("Exiting Program")
 
-# Catch any other exceptions
-except Exception as e:
-    print("An error has occurred. \nDetails:", end=e)
+# # Catch any other exceptions
+# except Exception as e:
+#     print("An error has occurred. \nDetails:", end=e)
 
-finally:
-    ser.close()
-    sys.exit()
+# finally:
+#     ser.close()
+#     sys.exit()
+
 
 app = Flask(__name__)
 
@@ -102,5 +103,5 @@ def index():
 @app.route('/cmd/<string:command>')
 def webCmd(command):
     # Execute command
-    changeBrightness(level)
-    return 'Level %d\nADC1: %f\nADC2: %f' % (level, GetADC(1), GetADC(2))
+    response = sendCommand(command)
+    return response
