@@ -7,8 +7,14 @@
 #include "deviceConfig.hpp"
 #include "routineConfig.hpp"
 
-//Create a serial interface object to PC
-UnbufferedSerial pc(USBTX, USBRX, 115200);
+
+#define USEDUSART USART2
+//Create a serial interface object on USART 2
+//Debugging, use the USART 3 instead. UnbufferedSerial pc(USBTX, USBRX, 115200);
+//Also, adjust USART above with the used interface to allow for the serial interrupt to work correctly
+//Serial default setttings - int bits=8, Parity parity=SerialBase::None, int stop_bits=1
+UnbufferedSerial pc(PD_5, PD_6, 115200);
+
 
 //Serial Communication Threads
 Thread serialThread(osPriorityNormal, OS_STACK_SIZE, nullptr, "Serial Communicator");
@@ -158,6 +164,24 @@ void cmdDecode(string cmd)
         return;
 	} 
 
+    //Test a device
+    else if (cmd.find("TESTDEVICE") != string::npos) {
+        
+        //Calculate the position of the command and use it to get the start of the arguments provided, length of command + 1 for space delimiter
+        uint32_t configPos = cmd.find("TESTDEVICE")+11;
+
+        //Get the argument string for the device ID to test
+        string testConfig = cmd.substr(configPos, string::npos);
+
+        //Send results string
+        sendString(testDeviceSerial(testConfig));
+
+        //Send acknowledgement
+        sendString("CONFIGROUTINESTEP: OK\n");
+
+        return;
+	} 
+
     //Reset
     else if (cmd.find("RESET") != string::npos) {
         
@@ -208,7 +232,7 @@ void serialInputInterrupt(void)
     char *mail = serial_mail_box.try_alloc_for(0s);
 
     //Read the incoming char
-    *mail = USART3->DR;
+    *mail = USEDUSART->DR;
 
     //Update the mailbox
     serial_mail_box.put(mail);
@@ -241,7 +265,7 @@ void serialInputHandler(void)
         //Copy the value to j
         j = *mail;
 
-        send_usart(*mail);
+        //send_usart(*mail);
 
         //Free memory
         serial_mail_box.free(mail);

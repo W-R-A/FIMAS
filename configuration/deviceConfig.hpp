@@ -24,4 +24,8 @@
 //Returns zero on sucess, non zero on failure
 uint8_t configDevicesSerial(std::string const& devConfig);
 
+//Test a device with given ID
+//Returns a string with the results of the tests
+std::string testDeviceSerial(std::string const& devTest);
+
 #endif
