@@ -26,7 +26,7 @@ extern EventQueue serialQueue;
 extern void serialInterface(void);
 
 //Serial interface command guide
-#define SERIAL_COMMAND_GUIDE "Serial command guide\n\nCLEARDEVICES - Clear configuration data \nCLEARROUTINE - Clear configuration data \nCONFIGDEVICES - Configures devices for use with the system \nCONFIGROUTINE - Configures a routine for use with the system \nRUN - Run loaded routine \nSTATUS - Get device status \nESTOP - Emergency Stop \n\n"
+#define SERIAL_COMMAND_GUIDE "Serial command guide\n\nCLEARDEVICES - Clear configuration data \nCLEARROUTINE - Clear configuration data \nCONFIGDEVICES - Configures devices for use with the system \nCONFIGROUTINE - Configures a routine for use with the system \nRUN - Run loaded routine \nSTATUS - Get device status \nESTOP - Emergency Stop \n\nSERIAL COMMAND GUIDE: OK\n"
 
 
 
