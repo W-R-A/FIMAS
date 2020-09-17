@@ -1,5 +1,39 @@
 {% extends 'bootstrap/base.html' %}
 
 {% block title %}
-    {% if title %}FIMAS - {{ title }}{% else %}FIMAS{% endif %}
+    {% if title %}FIMAS - {{ title }} {% else %}FIMAS {% endif %}
 {% endblock %}
+
+{% block navbar %}
+    <nav class="navbar navbar-default">
+        <!-- Class for the navbar container -->
+        <div class="container">
+            <!-- Create the navbar header and small-screen logic -->
+            <div class="navbar-header">
+                <!-- Create a button to show/hide the navbar links on smaller devices -->
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <!-- Use three spans to create the lines in the "hamburger" menu button -->
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- Create a static "brand" which links back to the index -->
+                <a class="navbar-brand" href="{{ url_for('index') }}">FIMAS</a>      
+            </div>
+            <!-- Create the navbar class which can be hidden on smaller screens -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+                <ul class="nav navbar-nav">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('devices') }}">Device Configuration</a></li>
+                    <li><a href="{{ url_for('routines') }}">Routine Configuration</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="float:right; background-color:rgb(255, 2, 2);"><a style="color: rgb(7, 1, 61); font-size: 16px;"href="{{ url_for('index') }}">Emergency Stop</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
