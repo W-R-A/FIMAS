@@ -5,3 +5,4 @@ mbed-os
 BUILD
 venv
 .vscode
+*.pyc
