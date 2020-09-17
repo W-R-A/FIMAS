@@ -4,4 +4,4 @@ projectfiles
 mbed-os
 BUILD
 .venv
-
+.vscode
