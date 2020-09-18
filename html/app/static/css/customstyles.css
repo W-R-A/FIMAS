@@ -8,3 +8,9 @@ table {
 td, th {
     text-align: center;
 }
+
+.main {
+    padding: 5px;
+    margin: auto;
+    text-align: center
+  }
