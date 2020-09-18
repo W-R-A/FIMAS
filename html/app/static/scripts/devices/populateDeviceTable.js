@@ -93,14 +93,8 @@ function populateDeviceTable(tableID) {
 
         //Replace the abbreviated device names with the full ones
         $.each(typesResponse, function (j, itemTypes) {
-            trHTML = trHTML.replace(item.devType, item.friendlyName);
+            trHTML = trHTML.replace(itemTypes.devType, itemTypes.friendlyName);
         });
-
-        // trHTML = trHTML.replace("perPump", "Peristaltic Pump");
-        // trHTML = trHTML.replace("solValve", "Solenoid Valve");
-        // trHTML = trHTML.replace("sixValve", "6-Port Valve");
-        // trHTML = trHTML.replace("switchValve", "Switching Valve");
-
     });
 
     //Append the html to the table
