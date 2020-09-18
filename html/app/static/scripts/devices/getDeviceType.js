@@ -1,29 +1,14 @@
 //Declare the get device type function - This will return the device type as a string given the device ID.
-//Need to pass the device ID, as a string
+//Need to pass the device ID, as a string and an array of the devices
 //Returns an array with a code, message and device type which can be accessed in return .type, .code and .msg
 //Code 0 on success, non-zero on failure
 //Code, msg
 //0 - Success
-//1 - The given device ID does not exist in the devices.json file 
-//2 - There is an issue loading the devices.json file
+//1 - The given device ID does not exist in the devices parameter
 //3 - There is no type associated with the deviceID
-function getDeviceType(deviceID) {
-    //Load devices file
+function getDeviceType(deviceID, devices) {
     //Check if ID exists
     //Return type of the device
-
-    //Get the device info 
-    let devices = getDevices();
-
-    //Check if failed - code non-zero
-    if (devices.code) {
-
-        //An error has occurred loading the devices file
-        return {
-            code: 2,
-            msg: "There was an issue loading the devices file",
-        };
-    }
 
     //Parse the JSON
     var response = $.parseJSON(devices.json);
