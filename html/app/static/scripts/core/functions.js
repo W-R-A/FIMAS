@@ -428,80 +428,6 @@ function getDuration(timings) {
 
 
 
-//Declare the unique ids function - This will return an array of unique deviceIds given the timings array
-//Need to pass the timings array in as a string
-//Returns an array with a code, message and device id array which can be accessed in return .devices, .code and .msg
-//Code 0 on success, non-zero on failure
-//Code, msg
-//0 - Success
-//1 - There was a problem parsing the JSON string
-function getUniqueDevices(timings) {
-    //Parse JSON string containing the timings array
-    //Loop through the array looking for unique deviceID's 
-    //Return an array of deviceIDs
-
-    //Try to parse the JSON, return an error is it cannot be parsed
-    try {
-        times = JSON.parse(timings);
-    } catch (e) {
-        //If there was an error parsing the JSON, return an error
-        return {
-            code: 1,
-            msg: "There was a problem parsing the JSON string",
-            devices: [],
-        };
-    }
-
-    //Declare a array to hold the deviceID's
-    let devices = [];
-
-    //Loop through the timings array and extract all of the deviceID's
-    for (ii in times) {
-        //Extract all of the deviceID's to the devices array
-        devices.push(parseInt(times[ii].devID));
-    }
-
-    //Get a array of non-duplicate deviceIDs used in the routine
-    let uniqueDevices = [...new Set(devices)];
-
-    //Return the devices used in the routine
-    return {
-        code: 0,
-        msg: "Success",
-        devices: uniqueDevices,
-    };
-}
-
-
-
-//Declare the sortByProperty function - This will sort a JSON array of objects by property, when called in array.sort();
-//From https://medium.com/@asadise/sorting-a-json-array-according-one-property-in-javascript-18b1d22cd9e9
-//Accessed 01/05/2020
-function sortByProperty(property) {
-
-    //Get the two values to compare, a and b
-    return function (a, b) {
-
-        //If the element in a is greater than the element in b
-        if (a[property] > b[property]) {
-
-            //Return 1 indicating that a is bigger 
-            return 1;
-        }
-
-        //If the element in b is greater than the element in a
-        else if (a[property] < b[property])
-
-            //Return 1 indicating that b is bigger 
-            return -1;
-
-        //Return 0 is the value of the elements is the same
-        return 0;
-    }
-}
-
-
-
 //Declare the genVisHTML function - This will return the a string containing the rows html to append to the appropriate figure 
 //Need to pass the timings array in as a string
 //Returns an array with a code, message and the html which can be accessed in return .html, .code and .msg
@@ -551,6 +477,19 @@ function genVisHTML(timings) {
     //Create an array to store the html row data
     var htmlRows = [];
 
+    //Get the device info 
+    let devices = getDevices();
+
+    //Check if failed - code non-zero
+    if (devices.code) {
+
+        //An error has occurred loading the devices file
+        return {
+            code: 2,
+            msg: "There was an issue loading the devices file",
+        };
+    }
+
     //Loop through the unique devices, and create the initial row html
     for (ij in uniqueDevices.devices) {
 
@@ -588,7 +527,7 @@ function genVisHTML(timings) {
     for (ik in times) {
 
         //Get the type of the device
-        var deviceType = getDeviceType(times[ik].devID);
+        var deviceType = getDeviceType(times[ik].devID, devices);
 
         //Check if failed - code non-zero
         if (deviceType.code) {
