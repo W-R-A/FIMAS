@@ -1,6 +1,6 @@
 from flask import render_template, url_for
-
 from app import app
+from app.forms import ADDDEVICEFORM
 
 
 @app.route('/')
@@ -22,3 +22,9 @@ def routines():
 @app.route('/estop')
 def estop():
     return render_template('estop.html', title='Emergency Stop')
+
+
+@app.route('/adddevice')
+def adddevice():
+    form = ADDDEVICEFORM()
+    return render_template('adddevice.html', title='Add a device', form=form)
