@@ -15,8 +15,8 @@ function getDevices() {
         async: false
     });
 
-    //Production, get the devices.json file from the server
-    $.getJSON("/devices.json", function (response) {
+    //Get the devices.json file from the server
+    $.getJSON("/getdevices", function (response) {
         res = response;
     });
 
@@ -34,7 +34,7 @@ function getDevices() {
     }
     return {
         code: 1,
-        msg: "The devices.json file could not be loaded",
+        msg: "The devices on the system could not be loaded",
         json: "undefined",
     };
 
