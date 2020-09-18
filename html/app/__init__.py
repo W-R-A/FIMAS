@@ -1,10 +1,10 @@
 from flask import Flask
+from config import Config
 from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+app.config.from_object(Config)
 
 from app import routes, errors, data
 
 bootstrap = Bootstrap(app)
-
-app.config['BOOTSTRAP_SERVE_LOCAL'] = True
