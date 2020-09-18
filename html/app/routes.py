@@ -11,7 +11,7 @@ def index():
 
 @app.route('/devices')
 def devices():
-    return render_template('index.html', title='Device Configuration')
+    return render_template('devices.html', title='Device Configuration')
 
 
 @app.route('/routines')
