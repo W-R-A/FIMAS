@@ -11,7 +11,7 @@ def getdevices():
     return jsonify(devices)
 
 
-@app.route('/getdevices')
+@app.route('/getroutines')
 def getroutines():
     # ToDo - Database lookup of current devices
 
