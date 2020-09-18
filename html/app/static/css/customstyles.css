@@ -1,5 +1,4 @@
 table {
-    font-family: arial;
     border-collapse: collapse;
     width: 100%;
 }
@@ -8,5 +7,5 @@ td,
 th {
     text-align: center;
     padding: 8px;
-    border: 1px solid rgb(145, 229, 255);
+    border: 1px solid rgb(109, 109, 109);
 }
