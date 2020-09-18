@@ -21,4 +21,4 @@ def routines():
 
 @app.route('/estop')
 def estop():
-    return render_template('index.html', title='Emergency Stop')
+    return render_template('estop.html', title='Emergency Stop')
