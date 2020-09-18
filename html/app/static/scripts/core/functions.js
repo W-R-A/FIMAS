@@ -494,7 +494,7 @@ function genVisHTML(timings) {
     for (ij in uniqueDevices.devices) {
 
         //Attempt to get the device name from the deviceID
-        let devName = getDeviceName(uniqueDevices.devices[ij]);
+        let devName = getDeviceName(uniqueDevices.devices[ij], devices);
 
         //Check if failed - code non-zero
         if (devName.code) {
