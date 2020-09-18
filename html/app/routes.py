@@ -1,4 +1,4 @@
-from flask import render_template, url_for
+from flask import render_template, url_for, flash, redirect
 from app import app
 from app.forms import ADDDEVICEFORM
 
@@ -24,7 +24,10 @@ def estop():
     return render_template('estop.html', title='Emergency Stop')
 
 
-@app.route('/adddevice')
+@app.route('/adddevice', methods=['GET', 'POST'])
 def adddevice():
     form = ADDDEVICEFORM()
+    if form.validate_on_submit():
+        flash('Device added!')
+        return redirect('/devices')
     return render_template('adddevice.html', title='Add a device', form=form)
