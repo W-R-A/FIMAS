@@ -1,11 +1,10 @@
+/* Table Formatting */
+
 table {
     border-collapse: collapse;
     width: 100%;
 }
 
-td,
-th {
+td, th {
     text-align: center;
-    padding: 8px;
-    border: 1px solid rgb(109, 109, 109);
 }
