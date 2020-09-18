@@ -42,12 +42,12 @@
 
 {% block content %}
 <!-- Include custom stylesheet -->
-<link rel="stylesheet" type="text/css" href="static/customstyles.css">
+<link rel="stylesheet" type="text/css" href="static/css/customstyles.css">
 
 <!-- Include core scripts at the beginning of each page -->
-<script src="static/jquery.js"></script>
+<script src="static/scripts/core/jquery.js"></script>
+<script src="static/scripts/core/getDevices.js"></script>
 <script src="static/functions.js"></script>
-<script src="static/getDevices.js"></script>
 <div class="container-fluid">
     {# application content needs to be provided in the app_content block #} {% block app_content %}{% endblock %}
 </div>
