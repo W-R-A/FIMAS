@@ -16,7 +16,7 @@ def devices():
 
 @app.route('/routines')
 def routines():
-    return render_template('index.html', title='Routines Configuration')
+    return render_template('routines.html', title='Routines Configuration')
 
 
 @app.route('/estop')
