@@ -19,7 +19,6 @@
 
     <!-- Linebreaks to move button onto new line -->
     <br>
-    <br>
 
     <!-- Create a form to hold the device management options -->
 
@@ -39,9 +38,9 @@
 
 
     <!-- Device options -->
-    <button onclick="addDevice()">Add a device</button>
-    <button onclick="updateDevice()">Update a device</button>
-    <button onclick="deleteDevice()">Delete a device</button>
+    <button class="btn btn-secondary" onclick="location.href='{{ url_for('adddevice') }}'">Add a device</button>
+    <button class="btn btn-secondary" onclick="updateDevice()">Update a device</button>
+    <button class="btn btn-secondary" onclick="deleteDevice()">Delete a device</button>
 
     <!-- Script to close the popup form when anywhere outside it is clicked -->
     <script>
