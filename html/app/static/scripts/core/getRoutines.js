@@ -16,7 +16,7 @@ function getRoutines() {
     });
 
     //Get the devices.json file from the server
-    $.getJSON("/routines.json", function (response) {
+    $.getJSON("/getroutines", function (response) {
         res = response;
     });
 
