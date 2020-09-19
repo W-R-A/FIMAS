@@ -40,8 +40,3 @@ def deletedevice():
         flash('Device deleted!')
         return redirect('/devices')
     return render_template('managedevice.html', deviceOperation = "Delete", title='Delete a device', form=form)
-
-
-@app.route('/updatedevice')
-def updatedevice():
-    return render_template('index.html', title='Home')

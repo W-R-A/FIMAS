@@ -45,4 +45,3 @@ class DeleteDeviceForm(FlaskForm):
     devID = SelectField('Device Name', choices = deviceChoices, validators=[DataRequired()])
     submit = SubmitField('Delete Device')
 
-

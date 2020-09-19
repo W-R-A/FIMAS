@@ -39,38 +39,8 @@
 
     <!-- Device options -->
     <button class="btn btn-secondary" onclick="location.href='{{ url_for('adddevice') }}'">Add a device</button>
-    <button class="btn btn-secondary" onclick="location.href='{{ url_for('updatedevice') }}'">Update a device</button>
     <button class="btn btn-secondary" onclick="location.href='{{ url_for('deletedevice') }}'">Delete a device</button>
-
-    <!-- Script to close the popup form when anywhere outside it is clicked -->
     <script>
-        // Get the id of the background div
-        var modal = document.getElementById('devConfig');
-
-        // When the user clicks anywhere outside of the popup
-        window.onclick = function (event) {
-            if (event.target == modal) {
-
-                //Hide the form popup
-                hideForm()
-            }
-        }
-    </script>
-    <script>
-
-        //Form object submitted
-        function devicesConfigChange(formObject) {
-
-            //Display form element
-            //alert("Form Submitted");
-
-            //Display Data from form - use hidden input to get 
-            //alert(formObject.opType.value);
-
-            //Hide the form
-            hideForm();
-        }
-
         //When the web page has loaded and the the document is ready to be worked on
         $(document).ready(function () {
 
