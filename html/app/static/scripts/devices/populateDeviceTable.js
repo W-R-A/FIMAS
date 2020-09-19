@@ -86,7 +86,7 @@ function populateDeviceTable(tableID) {
     //Loop through the response and fill in the table
     $.each(response, function (i, item) {
         //Generate the table HTML from the received JSON file
-        trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devPin1 + '</td><td>' + item.devPin2 + '</td><td><button class="btnTest" id ="' + item.devID + '">Test Device</button></td></tr>';
+        trHTML += '<tr><td>' + item.devName + '</td><td>' + item.devType + '</td><td>' + item.devPin1 + '</td><td>' + item.devPin2 + '</td><td><button class="btnTest btn btn-secondary" id ="' + item.devID + '">Test Device</button></td></tr>';
 
         //Replace -1 pins to not used
         trHTML = trHTML.replace("-1", "Not Used");
