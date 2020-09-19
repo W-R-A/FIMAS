@@ -18,7 +18,7 @@ class Device(db.Model):
     routine_id = db.Column(db.Integer, db.ForeignKey('routine.id'))
 
     def __repr__(self):
-        return '<Device ID: {}, Name: {}, Type: {}, Interface 1: {}, Interface 2: {}>'.format(self.id, self.name, self.devType, self.interface1, self.interface2, self.routine_id)
+        return '<Device ID: {}, Name: {}, Type: {}, Interface 1: {}, Interface 2: {}, Routine ID: {}>'.format(self.id, self.name, self.devType, self.interface1, self.interface2, self.routine_id)
 
 
 class Timing(db.Model):
@@ -28,4 +28,7 @@ class Timing(db.Model):
     startTime = db.Column(db.Integer)
     stopTime = db.Column(db.Integer)
     state = db.Column(db.Integer)
+
+    def __repr__(self):
+        return 'Timing ID: {}, Device ID: {}, Routine ID: {}, Start Time: {}, Stop Time: {}, State: {}>'.format(self.id, self.device_id, self.routine_id, self.startTime, self.stopTime, self.state)
 
