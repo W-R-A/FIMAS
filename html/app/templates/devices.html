@@ -39,8 +39,8 @@
 
     <!-- Device options -->
     <button class="btn btn-secondary" onclick="location.href='{{ url_for('adddevice') }}'">Add a device</button>
-    <button class="btn btn-secondary" onclick="updateDevice()">Update a device</button>
-    <button class="btn btn-secondary" onclick="deleteDevice()">Delete a device</button>
+    <button class="btn btn-secondary" onclick="location.href='{{ url_for('updatedevice') }}'">Update a device</button>
+    <button class="btn btn-secondary" onclick="location.href='{{ url_for('deletedevice') }}'">Delete a device</button>
 
     <!-- Script to close the popup form when anywhere outside it is clicked -->
     <script>
