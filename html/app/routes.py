@@ -29,7 +29,7 @@ def adddevice():
     form = AddDeviceForm()
     if form.validate_on_submit():
         flash('Device added!')
-        return redirect('/devices')
+        return redirect(url_for('devices'))
     return render_template('managedevice.html', deviceOperation = "Add", title='Add a device', form=form)
 
 
@@ -38,5 +38,5 @@ def deletedevice():
     form = DeleteDeviceForm()
     if form.validate_on_submit():
         flash('Device deleted!')
-        return redirect('/devices')
+        return redirect(url_for('devices'))
     return render_template('managedevice.html', deviceOperation = "Delete", title='Delete a device', form=form)
