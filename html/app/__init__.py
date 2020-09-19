@@ -26,5 +26,8 @@ migrate = Migrate(app, db)
 #Import routes 
 from app import routes, errors, data
 
+#Import database models
+from app import models
+
 #Start bootstrap
 bootstrap = Bootstrap(app)
