@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect
 from app import app
-from app.forms import ADDDEVICEFORM
+from app.forms import AddDeviceForm, DeleteDeviceForm
 
 
 @app.route('/')
@@ -26,8 +26,22 @@ def estop():
 
 @app.route('/adddevice', methods=['GET', 'POST'])
 def adddevice():
-    form = ADDDEVICEFORM()
+    form = AddDeviceForm()
     if form.validate_on_submit():
         flash('Device added!')
         return redirect('/devices')
-    return render_template('adddevice.html', title='Add a device', form=form)
+    return render_template('managedevice.html', deviceOperation = "Add", title='Add a device', form=form)
+
+
+@app.route('/deletedevice', methods=['GET', 'POST'])
+def deletedevice():
+    form = DeleteDeviceForm()
+    if form.validate_on_submit():
+        flash('Device deleted!')
+        return redirect('/devices')
+    return render_template('managedevice.html', deviceOperation = "Delete", title='Delete a device', form=form)
+
+
+@app.route('/updatedevice')
+def updatedevice():
+    return render_template('index.html', title='Home')
