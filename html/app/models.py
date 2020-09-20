@@ -6,7 +6,7 @@ class Routine(db.Model):
     name = db.Column(db.String(32))
 
     def __repr__(self):
-        return '<Routine ID: {}, Name: {}>'.format(self.id, self.name)
+        return '"Routine ID":"{}","Name":"{}"'.format(self.id, self.name)
 
 
 class Device(db.Model):
@@ -17,8 +17,11 @@ class Device(db.Model):
     interface2 = db.Column(db.Integer)
     routine_id = db.Column(db.Integer, db.ForeignKey('routine.id'))
 
+    #def __repr__(self):
+        #return "{{'devID':'{}','devName':'{}','devType':'{}','devPin1':'{}','devPin2':'{}','routineID':'{}'}}".format(self.id, self.name, self.devType, self.interface1, self.interface2, self.routine_id)
+
     def __repr__(self):
-        return '<Device ID: {}, Name: {}, Type: {}, Interface 1: {}, Interface 2: {}, Routine ID: {}>'.format(self.id, self.name, self.devType, self.interface1, self.interface2, self.routine_id)
+        return "{}".format(self.id)
 
 
 class Timing(db.Model):
