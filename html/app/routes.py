@@ -40,6 +40,7 @@ def adddevice():
 @app.route('/deletedevice', methods=['GET', 'POST'])
 def deletedevice():
     form = DeleteDeviceForm()
+    form.delDev()
     if form.validate_on_submit():
         dev = Device.query.get(form.devID.data)
         db.session.delete(dev)

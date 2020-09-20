@@ -36,17 +36,21 @@ class AddDeviceForm(FlaskForm):
 
 class DeleteDeviceForm(FlaskForm):
 
-    #Create empty list to hold the devices on the system
-    deviceChoices = []
-
-    #Get all of the devices on the system
-    devices = Device.query.all()
-    
-    #Setup options for html select
-    for i in range(0, len(devices)): 
-        deviceChoices.append([devices[i].id, devices[i].name])
-
     #Create the select input and submit button
-    devID = SelectField('Device Name', choices = deviceChoices, validators=[DataRequired()])
+    devID = SelectField('Device Name', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Delete Device')
 
+
+    def delDev(self):
+
+        #Create empty list to hold the devices on the system
+        deviceChoices = []
+
+        #Get all of the devices on the system
+        devices = Device.query.all()
+        
+        #Setup options for html select
+        for i in range(0, len(devices)): 
+            deviceChoices.append([devices[i].id, devices[i].name])
+
+        self.devID.choices = deviceChoices
