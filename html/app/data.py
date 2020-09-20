@@ -1,14 +1,20 @@
-from flask import render_template, jsonify
-from app import app
+from flask import render_template, url_for, flash, redirect, jsonify
+from app import app, db
+from app.models import Routine, Device,Timing
 
 
 @app.route('/getdevices')
 def getdevices():
-    # ToDo - Database lookup of current devices
+    # Database lookup of current devices
 
-    devices = [{"devID":"1000","devName":"Sample Pump","devType":"perPump","devPin1":"2","devPin2":"3"},{"devID":"1001","devName":"Distribution Valve","devType":"switchValve","devPin1":"5","devPin2":"6"},{"devID":"1002","devName":"6-Port Valve","devType":"sixValve","devPin1":"9","devPin2":"10"}]
+    devices = Device.query.all()
 
-    return jsonify(devices)
+    dev = []
+
+    for i in range(0, len(devices)):
+        dev.append({'devID':devices[i].id,'devName':devices[i].name,'devType':devices[i].devType,'devPin1':devices[i].interface1,'devPin2':devices[i].interface2,'routineID':devices[i].routine_id})
+    
+    return jsonify(dev)
 
 
 @app.route('/getroutines')
