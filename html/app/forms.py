@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SelectField, SubmitField
 from wtforms.validators import DataRequired
+from app import db
+from app.models import Routine, Device, Timing
 
 class AddDeviceForm(FlaskForm):
     devTypes = [{"devType": "perPump", "friendlyName": "Peristaltic Pump"}, {"devType": "solValve", "friendlyName": "Solenoid Valve"}, {"devType": "sixValve", "friendlyName": "6-Port Valve"}, {"devType": "switchValve", "friendlyName": "Switching Valve"}]
@@ -34,14 +36,17 @@ class AddDeviceForm(FlaskForm):
 
 class DeleteDeviceForm(FlaskForm):
 
-    devices = [{"devID":"1000","devName":"Sample Pump","devType":"perPump","devPin1":"2","devPin2":"3"},{"devID":"1001","devName":"Distribution Valve","devType":"switchValve","devPin1":"5","devPin2":"6"},{"devID":"1002","devName":"6-Port Valve","devType":"sixValve","devPin1":"9","devPin2":"10"}]
-
+    #Create empty list to hold the devices on the system
     deviceChoices = []
 
-    for j in range (0, len(devices)):
-        deviceChoices.append([devices[j]["devID"], devices[j]["devName"]])
+    #Get all of the devices on the system
+    devices = Device.query.all()
+    
+    #Setup options for html select
+    for i in range(0, len(devices)): 
+        deviceChoices.append([devices[i].id, devices[i].name])
 
-
+    #Create the select input and submit button
     devID = SelectField('Device Name', choices = deviceChoices, validators=[DataRequired()])
     submit = SubmitField('Delete Device')
 
