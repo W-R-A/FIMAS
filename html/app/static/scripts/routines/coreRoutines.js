@@ -183,7 +183,7 @@ $(document).on("click", "button.genTiming", function (event) {
 
 //Bind the device selection to the following handler - to adjust the state drop down
 $(document).on("change", "#devID", function (event) {
-    deviceStates()
+    //deviceStates()
 });
 
 
