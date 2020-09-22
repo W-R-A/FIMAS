@@ -79,8 +79,8 @@ def addtiming():
     form.populateRoutines()
     form.populateDevices()
     if form.validate_on_submit():
-        time = Timing(device_id = form.devID.data, routine_id = form.rouID.data, startTime = form.timeStart.data, stopTime = form.timeStop.data, state = form.state.data)
-        db.session.delete(time)
+        time = Timing(device_id = form.devID.data, routine_id = form.rouID.data, startTime = int(form.timeStart.data), stopTime = int(form.timeStop.data), state = int(form.state.data))
+        db.session.add(time)
         db.session.commit()
         flash('Timing created!')
         return redirect(url_for('routines'))
