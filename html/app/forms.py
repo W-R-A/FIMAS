@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, SubmitField
+from wtforms import StringField, SelectField, SubmitField, IntegerField
 from wtforms.validators import DataRequired
 from app import db
 from app.models import Routine, Device, Timing
@@ -74,6 +74,62 @@ class DeleteRoutineForm(FlaskForm):
     rouID = SelectField('Routine Name', coerce=int, validators=[DataRequired()])
     submit = SubmitField('Delete Routine')
 
+
+    def populateRoutines(self):
+
+        #Create empty list to hold the routines on the system
+        routineChoices = []
+
+        #Get all of the routines on the system
+        routines = Routine.query.all()
+        
+        #Setup options for html select
+        for i in range(0, len(routines)): 
+            routineChoices.append([routines[i].id, routines[i].name])
+
+        self.rouID.choices = routineChoices
+
+
+class AddTimingForm(FlaskForm):
+    #Create the form for adding a timing block
+    #Routine
+    #Device
+    #TimeStart
+    #TimeStop
+    #State of the device
+
+    #Routine ID
+    rouID = SelectField('Routine Name', coerce=int, validators=[DataRequired()])
+    
+    #Device ID
+    devID = SelectField('Device Name', coerce=int, validators=[DataRequired()])
+    
+    #TimeStart
+    timeStart = IntegerField('Start Time', validators=[DataRequired()])
+
+    #TimeStop
+    timeStop = IntegerField('Stop Time', validators=[DataRequired()])
+
+    #State
+    state = SelectField('Start Time', validators=[DataRequired()])
+
+    #Submit button
+    submit = SubmitField('Add timing')
+
+
+    def populateDevices(self):
+
+        #Create empty list to hold the devices on the system
+        deviceChoices = []
+
+        #Get all of the devices on the system
+        devices = Device.query.all()
+        
+        #Setup options for html select
+        for i in range(0, len(devices)): 
+            deviceChoices.append([devices[i].id, devices[i].name])
+
+        self.devID.choices = deviceChoices
 
     def populateRoutines(self):
 
