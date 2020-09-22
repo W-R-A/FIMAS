@@ -1,4 +1,4 @@
-//Declare the getRoutines function - This will get the routines.json file when running in production, or some static text when running in development
+//Declare the getRoutines function - This will get the routines.json file when running in production
 //No parameters need to be passed
 //Returns an array with a jsonString code and message which can be accessed in return .code and .msg .json
 //Code 0 on success, non-zero on failure
@@ -36,5 +36,4 @@ function getRoutines() {
         msg: "The devices.json file could not be loaded",
         json: "undefined",
     };
-
 }
