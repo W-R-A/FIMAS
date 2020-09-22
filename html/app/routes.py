@@ -43,6 +43,9 @@ def deletedevice():
     form.populateDevices()
     if form.validate_on_submit():
         dev = Device.query.get(form.devID.data)
+        timings = Timing.query.filter_by(device_id=form.devID.data).all()
+        for i in range(0, len(timings)):
+            db.session.delete(timings[i])
         db.session.delete(dev)
         db.session.commit()
         flash('Device deleted!')
@@ -66,6 +69,9 @@ def deleteroutine():
     form.populateRoutines()
     if form.validate_on_submit():
         rou = Routine.query.get(form.rouID.data)
+        timings = Timing.query.filter_by(routine_id=form.rouID.data).all()
+        for i in range(0, len(timings)):
+            db.session.delete(timings[i])
         db.session.delete(rou)
         db.session.commit()
         flash('Routine deleted!')

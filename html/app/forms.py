@@ -165,6 +165,9 @@ class DeleteTimingForm(FlaskForm):
         
         #Setup options for html select
         for i in range(0, len(timings)): 
-            timingChoices.append([timings[i].id, timings[i].device_id])
+            dev = Device.query.get(timings[i].device_id)
+            description = str(dev.name) + " in state " + str(timings[i].state) + " from " + str(timings[i].startTime) + " to " + str(timings[i].stopTime)
+            timingChoices.append([timings[i].id, description])
+            
 
         self.timeID.choices = timingChoices
