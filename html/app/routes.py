@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect
 from app import app, db
-from app.forms import AddDeviceForm, DeleteDeviceForm, AddRoutineForm
-from app.models import Routine, Device,Timing
+from app.forms import AddDeviceForm, DeleteDeviceForm, AddRoutineForm, DeleteRoutineForm
+from app.models import Routine, Device, Timing
 
 
 @app.route('/')
@@ -58,8 +58,16 @@ def addroutine():
         db.session.commit()
         flash('Routine added!')
         return redirect(url_for('routines'))
-    return render_template('manageroutine.html', deviceOperation = "Add", title='Add a routine', form=form)
+    return render_template('manageroutine.html', routineOperation = "Add", title='Add a routine', form=form)
 
 @app.route('/deleteroutine', methods=['GET', 'POST'])
 def deleteroutine():
-    return "delete routine"
+    form = DeleteRoutineForm()
+    form.populateRoutines()
+    if form.validate_on_submit():
+        rou = Routine.query.get(form.rouID.data)
+        db.session.delete(rou)
+        db.session.commit()
+        flash('Routine deleted!')
+        return redirect(url_for('routines'))
+    return render_template('manageroutine.html', routineOperation = "Delete", title='Delete a routine', form=form)
