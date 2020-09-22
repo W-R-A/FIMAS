@@ -54,3 +54,16 @@ class DeleteDeviceForm(FlaskForm):
             deviceChoices.append([devices[i].id, devices[i].name])
 
         self.devID.choices = deviceChoices
+
+
+
+
+class AddRoutineForm(FlaskForm):
+
+    name = StringField('Routine Name', validators=[DataRequired()])
+    
+    submit = SubmitField('Add Routine')
+
+
+
+
