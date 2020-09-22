@@ -27,13 +27,17 @@
       <button class="btn btn-secondary" onclick="location.href='{{ url_for('deleteroutine') }}'">Delete a routine</button>
     </div>
   </div>
-  <!-- Linebreaks to move the figure down -->
+  
   <br>
 
   <!-- Edit timings -->
   <button class="btn btn-secondary" onclick="location.href='{{ url_for('addtiming') }}'">Add timings</button>
   <button class="btn btn-secondary" onclick="location.href='{{ url_for('deletetiming') }}'">Remove timings</button>
+  
+  <!-- Linebreaks to move the figure down -->
   <br>
+  <br>
+  
   <!-- Create a figure to hold the timing visualisation -->
   <figure>
     <!-- Create a div for the graphic bars to visualise timing -->
@@ -62,19 +66,6 @@
         //Log specific error
         console.log(attRou.msg);
       }
-
-      //Populate the device dropdown with the devices on the system
-      let attDev = populateDevices("devices_dropdown");
-
-      //Check if failed - code non-zero
-      if (attDev.code) {
-        //Alert that an error occurred
-        alert("Error populating devices");
-
-        //Log specific error
-        console.log(attDev.msg);
-      }
-
       var routines = [];
     });
   </script>

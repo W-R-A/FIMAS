@@ -146,3 +146,25 @@ class AddTimingForm(FlaskForm):
             routineChoices.append([routines[i].id, routines[i].name])
 
         self.rouID.choices = routineChoices
+
+
+class DeleteTimingForm(FlaskForm):
+
+    #Create the select input and submit button
+    timeID = SelectField('Timing', coerce=int, validators=[DataRequired()])
+    submit = SubmitField('Delete Timing')
+
+
+    def populateTimings(self):
+
+        #Create empty list to hold the timings on the system
+        timingChoices = []
+
+        #Get all of the timings on the system
+        timings = Timing.query.all()
+        
+        #Setup options for html select
+        for i in range(0, len(timings)): 
+            timingChoices.append([timings[i].id, timings[i].device_id])
+
+        self.timeID.choices = timingChoices
