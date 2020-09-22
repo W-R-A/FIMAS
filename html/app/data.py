@@ -30,6 +30,22 @@ def getroutines():
 
     return jsonify(rou)
 
+#get timings - get the current timings for a routine, by pasing the routine ID
+@app.route('/gettimings/<int:routineID>')
+def gettimings(routineID):
+    #Database query of all timings with the requested routine ID
+
+    timings = Timing.query.filter_by(routine_id=routineID).all()
+
+    time = []
+
+    for i in range(0, len(timings)):
+        time.append({"devID":timings[i].device_id,"timeStart":timings[i].startTime,"timeStop":timings[i].stopTime,"state":timings[i].state})
+
+    return jsonify(time)
+
+
+
 
 @app.route('/gettypes')
 def gettypes():
