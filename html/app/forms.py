@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, SubmitField, IntegerField
+from wtforms import StringField, SelectField, SubmitField
 from wtforms.validators import DataRequired
 from app import db
 from app.models import Routine, Device, Timing
@@ -97,6 +97,7 @@ class AddTimingForm(FlaskForm):
     #TimeStart
     #TimeStop
     #State of the device
+    states = [[0, "Off"], [1, "On"], [0, "Position A"], [1, "Position B"]]
 
     #Routine ID
     rouID = SelectField('Routine Name', coerce=int, validators=[DataRequired()])
@@ -105,17 +106,18 @@ class AddTimingForm(FlaskForm):
     devID = SelectField('Device Name', coerce=int, validators=[DataRequired()])
     
     #TimeStart
-    timeStart = IntegerField('Start Time', validators=[DataRequired()])
+    timeStart = StringField('Start Time', validators=[DataRequired()])
 
     #TimeStop
-    timeStop = IntegerField('Stop Time', validators=[DataRequired()])
+    timeStop = StringField('Stop Time', validators=[DataRequired()])
 
     #State
-    state = SelectField('Start Time', validators=[DataRequired()])
+    state = SelectField('State', choices = states)
 
     #Submit button
     submit = SubmitField('Add timing')
 
+    
 
     def populateDevices(self):
 
