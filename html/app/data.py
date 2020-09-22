@@ -1,6 +1,6 @@
 from flask import render_template, url_for, flash, redirect, jsonify
 from app import app, db
-from app.models import Routine, Device,Timing
+from app.models import Routine, Device, Timing
 
 
 @app.route('/getdevices')
@@ -19,11 +19,16 @@ def getdevices():
 
 @app.route('/getroutines')
 def getroutines():
-    # ToDo - Database lookup of current devices
+    #Database lookup of current routines
 
-    routines = [{"routineID":"1004","name":"AlCl","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"0"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"1"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"0"},{"devID":"1000","timeStart":"15","timeStop":"24","state":"1"},{"devID":"1000","timeStart":"24","timeStop":"56","state":"0"},{"devID":"1000","timeStart":"56","timeStop":"60","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1001","timeStart":"4","timeStop":"8","state":"0"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"15","timeStop":"29","state":"0"},{"devID":"1001","timeStart":"29","timeStop":"47","state":"1"},{"devID":"1001","timeStart":"47","timeStop":"60","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"},{"devID":"1002","timeStart":"15","timeStop":"28","state":"0"},{"devID":"1002","timeStart":"28","timeStop":"40","state":"1"},{"devID":"1002","timeStart":"40","timeStop":"60","state":"0"}]},{"routineID":"1003","name":"CuSO4","timings":[{"devID":"1000","timeStart":"0","timeStop":"4","state":"1"},{"devID":"1000","timeStart":"4","timeStop":"9","state":"0"},{"devID":"1000","timeStart":"9","timeStop":"15","state":"1"},{"devID":"1001","timeStart":"0","timeStop":"6","state":"0"},{"devID":"1001","timeStart":"6","timeStop":"8","state":"1"},{"devID":"1001","timeStart":"8","timeStop":"15","state":"0"},{"devID":"1002","timeStart":"0","timeStop":"3","state":"1"},{"devID":"1002","timeStart":"3","timeStop":"7","state":"0"},{"devID":"1002","timeStart":"7","timeStop":"15","state":"1"}]}]
+    routines = Routine.query.all()
+    
+    rou = []
 
-    return jsonify(routines)
+    for i in range(0, len(routines)):
+        rou.append({'routineID':routines[i].id,'name':routines[i].name})
+
+    return jsonify(rou)
 
 
 @app.route('/gettypes')
