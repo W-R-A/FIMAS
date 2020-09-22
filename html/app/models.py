@@ -17,9 +17,6 @@ class Device(db.Model):
     interface2 = db.Column(db.Integer)
     routine_id = db.Column(db.Integer, db.ForeignKey('routine.id'))
 
-    #def __repr__(self):
-        #return "{{'devID':'{}','devName':'{}','devType':'{}','devPin1':'{}','devPin2':'{}','routineID':'{}'}}".format(self.id, self.name, self.devType, self.interface1, self.interface2, self.routine_id)
-
     def __repr__(self):
         return "{}".format(self.id)
 
