@@ -434,7 +434,8 @@ function getDuration(timings) {
 //Code 0 on success, non-zero on failure
 //Code, msg
 //0 - Success
-//1 - There was a problem parsing the JSON string
+//0 - There is no timing data available
+//2 - There was a problem parsing the JSON string
 function genVisHTML(timings) {
 
     //Parse timings JSON
@@ -446,13 +447,22 @@ function genVisHTML(timings) {
     //Append closing div tags to each device row
     //Concatenate the html together and return as .html
 
+    if (timings.toString() == "[]") {
+        //If there is no timings data, return
+        return {
+            code: 0,
+            msg: "There is no timing data",
+            devices: [],
+        };
+    }
+
     //Try to parse the JSON, return an error is it cannot be parsed
     try {
         times = JSON.parse(timings);
     } catch (e) {
         //If there was an error parsing the JSON, return an error
         return {
-            code: 1,
+            code: 2,
             msg: "There was a problem parsing the JSON string",
             devices: [],
         };
