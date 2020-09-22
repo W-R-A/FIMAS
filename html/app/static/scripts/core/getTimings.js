@@ -15,7 +15,7 @@ function getTimings(routineID) {
         async: false
     });
 
-    //Get the devices.json file from the server
+    //Get the timings.json file from the server
     $.getJSON("/gettimings/"+ routineID, function (response) {
         res = response;
     });
@@ -33,7 +33,7 @@ function getTimings(routineID) {
     }
     return {
         code: 1,
-        msg: "The devices.json file could not be loaded",
+        msg: "The timings.json file could not be loaded",
         json: "undefined",
     };
 }

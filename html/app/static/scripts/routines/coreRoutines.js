@@ -254,7 +254,7 @@ $(document).on("change", "#routines_dropdown", function (event) {
         if (selRoutineID == routines.routineID) {
 
             //Get a list of all devices used
-            var visualisationHtml = genVisHTML(JSON.stringify(routines.timings));
+            var visualisationHtml = genVisHTML(getTimings(selRoutineID).json);
 
             //Check if failed - code non-zero
             if (visualisationHtml.code) {
