@@ -24,12 +24,15 @@
 
       <!-- Routine Management Functions -->
       <button class="btn btn-secondary" onclick="location.href='{{ url_for('addroutine') }}'">Add a routine</button>
-      <button class="btn btn-secondary" onclick="location.href='{{ url_for('deleteroutine') }}'">Delete a
-        routine</button>
+      <button class="btn btn-secondary" onclick="location.href='{{ url_for('deleteroutine') }}'">Delete a routine</button>
     </div>
   </div>
   <!-- Linebreaks to move the figure down -->
   <br>
+
+  <!-- Edit timings -->
+  <button class="btn btn-secondary" onclick="location.href='{{ url_for('addtiming') }}'">Add timings</button>
+  <button class="btn btn-secondary" onclick="location.href='{{ url_for('deletetiming') }}'">Remove timings</button>
   <br>
   <!-- Create a figure to hold the timing visualisation -->
   <figure>
@@ -37,22 +40,7 @@
     <div id="visualisation" class="graphic">
     </div>
   </figure>
-  <p>Select Device: </p>
 
-  <!-- Dropdown to edit the configuration of a device -->
-  <select id="devices_dropdown" title="Select a device"></select>
-
-  <!-- Create an input box for the timings, and restrict its contents to a number between 0 and 1000 -->
-  <input id="timeStart" type="number" min="0" title="The starting time for the step"></input>
-
-  <!-- Create an input box for the timings, and restrict its contents to a number between 0 and 1000 -->
-  <input id="timeStop" type="number" min="0" title="The ending time for the step"></input>
-
-  <!-- Create a dropdown to select the state of the devices during a step -->
-  <select id="state" title="Select the state of the device during the step"></select>
-
-  <!-- Create a button to generate the timing data -->
-  <button class="genTiming">Generate Timings</button>
 
 
 
