@@ -41,7 +41,7 @@ class DeleteDeviceForm(FlaskForm):
     submit = SubmitField('Delete Device')
 
 
-    def delDev(self):
+    def populateDevices(self):
 
         #Create empty list to hold the devices on the system
         deviceChoices = []
