@@ -182,9 +182,15 @@ $(document).on("click", "button.genTiming", function (event) {
 });
 
 //Bind the device selection to the following handler - to adjust the state drop down
-$(document).on("change", "#devices_dropdown", function (event) {
+$(document).on("change", "#devID", function (event) {
+    deviceStates()
+});
 
-    var devClass = $('select[id="devices_dropdown"] option:selected').attr('class');
+
+function deviceStates() {
+    var devID = $('select[id="devID"] option:selected').attr('value');
+
+    devClass = getDeviceTypeRequest(devID).type;
 
     //Debugging, display the ID to be requested
     //alert($('select[id="devices_dropdown"] option:selected').attr('class'));
@@ -216,7 +222,7 @@ $(document).on("change", "#devices_dropdown", function (event) {
         default:
         // code block
     }
-});
+}
 
 //Bind the routine selection to the following handler generate the visualisation
 $(document).on("change", "#routines_dropdown", function (event) {

@@ -2,6 +2,8 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
+<script src="static/scripts/routines/coreRoutines.js"></script>
+<script src="static/scripts/devices/getDeviceType.js"></script>
 <div class="main"></div>
 <h1>
     {% block routineOperation %}
@@ -14,6 +16,11 @@
         <button class="btn btn-warning" onclick="location.href='{{ url_for('routines') }}'">Cancel</button>
     </div>
 </div>
-</div>
+
+<script>
+    $(document).ready(function () {
+        //deviceStates()
+    });        
+</script>
 
 {% endblock %}
