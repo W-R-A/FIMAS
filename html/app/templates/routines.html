@@ -13,22 +13,21 @@
 <div class="main">
   <h1>Routines Configuration</h1>
 
-  <p>Select a routine to configure</p>
-  <!-- Dropdown to select the routine to configure -->
-  <select id="routines_dropdown"></select>
+  <div class="form-row align-items-center">
+    <div class="col-auto my-1">
+      <p>Select a routine to configure</p>
+      <!-- Dropdown to select the routine to configure -->
+      <select class="form-control custom-select mr-sm-2" id="routines_dropdown"></select>
 
-  <br>
+      <br>
+      <br>
 
-  <!--  -->
-  <button class="btn btn-secondary" onclick="location.href='{{ url_for('adddevice') }}'">Add a device</button>
-  <button class="btn btn-secondary" onclick="location.href='{{ url_for('deletedevice') }}'">Delete a device</button>
-
-  <!-- Create a button to add a routine -->
-  <button class="addRoutine">Add Routine</button>
-
-  <!-- Create a button to add a routine -->
-  <button class="addRoutine">Delete Routine</button>
-
+      <!-- Routine Management Functions -->
+      <button class="btn btn-secondary" onclick="location.href='{{ url_for('addroutine') }}'">Add a routine</button>
+      <button class="btn btn-secondary" onclick="location.href='{{ url_for('deleteroutine') }}'">Delete a
+        routine</button>
+    </div>
+  </div>
   <!-- Linebreaks to move the figure down -->
   <br>
   <br>
