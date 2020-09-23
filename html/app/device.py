@@ -29,4 +29,13 @@ def configDevices():
             print("CONFIGDEVICE " + str((devices[i].devType).upper()) + ',' + str(devices[i].id) + ',' + str(devices[i].interface1) + ',' + str(devices[i].interface2))
         else:
             print("CONFIGDEVICE " + str((devices[i].devType).upper()) + ',' + str(devices[i].id) + ',' + str(devices[i].interface1))
-    
+
+
+def configRoutines(routineID):
+    #Database query of all timings with the requested routine ID
+
+    timings = Timing.query.filter_by(routine_id=routineID).all()
+
+    for i in range(0, len(timings)):
+        #configroutinestep routineID,devID,timestart,timeStop,state
+        print("CONFIGROUTINESTEP " + str(routineID) + ',' + str(timings[i].device_id) + ',' + str(timings[i].startTime) + ',' + str(timings[i].stopTime) + ',' + str(timings[i].state))
