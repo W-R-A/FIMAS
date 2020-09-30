@@ -35,7 +35,7 @@ def getroutines():
 def gettimings(routineID):
     #Database query of all timings with the requested routine ID
 
-    timings = Timing.query.filter_by(routine_id=routineID).all()
+    timings = Timing.query.filter_by(routine_id=routineID).order_by(Timing.startTime).all()
 
     time = []
 

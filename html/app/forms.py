@@ -97,7 +97,7 @@ class AddTimingForm(FlaskForm):
     #TimeStart
     #TimeStop
     #State of the device
-    states = [[0, "Off"], [1, "On"], [0, "Position A"], [1, "Position B"]]
+    states = [[0, "Off"], [1, "On"], [0, "(Six Valve)Position A"], [1, "(Six Valve)Position B"], [0, "(Switching Valve) Position 0"], [1, "(Switching Valve) Position 1"], [2, "(Switching Valve) Position 2"], [3, "(Switching Valve) Position 3"], [4, "(Switching Valve) Position 4"], [5, "(Switching Valve) Position 5"], [6, "(Switching Valve) Position 6"], [7, "(Switching Valve) Position 7"], [8, "(Switching Valve) Position 8"], [9, "(Switching Valve) Position 9"]]
 
     #Routine ID
     rouID = SelectField('Routine Name', coerce=int, validators=[DataRequired()])
