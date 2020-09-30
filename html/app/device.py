@@ -92,7 +92,7 @@ def configDevices():
         else:
             sendCommand("CONFIGDEVICE " + str((devices[i].devType).upper()) + ',' + str(devices[i].id) + ',' + str(devices[i].interface1), False)
 
-@app.route('/testroutine/<int:routineID>')
+
 def configRoutines(routineID):
     #Database query of all timings with the requested routine ID
 
@@ -102,8 +102,15 @@ def configRoutines(routineID):
         #configroutinestep routineID,devID,timestart,timeStop,state
         sendCommand("CONFIGROUTINESTEP " + str(timings[i].routine_id) + ',' + str(timings[i].device_id) + ',' + str(timings[i].startTime) + ',' + str(timings[i].stopTime) + ',' + str(timings[i].state), False)
     
-    return redirect(url_for('routines'))
+    
 
+
+@app.route('/runroutine/<int:routineID>')
+def runroutine(routineID):
+    configDevices()
+    configRoutines(routineID)
+    sendCommand("RUN ", True)
+    return redirect(url_for('index'))
 
 @app.route('/estop')
 def estop():
