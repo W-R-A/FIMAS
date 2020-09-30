@@ -20,11 +20,6 @@ def routines():
     return render_template('routines.html', title='Routines Configuration')
 
 
-@app.route('/estop')
-def estop():
-    return render_template('estop.html', title='Emergency Stop')
-
-
 @app.route('/adddevice', methods=['GET', 'POST'])
 def adddevice():
     form = AddDeviceForm()
