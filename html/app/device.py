@@ -38,7 +38,7 @@ def configRoutines(routineID):
 
     for i in range(0, len(timings)):
         #configroutinestep routineID,devID,timestart,timeStop,state
-        print("CONFIGROUTINESTEP " + str(routineID) + ',' + str(timings[i].device_id) + ',' + str(timings[i].startTime) + ',' + str(timings[i].stopTime) + ',' + str(timings[i].state))
+        print("CONFIGROUTINESTEP " + str(timings[i].routine_id) + ',' + str(timings[i].device_id) + ',' + str(timings[i].startTime) + ',' + str(timings[i].stopTime) + ',' + str(timings[i].state))
     
     return redirect(url_for('routines'))
 
