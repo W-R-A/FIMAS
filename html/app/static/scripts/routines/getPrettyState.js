@@ -71,7 +71,7 @@ function getPrettyState(state, deviceType) {
 
         //If the device is a switch valve, ten states, 1 through 9
         case "switchValve": {
-            //Simply return the mumerical state
+            //Simply return the numerical state
             prettyState = state;
             //Break out of the case
             break;

@@ -111,6 +111,46 @@ figure {
     background-color: #E27A3F;
 }
 
+.state0 {
+    background-color: #334D5C;
+}
+
+.state1 {
+    background-color: #45B29D;
+}
+
+.state2 {
+    background-color: #EFC94C;
+}
+
+.state3 {
+    background-color: #E27A3F;
+}
+
+.state4 {
+    background-color: #DF5A49;
+}
+
+.state5 {
+    background-color: #962D3E;
+}
+
+.state6 {
+    background-color: #460d16;
+}
+
+.state7 {
+    background-color: #326316;
+}
+
+.state8 {
+    background-color: #54dd99;
+}
+
+.state9 {
+    background-color: #3561a3;
+}
+
 /* .block:nth-of-type(2), .legend li:nth-of-type(2):before {
     background-color: #45B29D;
   }
