@@ -15,7 +15,6 @@
 #include "runRoutine.hpp"
 
 
-
 int main() {
 
     //Start routine management thread
