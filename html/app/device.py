@@ -79,6 +79,8 @@ def testdevice(deviceID):
 
 def configDevices():
 
+    sendCommand("RESET", False)
+
     # Database lookup of current devices
 
     devices = Device.query.all()
