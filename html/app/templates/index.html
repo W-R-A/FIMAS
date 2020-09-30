@@ -11,7 +11,7 @@
         <select id="routines_dropdown"></select>
 
         <!-- Test the devices used in the routine -->
-        <button class="btn btn-secondary" onclick="location.href='{{ url_for('testdevices') }}'">Add a device</button>
+        <button class="btn btn-secondary" onclick="location.href='{{ url_for('testdevices') }}'">Test Devices</button>
 
         <!-- Run the Routine -->
         <button class="btn btn-secondary btnRunRoutine">Run the Routine</button>
@@ -48,7 +48,7 @@
                 }
 
                 //Define the URL to hit
-                var reqURL = '{{ url_for('runroutine') }}' + '/' + routineID;
+                var reqURL = '/runroutine/' + routineID;
 
                 //Debugging, display the URL to send a GET request to
                 //alert(reqURL);
