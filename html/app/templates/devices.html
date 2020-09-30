@@ -63,22 +63,8 @@
             //Bind the test buttons to the following handler if table population succeeded
             $(document).on("click", "button.btnTest", function (event) {
 
-                //Debugging, display the ID to be requested
-                //alert(event.target.id);
-
-                var state = 0;
-
-                if (confirm("Ok for on, cancel for off!")) {
-                    state = 1;
-                } else {
-                    state = 0;
-                }
-
                 //Define the URL to hit
-                var reqURL = '/devicetest/id=' + event.target.id + 'state=' + state;
-
-                //Debuging, dislay the URL to send a GET request to
-                //alert(reqURL);
+                var reqURL = '/testdevice/' + event.target.id ;
 
                 //Send the AJAX request to the defined URL
                 $.ajax({
