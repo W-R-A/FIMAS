@@ -6,6 +6,9 @@ from app.models import Routine, Device, Timing
 import serial
 from time import sleep
 
+#threading
+from threading import Thread
+
 # Create a serial object with the following properties
 ser = serial.Serial(
     port='/dev/ttyS0',
@@ -65,15 +68,15 @@ def sendCommand(cmd, displayResult):
 @app.route('/testdevices')
 def testdevices():
     configDevices()
-    sendCommand("TESTDEVICES", True)
-    flash("Device Test Successful")
+    Thread(target=sendCommand, args=("TESTDEVICES", True)).start()
+    flash("Device Test In Progress")
     return redirect(url_for('devices'))
 
 @app.route('/testdevice/<int:deviceID>')
 def testdevice(deviceID):
     configDevices()
-    sendCommand("TESTDEVICE " + str(deviceID), True)
-    flash("Device Test Successful")
+    Thread(target=sendCommand, args=("TESTDEVICE " + str(deviceID), True)).start()
+    flash("Device Test In Progress")
     return redirect(url_for('devices'))
 
 
@@ -109,7 +112,7 @@ def configRoutines(routineID):
 def runroutine(routineID):
     configDevices()
     configRoutines(routineID)
-    sendCommand("RUN ", True)
+    Thread(target=sendCommand, args=("RUN ", True)).start()
     return redirect(url_for('index'))
 
 @app.route('/estop')
