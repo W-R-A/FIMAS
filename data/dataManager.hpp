@@ -7,6 +7,9 @@
 //Include the string header file
 #include <string>
 
+//Include vector header
+#include <vector>
+
 //Include the hardware header file to gain awareness of the hardware connected
 #include "hardware.hpp"
 
