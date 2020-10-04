@@ -10,6 +10,7 @@
 //Include the hardware header file to gain awareness of the hardware connected
 #include "hardware.hpp"
 
+//Include the serial interface to aid debugging
 #include "serialInterface.hpp"
 
 

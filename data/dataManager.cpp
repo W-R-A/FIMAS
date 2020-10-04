@@ -518,7 +518,7 @@ void dataManager::getMutex(void) {
 
 
 
-//Release the internal data mutex, block until available
+//Release the internal data mutex
 //Nothing is passed, nothing is returned
 void dataManager::releaseMutex(void) {
 
