@@ -8,9 +8,7 @@
  * Ross Andrewartha, January 2020
  */
 
-//#include "Networkbits.hpp"
 #include "deviceConfig.hpp"
-// #include "hardware.hpp"
 #include "serialInterface.hpp"
 #include "runRoutine.hpp"
 
