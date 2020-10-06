@@ -1,0 +1,3 @@
+# Real-Time Routines #
+
+To ensure that repeatable and accurate results are produced by the system, the routine timing needs to occur in real-time. To do this an EventQueue on the highest-priority thread is used. Every second, the EventQueue fires and instructs the program to read the timing information from the data manager. It then sends the control signals to all devices that need to change state, before going into the waiting state until the next second passes.

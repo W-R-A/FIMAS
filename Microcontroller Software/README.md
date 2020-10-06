@@ -3,6 +3,6 @@ Any microcontroller that can run the full version of mbed os can be used with th
 
 
 
-## Real-Time Routines ##
 
-## Thread Safe Data Sharing ##
+
+# Thread Safe Data Sharing #
