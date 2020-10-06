@@ -1,13 +1,12 @@
 # Overview #
 Any microcontroller that can run the full version of mbed os can be used with the project, although it has only been tested with the STM32 F429ZI - 144 Nucleo Board. The board recieves commands through the serial interface and interfaces with lab devices through relays or other interfaces. 
 
-## Device Classes ##
-The object-orientated nature of C++ has been used to create a base class for all of the devices that are to be controlled. Each device has its own class which inherites from the base class. The device-specific classes implement the specific control signals and monitoring required to operate the device, while all device classes  have a consistant interface allowing for simple control from the rest of the system. 
+
 
 ## Serial Interface ##
 
 
-## Real-time Routines ##
+## Real-Time Routines ##
 
 ## Thread Safe Data Sharing ##
 

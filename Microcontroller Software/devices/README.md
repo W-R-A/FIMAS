@@ -1,0 +1,2 @@
+# Device Classes #
+The object-orientated nature of C++ has been used to create a base class for all of the devices that are to be controlled. Each device has its own class which inherites from the base class. The device-specific classes implement the specific control signals and monitoring required to operate the device, while all device classes  have a consistant interface allowing for simple control from the rest of the system. 
