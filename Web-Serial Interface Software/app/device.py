@@ -9,15 +9,18 @@ from time import sleep
 #threading
 from threading import Thread
 
-# Create a serial object with the following properties
-ser = serial.Serial(
-    port='/dev/ttyS0',
-    baudrate=115200,
-    parity=serial.PARITY_NONE,
-    stopbits=serial.STOPBITS_ONE,
-    bytesize=serial.EIGHTBITS,
-    timeout=1
-)
+try:
+    # Create a serial object with the following properties
+    ser = serial.Serial(
+        port='/dev/ttyS0',
+        baudrate=115200,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+    )
+except Exception as e:
+    print(e)
 
 """
 Define a function to send a command over USART to the MCU, blocking until a valid response is received back 
